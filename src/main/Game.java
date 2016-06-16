@@ -65,7 +65,7 @@ public class Game {
 	private static void resetBoard() {
 		
 		if (board == null){
-			board = new int[COLUMNS-1][ROWS-1];
+			board = new int[ROWS][COLUMNS];
 		}
 		for (int i=0; i<COLUMNS; i++) {
 			for (int j=0; j<ROWS; j++){
@@ -184,7 +184,7 @@ public class Game {
 			}
 		}
 		//Schaue links:
-		for (int i=column-1; i<COLUMNS; i--){
+		for (int i=column-1; i>=0; i--){
 			if (board[row][i]==p){
 				tokensfound++;
 			}
@@ -230,20 +230,21 @@ public class Game {
 		IPlayer player1 = new HumanPlayer(1);
 		IPlayer player2 = new HumanPlayer(2);
 		
-		int[][] board  = {  {1,0,0,0,0,0,0},
+		int[][] testboard  = {  {1,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
 							{0,1,0,1,1,0,0},
 							{0,2,2,2,1,2,1}
 		};
-		Game.board = board;
+		
 		System.out.println("So sieht das Spielfeld aus:");
 		System.out.println("--------------------------------------");
-		System.out.println(Helper.convertIntBoardToString(Game.board));
+		System.out.println(Helper.convertIntBoardToString(testboard));
 		System.out.println("--------------------------------------");
 		System.out.println("Spieler 2 platziert seinen Stein in Reihe 0");
-		board[5][0] = 2;
+		testboard[5][0] = 2;
+		Game.board = testboard;
 		System.out.println("So sieht das Spielfeld aus:");
 		System.out.println("--------------------------------------");
 		System.out.println(Helper.convertIntBoardToString(Game.board));
