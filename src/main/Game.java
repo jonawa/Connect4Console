@@ -15,7 +15,7 @@ public class Game {
 	public static void playGame(){
 		
 		//Erzeuge leeres Board.
-		board = new int[COLUMNS-1][ROWS-1];
+		board = new int[ROWS-1][COLUMNS-1];
 		for (int i=0; i<COLUMNS; i++) {
 			for (int j=0; j<ROWS; j++){
 				board[i][j]=0;
@@ -104,7 +104,7 @@ public class Game {
 		
 		// Schaue in der Spalte nach unten:
 		for (int i=column+1; i<ROWS; i++){
-			if (board[column][i]==p){
+			if (board[i][column]==p){
 				tokensfound++;
 			}
 			else if (board[column][i]==gegner){
@@ -116,10 +116,10 @@ public class Game {
 		 * Ich glaube das hier braucht man nicht 
 		 * Oberhalb vom geworfenen Stein könne keine anderen liegen.
 		for (int i=column-1; i<ROWS; i--){
-			if (board[column][i]==p){
+			if (board[i][column]==p){
 				tokensfound++;
 			}
-			else if (board[column][i]==gegner){
+			else if (board[i][column]==gegner){
 				break;
 			}
 		}
@@ -145,19 +145,19 @@ public class Game {
 		
 		//Schaue rechts:
 		for (int i=column+1; i<COLUMNS; i++){
-			if (board[i][row]==p){
+			if (board[row][i]==p){
 				tokensfound++;
 			}
-			else if (board[i][row]==gegner){
+			else if (board[row][i]==gegner){
 				break;
 			}
 		}
 		//Schaue links:
 		for (int i=column-1; i<COLUMNS; i--){
-			if (board[i][row]==p){
+			if (board[row][i]==p){
 				tokensfound++;
 			}
-			else if (board[i][row]==gegner){
+			else if (board[row][i]==gegner){
 				break;
 			}
 		}
