@@ -14,8 +14,19 @@ public class Game {
 	
 	public static void playGame(){
 		
+		//Erzeuge leeres Board.
+		board = new int[COLUMNS-1][ROWS-1];
+		for (int i=0; i<COLUMNS; i++) {
+			for (int j=0; j<ROWS; j++){
+				board[i][j]=0;
+			}
+		}
+		
 		IPlayer Spieler1 = new HumanPlayer(1);
 		IPlayer Spieler2 = new HumanPlayer(2);
+		FINISHED=false;
+		
+		
 		
 		while(!FINISHED){
 			
