@@ -41,17 +41,54 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Prüft nachdem ein Stein in eine Spalte geworfen worden ist, ob der Spiele der mitgegeben wird gewonnen hat.
+	 * Ruft 4 Methoden auf, die jeweils die unterschiedlichen Fälle für ein N gewinnt abdecken
+	 * N ist dabei in der Game Klasse als statische Variable definiert.
+	 * 
+	 * @param player Spieler für den geprüft werden soll, ob dieser gewonnen hat.
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	
+	
 	public static boolean checkWin(IPlayer player, int row, int column){
 		
-		/**checkColumns(,Player)
-		checkRows(,Player)
-		checkDiagonal1(,PLayer)
-		checkDiagonal2(,Player)
-		**/
+		//Methoden sollen das für den statischen WINCOUNT prüfen, nicht für 4
+	
+		if(checkWinRows( player,  row,  column))
+			return true;
+		if(checkWinColumns( player,  row,  column))
+			return true;
+		if(checkWinDiagonal1( player,  row,  column))
+			return true;
+		if(checkWinDiagonal2( player,  row,  column))
+			return true;
 		
 		return false;
 	}
 	
+	private static boolean checkWinDiagonal2(IPlayer player, int row, int column) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	private static boolean checkWinDiagonal1(IPlayer player, int row, int column) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private static boolean checkWinColumns(IPlayer player, int row, int column) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private static boolean checkWinRows(IPlayer player, int row, int column) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	/**
 	 * Board wird mit dieser Methode verändert.
 	 * boolean Rückgabe um zu überprüfen ob alles geklappt hat

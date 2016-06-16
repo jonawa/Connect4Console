@@ -15,14 +15,14 @@ public class HumanPlayer implements IPlayer{
 
 	@Override
 	public void reactToWinOrLose(boolean win) {
-		// TODO Auto-generated method stub
+		//leer lassen
 		
 	}
 
 	@Override
 	public int getPlayerID() {
 		// TODO Auto-generated method stub
-		return 0;
+		return playerID;
 	}
 
 }
