@@ -17,11 +17,12 @@ public class Game {
 	public static void playGame(){
 		
 		//Erzeuge leeres Board.
+
 		
 		resetBoard();
 
 		
-		
+
 		
 		IPlayer Spieler1 = new HumanPlayer(1);
 		IPlayer Spieler2 = new HumanPlayer(2);
@@ -98,9 +99,9 @@ public class Game {
 		
 		//Methoden sollen das für den statischen WINCOUNT prüfen, nicht für 4
 	
-		if(checkWinRows( player,  row,  column))
+		if(checkWinRow( player,  row,  column))
 			return true;
-		if(checkWinColumns( player,  row,  column))
+		if(checkWinColumn( player,  row,  column))
 			return true;
 		if(checkWinDiagonal1( player,  row,  column))
 			return true;
@@ -120,13 +121,82 @@ public class Game {
 		return false;
 	}
 
-	private static boolean checkWinColumns(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
+	private static boolean checkWinColumn(IPlayer player, int row, int column) {
+		int tokensfound=1;
+		int p = player.getPlayerID();
+		int gegner;
+		if(p==1){
+			gegner=2;
+		}
+		else{
+			gegner=1;
+		}
+		
+		
+		// Schaue in der Spalte nach unten:
+		for (int i=column+1; i<ROWS; i++){
+			if (board[i][column]==p){
+				tokensfound++;
+			}
+			else if (board[column][i]==gegner){
+				break;
+			}
+		}
+		
+		/*
+		 * Ich glaube das hier braucht man nicht 
+		 * Oberhalb vom geworfenen Stein könne keine anderen liegen.
+		for (int i=column-1; i<ROWS; i--){
+			if (board[i][column]==p){
+				tokensfound++;
+			}
+			else if (board[i][column]==gegner){
+				break;
+			}
+		}
+		*/
+		if (tokensfound>=WINCOUNT){
+			return true;
+		}
 		return false;
+		
 	}
 
-	private static boolean checkWinRows(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
+	private static boolean checkWinRow(IPlayer player, int row, int column) {
+		
+		int tokensfound=1;
+		int p = player.getPlayerID();
+		int gegner;
+		if(p==1){
+			gegner=2;
+		}
+		else{
+			gegner=1;
+		}
+		
+		//Schaue rechts:
+		for (int i=column+1; i<COLUMNS; i++){
+			if (board[row][i]==p){
+				tokensfound++;
+			}
+			else if (board[row][i]==gegner){
+				break;
+			}
+		}
+		//Schaue links:
+		for (int i=column-1; i<COLUMNS; i--){
+			if (board[row][i]==p){
+				tokensfound++;
+			}
+			else if (board[row][i]==gegner){
+				break;
+			}
+		}
+		
+		if (tokensfound>=WINCOUNT){
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -180,7 +250,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWinRows(player2, 5, 0) );
+							+ checkWinRow(player2, 5, 0) );
 		
 		
 		
