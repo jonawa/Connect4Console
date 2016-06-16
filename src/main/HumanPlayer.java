@@ -1,5 +1,8 @@
 package main;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class HumanPlayer implements IPlayer{
 	private int playerID;
 	
@@ -9,8 +12,17 @@ public class HumanPlayer implements IPlayer{
 	}
 	@Override
 	public int turn() {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("Spielzu eingeben 0-6:");
+		InputStream in = System.in;
+		int column = -1;
+		try {
+			column = in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("column");
+		return column;
 	}
 
 	@Override
