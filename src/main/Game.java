@@ -68,9 +68,9 @@ public class Game {
 		
 		//Methoden sollen das für den statischen WINCOUNT prüfen, nicht für 4
 	
-		if(checkWinRows( player,  row,  column))
+		if(checkWinRow( player,  row,  column))
 			return true;
-		if(checkWinColumns( player,  row,  column))
+		if(checkWinColumn( player,  row,  column))
 			return true;
 		if(checkWinDiagonal1( player,  row,  column))
 			return true;
@@ -90,13 +90,82 @@ public class Game {
 		return false;
 	}
 
-	private static boolean checkWinColumns(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
+	private static boolean checkWinColumn(IPlayer player, int row, int column) {
+		int tokensfound=1;
+		int p = player.getPlayerID();
+		int gegner;
+		if(p==1){
+			gegner=2;
+		}
+		else{
+			gegner=1;
+		}
+		
+		
+		// Schaue in der Spalte nach unten:
+		for (int i=column+1; i<ROWS; i++){
+			if (board[column][i]==p){
+				tokensfound++;
+			}
+			else if (board[column][i]==gegner){
+				break;
+			}
+		}
+		
+		/*
+		 * Ich glaube das hier braucht man nicht 
+		 * Oberhalb vom geworfenen Stein könne keine anderen liegen.
+		for (int i=column-1; i<ROWS; i--){
+			if (board[column][i]==p){
+				tokensfound++;
+			}
+			else if (board[column][i]==gegner){
+				break;
+			}
+		}
+		*/
+		if (tokensfound>=WINCOUNT){
+			return true;
+		}
 		return false;
+		
 	}
 
-	private static boolean checkWinRows(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
+	private static boolean checkWinRow(IPlayer player, int row, int column) {
+		
+		int tokensfound=1;
+		int p = player.getPlayerID();
+		int gegner;
+		if(p==1){
+			gegner=2;
+		}
+		else{
+			gegner=1;
+		}
+		
+		//Schaue rechts:
+		for (int i=column+1; i<COLUMNS; i++){
+			if (board[i][row]==p){
+				tokensfound++;
+			}
+			else if (board[i][row]==gegner){
+				break;
+			}
+		}
+		//Schaue links:
+		for (int i=column-1; i<COLUMNS; i--){
+			if (board[i][row]==p){
+				tokensfound++;
+			}
+			else if (board[i][row]==gegner){
+				break;
+			}
+		}
+		
+		if (tokensfound>=WINCOUNT){
+			return true;
+		}
+		
 		return false;
 	}
 
