@@ -7,6 +7,21 @@ public class Game {
 	public static final int WINCOUNT = 4;
 	public static final int COLUMNS = 7;
 	public static final int ROWS = 6;
+	/** Beispiel für ein 6*7 Board
+	 * 							{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,1,0,1,1,0,0},
+								{0,2,2,2,1,2,1}
+		Beim Zugriff auf das board wird zuerst das die Zeile angegeben und dann die Spalte.
+		Dabei ist oben links der erste Stein 0,0.
+		Bsp hier Spieler 2 will seinen Stein in die erste Spalte werfen:
+		board[5][0] = 2
+		Sorgt dafür, dass in die 6.te Reihe in die 1.Spalte ein Stein vom Spieler 2 geworfen wird. 
+								
+								
+	 */
 	public static int[][] board;
 
 	
@@ -67,8 +82,8 @@ public class Game {
 		if (board == null){
 			board = new int[ROWS][COLUMNS];
 		}
-		for (int i=0; i<COLUMNS; i++) {
-			for (int j=0; j<ROWS; j++){
+		for (int i=0; i<ROWS; i++) {
+			for (int j=0; j<COLUMNS; j++){
 				board[i][j]=0;
 			}
 		}
@@ -77,7 +92,8 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		testCheck4Win();
+		//-testCheck4Win();
+		playGame();
 		
 	}
 	
@@ -202,12 +218,22 @@ public class Game {
 
 	/**
 	 * Board wird mit dieser Methode verändert.
-	 * boolean Rückgabe um zu überprüfen ob alles geklappt hat
-	 * @param row
+	 * int Rückgabe um zu überprüfen ob alles geklappt hat
+	 * @param column
 	 * @return Rückgabe der Zeile, in die geworfen wird
 	 * 			-1 wenn die Spalte voll oder sonstiger Fehler
 	 */
-	public static int placeDisk(int row){
+	public static int placeDisk(int column){
+		//Beginne in der untersten Reihe
+		int row = ROWS -1;
+		
+		//Bis zur obersten Reihe:
+		for(int i = row; i>=0;i-- ){
+			//Sobald ein Feld leer ist, gibt die Zeile dieses Felds zurück
+			if(board[i][column] == 0)
+				return i;
+		}
+			
 		return -1;
 	}
 	
@@ -219,7 +245,7 @@ public class Game {
 		
 		//Funktioniert nur mit WINCOUNT = 4 und 7*6 Spielfeld, also vor dem Testen die Statics so anpassen
 		/**
-		int[][] board  = {  {0,0,0,0,0,0,0},
+		int[][] testboard  = {  {0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
@@ -231,11 +257,11 @@ public class Game {
 		IPlayer player2 = new HumanPlayer(2);
 		
 		int[][] testboard  = {  {1,0,0,0,0,0,0},
-							{0,0,0,0,0,0,0},
-							{0,0,0,0,0,0,0},
-							{0,0,0,0,0,0,0},
-							{0,1,0,1,1,0,0},
-							{0,2,2,2,1,2,1}
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,1,0,1,1,0,0},
+								{0,2,2,2,1,2,1}
 		};
 		
 		System.out.println("So sieht das Spielfeld aus:");
