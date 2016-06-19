@@ -8,6 +8,7 @@ public class HumanPlayer implements IPlayer{
 	
 	public HumanPlayer(int playerID) {
 		// TODO Auto-generated constructor stub
+		this.playerID=playerID;
 		
 	}
 	@Override
