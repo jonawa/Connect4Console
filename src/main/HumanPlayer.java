@@ -1,28 +1,45 @@
 package main;
 
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class HumanPlayer implements IPlayer{
 	private int playerID;
+
 	
+	/**
+	 * Konstruktor für menschlichen Spieler, muss 1 oder 2 zuwegewiesen bekommen
+	 * 
+	 * @param playerID
+	 */
 	public HumanPlayer(int playerID) {
 		// TODO Auto-generated constructor stub
 		this.playerID=playerID;
+
 		
 	}
+	/**
+	 * Gibt den Zug des Menschlischen Spielers zurück, falls dieser einen falschen Zug gemacht hat wird allerdings -1 zurückgegeben
+	 */
 	@Override
 	public int turn() {
-		System.out.println("Spielzu eingeben 0-6:");
-		InputStream in = System.in;
+		System.out.format("Spielzug eingeben 0-%d: ",Game.COLUMNS-1);
+		Scanner sc = new Scanner(System.in);
+		
 		int column = -1;
-		try {
-			column = in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("column");
+		
+			try{
+				column = sc.nextInt();
+				if (column <0 || column > Game.COLUMNS- 1)
+					throw new InputMismatchException();
+			}
+			catch (InputMismatchException e){
+				System.out.println("Fehler! Der eingebene Wert ist falsch");
+			}
+
+		
+		
 		return column;
 	}
 

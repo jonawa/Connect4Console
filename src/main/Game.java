@@ -44,31 +44,49 @@ public class Game {
 		FINISHED=false;
 		
 		int column = -1;
+		int row = -1;
 		int count = 0;
 		
 		while(!FINISHED){
 			
 			if (count % 2 == 0){
+				
 				column = Spieler1.turn();
+				row = placeDisk(column, Spieler1);
 				
 			}
 				
 			else{ 
 				column = Spieler2.turn();
+				row = placeDisk(column, Spieler2);
+				
 			}
 			count++;
 			
+			//TODO Fehlerbehandlung
+			if(row == -1){
+				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
+			}
 			
-			int row = placeDisk(column);
+			
+			System.out.println(Helper.convertIntBoardToString(board));
 			
 			
 			if (checkWin(Spieler1,row,column)){
 				Spieler1.reactToWinOrLose(true);
-				Spieler2.reactToWinOrLose(false);	
+				Spieler2.reactToWinOrLose(false);
+				System.out.println("---------------------------------");
+				System.out.println("Spieler 1 hat gewonnen");
+				System.out.println("---------------------------------");
+				FINISHED = true;
 			}
 			if (checkWin(Spieler2,row, column)){
 				Spieler1.reactToWinOrLose(false);
 				Spieler2.reactToWinOrLose(true);
+				System.out.println("---------------------------------");
+				System.out.println("Spieler 2 hat gewonnen");
+				System.out.println("---------------------------------");
+				FINISHED = true;
 			}
 			
 		}
@@ -92,7 +110,7 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		//-testCheck4Win();
+		//testCheck4Win();
 		playGame();
 		
 	}
@@ -220,18 +238,23 @@ public class Game {
 	 * Board wird mit dieser Methode verändert.
 	 * int Rückgabe um zu überprüfen ob alles geklappt hat
 	 * @param column
+	 * @param Player, der den Stein wirft
 	 * @return Rückgabe der Zeile, in die geworfen wird
 	 * 			-1 wenn die Spalte voll oder sonstiger Fehler
 	 */
-	public static int placeDisk(int column){
+	public static int placeDisk(int column, IPlayer player){
 		//Beginne in der untersten Reihe
 		int row = ROWS -1;
 		
 		//Bis zur obersten Reihe:
 		for(int i = row; i>=0;i-- ){
 			//Sobald ein Feld leer ist, gibt die Zeile dieses Felds zurück
-			if(board[i][column] == 0)
+			if(board[i][column] == 0){
+				
+				board[i][column] = player.getPlayerID(); 
 				return i;
+			}
+				
 		}
 			
 		return -1;
@@ -278,6 +301,33 @@ public class Game {
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
 							+ checkWinRow(player2, 5, 0) );
+		
+		
+	
+		//ROW Testen
+		int[][] testboard2  = {  {0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{2,0,0,0,0,0,0},
+								{2,1,0,1,1,0,0},
+								{1,2,2,2,1,2,1}
+		};
+		
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(testboard2));
+		System.out.println("--------------------------------------");
+		System.out.println("Spieler 2 platziert seinen Stein in Reihe 0");
+		testboard2[2][0] = 2;
+		Game.board = testboard2;
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(Game.board));
+		System.out.println("--------------------------------------");
+		
+		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
+							+ checkWinColumn(player2, 2, 0) );		
+		
 		
 		
 		

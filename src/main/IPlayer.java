@@ -3,8 +3,9 @@ package main;
 public interface IPlayer {
 	
 	/**
-	 * 
-	 * @return
+	 * Gibt den Zug eines menschlichen oder KI gesteuerten Spielers zurück
+	 * in der Range 0 bis COLUMNS -1
+	 * @return 
 	 */
 	public int turn();
 	
