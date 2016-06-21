@@ -110,7 +110,7 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		//testCheck4Win();
+		testCheck4Win();
 		playGame();
 		
 	}
@@ -285,6 +285,99 @@ public class Game {
 	private static void testCheck4Win() {
 		
 		//Funktioniert nur mit WINCOUNT = 4 und 7*6 Spielfeld, also vor dem Testen die Statics so anpassen
+		//testColumns();
+		
+		//testRows();
+		
+		testDiagonal();
+		
+	
+		
+		
+		
+		
+		
+		
+	}
+
+	private static void testDiagonal() {
+		IPlayer player1 = new HumanPlayer(1);
+		IPlayer player2 = new HumanPlayer(2);
+		
+		//ROW Testen
+		int[][] testboard2  = {  {0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{2,2,0,0,1,2,0},
+								{2,1,2,1,1,0,0},
+								{1,2,1,2,1,2,1}
+		};
+		System.out.println("--------------TESTE DIAGONALE 1---------------------- \n \n \n");
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(testboard2));
+		System.out.println("--------------------------------------");
+		System.out.println("Spieler 2 platziert seinen Stein in Reihe 0");
+		testboard2[2][0] = 2;
+		Game.board = testboard2;
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(Game.board));
+		System.out.println("--------------------------------------");
+		
+		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
+							+ checkWin(player2, 2, 0) );	
+		
+		System.out.println("\n \n \n --------------TESTE DIAGONALE 2---------------------- \n \n \n");
+		System.out.println("Spieler 1 setzt seinen Stein in Reihe 5");
+		testboard2[2][5] = 1;
+		Game.board = testboard2;
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(Game.board));
+		System.out.println("--------------------------------------");
+		
+		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
+							+ checkWin(player1, 2, 5) );
+		
+		
+		
+		
+	}
+
+	private static void testRows() {
+		IPlayer player1 = new HumanPlayer(1);
+		IPlayer player2 = new HumanPlayer(2);
+		
+		//ROW Testen
+		int[][] testboard2  = {  {0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{0,0,0,0,0,0,0},
+								{2,0,0,0,0,0,0},
+								{2,1,0,1,1,0,0},
+								{2,2,2,2,1,2,1}
+		};
+		
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(testboard2));
+		System.out.println("--------------------------------------");
+		System.out.println("Spieler 2 platziert seinen Stein in Reihe 0");
+		testboard2[2][0] = 2;
+		Game.board = testboard2;
+		System.out.println("So sieht das Spielfeld aus:");
+		System.out.println("--------------------------------------");
+		System.out.println(Helper.convertIntBoardToString(Game.board));
+		System.out.println("--------------------------------------");
+		
+		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
+							+ checkWinColumn(player2, 2, 0) );		
+		
+		
+		
+	}
+
+	private static void testColumns() {
 		/**
 		int[][] testboard  = {  {0,0,0,0,0,0,0},
 							{0,0,0,0,0,0,0},
@@ -319,38 +412,6 @@ public class Game {
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
 							+ checkWinRow(player2, 5, 0) );
-		
-		
-	
-		//ROW Testen
-		int[][] testboard2  = {  {0,0,0,0,0,0,0},
-								{0,0,0,0,0,0,0},
-								{0,0,0,0,0,0,0},
-								{2,0,0,0,0,0,0},
-								{2,1,0,1,1,0,0},
-								{1,2,2,2,1,2,1}
-		};
-		
-		System.out.println("So sieht das Spielfeld aus:");
-		System.out.println("--------------------------------------");
-		System.out.println(Helper.convertIntBoardToString(testboard2));
-		System.out.println("--------------------------------------");
-		System.out.println("Spieler 2 platziert seinen Stein in Reihe 0");
-		testboard2[2][0] = 2;
-		Game.board = testboard2;
-		System.out.println("So sieht das Spielfeld aus:");
-		System.out.println("--------------------------------------");
-		System.out.println(Helper.convertIntBoardToString(Game.board));
-		System.out.println("--------------------------------------");
-		
-		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWinColumn(player2, 2, 0) );		
-		
-		
-		
-		
-		
-		
 		
 		
 	}
