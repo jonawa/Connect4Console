@@ -51,7 +51,7 @@ public class HumanPlayer implements IPlayer{
 
 	@Override
 	public int getPlayerID() {
-		// TODO Auto-generated method stub
+		
 		return playerID;
 	}
 

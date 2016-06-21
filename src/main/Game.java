@@ -146,49 +146,73 @@ public class Game {
 	}
 	
 	private static boolean checkWinDiagonal2(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
-		return false;
+		//rechts nach links
+			int tokensfound=0;
+			int p = player.getPlayerID();
+				
+			int j= row+1;
+			//Schaue rechts:
+			for (int i=column; i<=COLUMNS-1; i++){
+				j--;
+				if (j>=0 && board[j][i]==p){
+					tokensfound++;
+				}
+					else {break;}
+			}
+			j= row;
+			//Schaue links:
+			for (int i=column-1; i>=0; i--){
+				j++;
+				if (j<=ROWS-1 && board[j][i]==p){
+					tokensfound++;
+				}
+				else {break;}
+			}
+			return false;
 	}
 	
 	private static boolean checkWinDiagonal1(IPlayer player, int row, int column) {
-		// TODO Auto-generated method stub
+		// links nach rechts
+		int tokensfound=0;
+		int p = player.getPlayerID();
+		
+		int j= row-1;
+		//Schaue rechts:
+		for (int i=column; i<=COLUMNS-1; i++){
+			j++;
+			if (j<=ROWS-1 && board[j][i]==p){
+				tokensfound++;
+				System.out.println("Diagonale1++");
+			}
+			else {break;}
+		}
+		j= row;
+		//Schaue links:
+		for (int i=column-1; i>=0; i--){
+			j--;
+			if (j>=0 && board[j][i]==p){
+				tokensfound++;
+			}
+			else {break;}
+		}
 		return false;
 	}
 
 	private static boolean checkWinColumn(IPlayer player, int row, int column) {
-		int tokensfound=1;
+		int tokensfound=0;
 		int p = player.getPlayerID();
-		int gegner;
-		if(p==1){
-			gegner=2;
-		}
-		else{
-			gegner=1;
-		}
-		
+				
 		
 		// Schaue in der Spalte nach unten:
-		for (int i=column+1; i<ROWS; i++){
+		for (int i=row; i<=ROWS-1; i++){
 			if (board[i][column]==p){
 				tokensfound++;
 			}
-			else if (board[column][i]==gegner){
+			else {
 				break;
 			}
 		}
-		
-		/*
-		 * Ich glaube das hier braucht man nicht 
-		 * Oberhalb vom geworfenen Stein könne keine anderen liegen.
-		for (int i=column-1; i<ROWS; i--){
-			if (board[i][column]==p){
-				tokensfound++;
-			}
-			else if (board[i][column]==gegner){
-				break;
-			}
-		}
-		*/
+		System.out.println("Column: Tokensfound "+ tokensfound);
 		if (tokensfound>=WINCOUNT){
 			return true;
 		}
@@ -198,22 +222,16 @@ public class Game {
 
 	private static boolean checkWinRow(IPlayer player, int row, int column) {
 		
-		int tokensfound=1;
+		int tokensfound=0;
 		int p = player.getPlayerID();
-		int gegner;
-		if(p==1){
-			gegner=2;
-		}
-		else{
-			gegner=1;
-		}
+		
 		
 		//Schaue rechts:
-		for (int i=column+1; i<COLUMNS; i++){
+		for (int i=column; i<=COLUMNS-1; i++){
 			if (board[row][i]==p){
 				tokensfound++;
 			}
-			else if (board[row][i]==gegner){
+			else {
 				break;
 			}
 		}
@@ -222,11 +240,11 @@ public class Game {
 			if (board[row][i]==p){
 				tokensfound++;
 			}
-			else if (board[row][i]==gegner){
+			else {
 				break;
 			}
 		}
-		
+		System.out.println("Row: Tokensfound "+ tokensfound);
 		if (tokensfound>=WINCOUNT){
 			return true;
 		}
