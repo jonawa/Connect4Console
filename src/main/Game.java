@@ -150,23 +150,27 @@ public class Game {
 			int tokensfound=0;
 			int p = player.getPlayerID();
 				
-			int j= row+1;
+			int j= row;
 			//Schaue rechts:
 			for (int i=column; i<=COLUMNS-1; i++){
-				j--;
 				if (j>=0 && board[j][i]==p){
 					tokensfound++;
+					j--;
 				}
 					else {break;}
 			}
-			j= row;
+			j= row+1;
 			//Schaue links:
 			for (int i=column-1; i>=0; i--){
-				j++;
 				if (j<=ROWS-1 && board[j][i]==p){
 					tokensfound++;
+					j++;
 				}
 				else {break;}
+			}
+			System.out.println("Diagonale2: Tokensfound "+ tokensfound);
+			if (tokensfound>=WINCOUNT){
+				return true;
 			}
 			return false;
 	}
@@ -176,24 +180,29 @@ public class Game {
 		int tokensfound=0;
 		int p = player.getPlayerID();
 		
-		int j= row-1;
+		int j= row;
 		//Schaue rechts:
 		for (int i=column; i<=COLUMNS-1; i++){
-			j++;
 			if (j<=ROWS-1 && board[j][i]==p){
 				tokensfound++;
 				System.out.println("Diagonale1++");
+				j++;
 			}
 			else {break;}
 		}
-		j= row;
+		j= row-1;
 		//Schaue links:
 		for (int i=column-1; i>=0; i--){
-			j--;
 			if (j>=0 && board[j][i]==p){
 				tokensfound++;
+				System.out.println("Diagonale1++");
+				j--;
 			}
 			else {break;}
+		}
+		System.out.println("Diagonale1: Tokensfound "+ tokensfound);
+		if (tokensfound>=WINCOUNT){
+			return true;
 		}
 		return false;
 	}
@@ -308,7 +317,7 @@ public class Game {
 		int[][] testboard2  = {  {0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
-								{2,2,0,0,1,2,0},
+								{2,2,1,0,1,2,0},
 								{2,1,2,1,1,0,0},
 								{1,2,1,2,1,2,1}
 		};
@@ -338,7 +347,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 1 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWin(player1, 2, 5) );
+							+ checkWin(player1, 3, 4) );
 		
 		
 		
