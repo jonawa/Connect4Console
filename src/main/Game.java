@@ -337,7 +337,7 @@ public class Game {
 		System.out.println(Helper.convertIntBoardToString(Game.board));
 		System.out.println("--------------------------------------");
 		
-		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
+		System.out.println("Spieler 1 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
 							+ checkWin(player1, 2, 5) );
 		
 		
