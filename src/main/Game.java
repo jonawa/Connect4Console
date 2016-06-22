@@ -35,7 +35,7 @@ public class Game {
 		//Erzeuge leeres Board.
 		resetBoard();
 	
-		IPlayer Spieler1 = new HumanPlayer(1);
+		IPlayer Spieler1 = new NormalKI(1);
 		IPlayer Spieler2 = new HumanPlayer(2);
 		FINISHED=false;
 		
@@ -68,7 +68,7 @@ public class Game {
 			System.out.println(Helper.convertIntBoardToString(board));
 			
 			
-			if (checkWin(1, WINCOUNT, row,column)){
+			if (checkWin(1, row,column)){
 				Spieler1.reactToWinOrLose(true);
 				Spieler2.reactToWinOrLose(false);
 				System.out.println("---------------------------------");
@@ -76,7 +76,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 			}
-			if (checkWin(2, WINCOUNT, row, column)){
+			if (checkWin(2, row, column)){
 				Spieler1.reactToWinOrLose(false);
 				Spieler2.reactToWinOrLose(true);
 				System.out.println("---------------------------------");
@@ -107,7 +107,7 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		testCheck4Win();
+		//testCheck4Win();
 		playGame();
 		
 	}
@@ -126,23 +126,23 @@ public class Game {
 	 */
 	
 	
-	public static boolean checkWin(int player, int win, int row, int column){
+	public static boolean checkWin(int player, int row, int column){
 		
 		//Methoden sollen das für den statischen WINCOUNT prüfen, nicht für 4
 	
-		if(checkWinRow( player,  win, row,  column))
+		if(checkWinRow( player,  row,  column))
 			return true;
-		if(checkWinColumn( player,  win, row,  column))
+		if(checkWinColumn( player,  row,  column))
 			return true;
-		if(checkWinDiagonal1( player,  win, row,  column))
+		if(checkWinDiagonal1( player,  row,  column))
 			return true;
-		if(checkWinDiagonal2( player,  win, row,  column))
+		if(checkWinDiagonal2( player,  row,  column))
 			return true;
 		
 		return false;
 	}
 	
-	private static boolean checkWinDiagonal2(int player, int win, int row, int column) {
+	private static boolean checkWinDiagonal2(int player, int row, int column) {
 		//rechts nach links
 			int tokensfound=0;
 				
@@ -164,14 +164,13 @@ public class Game {
 				}
 				else {break;}
 			}
-			System.out.println("Diagonale2: Tokensfound "+ tokensfound);
-			if (tokensfound>=win){
+			if (tokensfound>=WINCOUNT){
 				return true;
 			}
 			return false;
 	}
 	
-	private static boolean checkWinDiagonal1(int player, int win, int row, int column) {
+	private static boolean checkWinDiagonal1(int player, int row, int column) {
 		// links nach rechts
 		int tokensfound=0;
 		
@@ -180,7 +179,6 @@ public class Game {
 		for (int i=column; i<=COLUMNS-1; i++){
 			if (j<=ROWS-1 && board[j][i]==player){
 				tokensfound++;
-				System.out.println("Diagonale1++");
 				j++;
 			}
 			else {break;}
@@ -190,19 +188,17 @@ public class Game {
 		for (int i=column-1; i>=0; i--){
 			if (j>=0 && board[j][i]==player){
 				tokensfound++;
-				System.out.println("Diagonale1++");
 				j--;
 			}
 			else {break;}
 		}
-		System.out.println("Diagonale1: Tokensfound "+ tokensfound);
-		if (tokensfound>=win){
+		if (tokensfound>=WINCOUNT){
 			return true;
 		}
 		return false;
 	}
 
-	private static boolean checkWinColumn(int player, int win, int row, int column) {
+	private static boolean checkWinColumn(int player, int row, int column) {
 		int tokensfound=0;
 		
 		
@@ -215,15 +211,14 @@ public class Game {
 				break;
 			}
 		}
-		System.out.println("Column: Tokensfound "+ tokensfound);
-		if (tokensfound>=win){
+		if (tokensfound>=WINCOUNT){
 			return true;
 		}
 		return false;
 		
 	}
 
-	private static boolean checkWinRow(int player, int win, int row, int column) {
+	private static boolean checkWinRow(int player, int row, int column) {
 		
 		int tokensfound=0;
 		
@@ -246,8 +241,8 @@ public class Game {
 				break;
 			}
 		}
-		System.out.println("Row: Tokensfound "+ tokensfound);
-		if (tokensfound>=win){
+		
+		if (tokensfound>=WINCOUNT){
 			return true;
 		}
 		
@@ -322,7 +317,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWin(2, WINCOUNT, 2, 0) );	
+							+ checkWin(2, 2, 0) );	
 		
 		System.out.println("\n \n \n --------------TESTE DIAGONALE 2---------------------- \n \n \n");
 		System.out.println("Spieler 1 setzt seinen Stein in Reihe 5");
@@ -334,7 +329,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 1 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWin(1, WINCOUNT, 3, 4) );
+							+ checkWin(1, 3, 4) );
 		
 		
 		
@@ -367,7 +362,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWinColumn(2, WINCOUNT, 2, 0) );		
+							+ checkWinColumn(2, 2, 0) );		
 		
 		
 		
@@ -407,7 +402,7 @@ public class Game {
 		System.out.println("--------------------------------------");
 		
 		System.out.println("Spieler 2 sollte gewonnen haben, weil er als letztes in Reihe 0 seinen Stein platziert hat: "
-							+ checkWinRow(2,WINCOUNT, 5, 0) );
+							+ checkWinRow(2, 5, 0) );
 		
 		
 	}
