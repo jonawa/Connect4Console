@@ -67,7 +67,7 @@ public class Game {
 			
 			System.out.println(Helper.convertIntBoardToString(board));
 			
-			
+			//TODO WINCOUNT muss doch eigentlich überhaupt nicht übergeben werde ist doch statisch!
 			if (checkWin(1, WINCOUNT, row,column)){
 				Spieler1.reactToWinOrLose(true);
 				Spieler2.reactToWinOrLose(false);
@@ -107,7 +107,7 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		testCheck4Win();
+		//testCheck4Win();
 		playGame();
 		
 	}
@@ -271,6 +271,7 @@ public class Game {
 			//Sobald ein Feld leer ist, gibt die Zeile dieses Felds zurück
 			if(board[i][column] == 0){
 				
+				//Stein wird ins Spielfeld geworfen:
 				board[i][column] = player.getPlayerID(); 
 				if (BOARDISEMPTY==true){BOARDISEMPTY=false;}
 				return i;
