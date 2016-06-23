@@ -59,7 +59,8 @@ public class NormalKI implements IPlayer{
 		//Kann der Gegner im nächsten zu gewinnen?
 		for (column=0; column<=Game.COLUMNS-1; column++){
 			row=placeVirtualDisk(column);
-			if ((row!=1) && checkVirtualWin(enemyID, win, row, column)){					
+			
+			if ((row!=-1) && checkVirtualWin(enemyID, win, row, column)){					
 					if (debug){
 						System.out.println("Ich muss verhindern, dass mein Gegner gewinnt: Wähle " + (column+1));
 					}
@@ -71,7 +72,7 @@ public class NormalKI implements IPlayer{
 		for (column=0; column<=Game.COLUMNS-1; column++){
 			row=placeVirtualDisk(column);
 			for (int i=win-1; i>1; i--){
-				if ((row!=1) && checkVirtualWin(enemyID, i, row, column)){
+				if ((row!=-1) && checkVirtualWin(enemyID, i, row, column)){
 						possibleSolutions.add(column);
 						if (debug){
 							System.out.println("Habe vielleicht etwas nützliches gefunden: "+ (column+1));
@@ -113,7 +114,7 @@ public class NormalKI implements IPlayer{
 		
 		//Füge verbotene Züge zu veryBadIdeas hinzu.
 		 for (int col = 0; col <= Game.COLUMNS-1; col++) {
-		      if (Game.getBoard()[col][topRow] != 0){
+		      if (Game.getBoard()[topRow][col] != 0){
 		    	  veryBadIdeas.add(col);
 		      }  
 		      else
@@ -131,7 +132,7 @@ public class NormalKI implements IPlayer{
 			 do{
 				 column = grn.nextInt(Game.COLUMNS/2)+grn.nextInt(Game.COLUMNS/2);
 			 }
-			 while (Game.getBoard()[column][topRow]!=0);
+			 while (Game.getBoard()[topRow][column]!=0);
 			 if (debug){
 					System.out.println("Ich weiß nicht, was ich tuen soll. Das ist alles nicht gut.");
 				}
