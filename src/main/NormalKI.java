@@ -36,7 +36,7 @@ public class NormalKI implements IPlayer{
 		int column;
 		int row;
 		int win= Game.WINCOUNT;
-		int topRow=Game.ROWS-1;
+		int topRow= Game.ROWS-1;
 		
 		if (Game.BOARDISEMPTY){
 			if (debug){
@@ -112,8 +112,8 @@ public class NormalKI implements IPlayer{
 		}
 		
 		//Füge verbotene Züge zu veryBadIdeas hinzu.
-		 for (int col = 0; col < Game.COLUMNS; col++) {
-		      if (Game.board[col][topRow] != 0){
+		 for (int col = 0; col <= Game.COLUMNS-1; col++) {
+		      if (Game.getBoard()[col][topRow] != 0){
 		    	  veryBadIdeas.add(col);
 		      }  
 		      else
@@ -131,7 +131,7 @@ public class NormalKI implements IPlayer{
 			 do{
 				 column = grn.nextInt(Game.COLUMNS/2)+grn.nextInt(Game.COLUMNS/2);
 			 }
-			 while (Game.board[column][topRow]!=0);
+			 while (Game.getBoard()[column][topRow]!=0);
 			 if (debug){
 					System.out.println("Ich weiß nicht, was ich tuen soll. Das ist alles nicht gut.");
 				}
@@ -158,7 +158,7 @@ public class NormalKI implements IPlayer{
 		//Bis zur obersten Reihe:
 		for(int i = row; i>=0; i-- ){
 			//Sobald ein Feld leer ist, gibt die Zeile dieses Felds zurück
-			if(Game.board[i][column] == 0){return i;}				
+			if(Game.getBoard()[i][column] == 0){return i;}				
 		}
 		return -1;
 	}
@@ -186,7 +186,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 			int j= row-1;
 			//Schaue rechts:
 			for (int i=column+1; i<=Game.COLUMNS-1; i++){
-				if (j>=0 && Game.board[j][i]==player){
+				if (j>=0 && Game.getBoard()[j][i]==player){
 					tokensfound++;
 					j--;
 				}
@@ -195,7 +195,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 			j= row+1;
 			//Schaue links:
 			for (int i=column-1; i>=0; i--){
-				if (j<=Game.ROWS-1 && Game.board[j][i]==player){
+				if (j<=Game.ROWS-1 && Game.getBoard()[j][i]==player){
 					tokensfound++;
 					j++;
 				}
@@ -214,7 +214,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 		int j= row+1;
 		//Schaue rechts:
 		for (int i=column+1; i<=Game.COLUMNS-1; i++){
-			if (j<=Game.ROWS-1 && Game.board[j][i]==player){
+			if (j<=Game.ROWS-1 && Game.getBoard()[j][i]==player){
 				tokensfound++;
 				j++;
 			}
@@ -223,7 +223,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 		j= row-1;
 		//Schaue links:
 		for (int i=column-1; i>=0; i--){
-			if (j>=0 && Game.board[j][i]==player){
+			if (j>=0 && Game.getBoard()[j][i]==player){
 				tokensfound++;
 				j--;
 			}
@@ -241,7 +241,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 		
 		// Schaue in der Spalte nach unten:
 		for (int i=row+1; i<=Game.ROWS-1; i++){
-			if (Game.board[i][column]==player){
+			if (Game.getBoard()[i][column]==player){
 				tokensfound++;
 			}
 			else {
@@ -262,7 +262,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 		
 		//Schaue rechts:
 		for (int i=column+1; i<=Game.COLUMNS-1; i++){
-			if (Game.board[row][i]==player){
+			if (Game.getBoard()[row][i]==player){
 				tokensfound++;
 			}
 			else {
@@ -271,7 +271,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 		}
 		//Schaue links:
 		for (int i=column-1; i>=0; i--){
-			if (Game.board[row][i]==player){
+			if (Game.getBoard()[row][i]==player){
 				tokensfound++;
 			}
 			else {
