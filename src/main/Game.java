@@ -23,9 +23,19 @@ public class Game {
 								
 								
 	 */
-	public static int[][] board;
+	private static int[][] board;
+	//TODO immer mit getter jetzt auf board zugreifen. Die einzige Methode, die board verändern darf sollte placeDisk sein.
 
-	
+	/**
+	 * Board sollte eigentlich wirklich nicht public sein und darf nicht von anderen Klassen verändert werden.
+	 * Daher dieser getter!
+	 * 
+	 * @return
+	 */
+	public static int[][] getBoard() {
+		return board;
+	}
+
 	public Game() {
 		// TODO Auto-generated constructor stub
 	}
