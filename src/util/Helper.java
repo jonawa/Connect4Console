@@ -44,5 +44,14 @@ public class Helper {
 		
 		return sb.toString();
     }
+    
+    public static String convertIntArrayToString(int[] arr){
+    	StringBuilder sb = new StringBuilder();
+    	for(int i : arr){
+    		sb.append(i);
+    		sb.append(" ");
+    	}
+    	return sb.toString();
+    }
 
 }

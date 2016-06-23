@@ -4,8 +4,10 @@ import java.util.Map;
 
 import util.Helper;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -34,6 +36,41 @@ public class TestDB {
 		if (testDB == null)
 			testDB = new TestDB();
 		return testDB;
+	}
+	
+	/**
+	 * Gibt ein HashMap zurück mit Schlüssel Action, und Wert Value
+	 * @param state
+	 * @return
+	 */
+	public HashMap<Integer,Integer> get(int[][] state){
+		if (db.containsKey(state)){
+			
+			 HashMap<Integer, Integer> actionValue;
+			 actionValue = db.get(state);
+			 return actionValue;
+		}
+		return null;
+	}
+	
+	/**
+	 * Man übergibt der Mehtode einen State und die Action die ausgeführt werden soll,
+	 * und es wird der Value zurückgegeben, der für diese Action vorgesehen ist.
+	 * @param state
+	 * @param action
+	 * @return
+	 * @throws Exception wenn State und oder Action nicht vorhanden
+	 */
+	public int getValueOfStateAndAction(int[][]state, int action){
+		
+		Integer value = db.get(state).get(action);
+		
+		if (value != null)
+			return value;
+		else
+			throw new RuntimeException("Fehler sollte nicht passieren. Eintrag in DB nicht vorhanden");
+
+		
 	}
 	
 	/**
@@ -178,6 +215,47 @@ public class TestDB {
 		
 		//TODO Implementieren
 		return false;
+	}
+	
+	
+	
+	public void saveDBToTxt(){
+		 FileWriter fw;
+		try {
+			fw = new FileWriter("db.txt");
+		    BufferedWriter bw = new BufferedWriter(fw);
+		    
+		    for(int[][] state : db.keySet()){
+		    	
+		    	HashMap<Integer, Integer> valueActionMap = db.get(state);
+		    	
+		    	for(Integer action : valueActionMap.keySet()){
+		    		bw.write(Helper.convertIntBoardToString(state));
+		    		System.out.println(Helper.convertIntBoardToString(state));
+		    		bw.write("\t");
+		    		bw.write(action);
+		    		System.out.println(action.toString());
+		    		bw.write("\t");
+		    		bw.write(valueActionMap.get(action).toString());
+		    		System.out.println(valueActionMap.get(action));
+		    	
+		    	}
+		    	bw.write("\n");
+	    		bw.write("\n");
+	    		
+		    	//System.out.println("\n \n");
+		    }
+
+		    bw.write("test test test");
+		    bw.write("\n");
+		    bw.write("tset tset tset");
+
+		    bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
 

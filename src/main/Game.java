@@ -5,9 +5,9 @@ import util.Helper;
 public class Game {
 	public static boolean BOARDISEMPTY;
 	private static boolean FINISHED;
-	public static final int WINCOUNT = 4;
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int WINCOUNT = 3;
+	public static final int COLUMNS = 4;
+	public static final int ROWS = 3;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
