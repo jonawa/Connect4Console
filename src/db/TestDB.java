@@ -53,6 +53,15 @@ public class TestDB {
 		return null;
 	}
 	
+
+	
+	public boolean containsState(int[][] state) {
+		
+		return db.containsKey(state);
+	}
+	
+
+	
 	/**
 	 * Man übergibt der Mehtode einen State und die Action die ausgeführt werden soll,
 	 * und es wird der Value zurückgegeben, der für diese Action vorgesehen ist.
@@ -202,8 +211,7 @@ public class TestDB {
 		return -1;
 	}
 	/**
-	 * Methode wird dazu benutzt, am Ende eines Spiels: alle Actions, in den jeweiligen States ab bzw. aufzuwerten.
-	 * Dabei sucht die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
+	 * Die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
 	 * zu dem aktuellen Wert(value).
 	 * 
 	 * @param state aktuelle Spielposition als 2D Int Array
@@ -212,12 +220,18 @@ public class TestDB {
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
 	public boolean update(int[][] state, int action, int addValue){
+		if(db.containsKey(state) == false)
+			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
 		
-		//TODO Implementieren
-		return false;
+		
+		int previousValue = db.get(state).get(action); 
+		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
+		db.get(state).put(action, previousValue + addValue);
+		return true;
 	}
 	
 	public void saveDBToTxt(){
+		System.out.println("Datenbank Elemente" + db.size());
 		 FileWriter fw;
 		try {
 			fw = new FileWriter("db.txt");
@@ -256,6 +270,10 @@ public class TestDB {
 		}
 
 	}
+
+
+
+
 }
 
 
