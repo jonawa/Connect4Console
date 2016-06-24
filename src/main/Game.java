@@ -78,7 +78,7 @@ public class Game {
 			System.out.println(Helper.convertIntBoardToString(board));
 			
 
-			
+			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
 			if (checkWin(1, row,column)){
 
 				Spieler1.reactToWinOrLose(true);

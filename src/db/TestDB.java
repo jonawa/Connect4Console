@@ -217,8 +217,6 @@ public class TestDB {
 		return false;
 	}
 	
-	
-	
 	public void saveDBToTxt(){
 		 FileWriter fw;
 		try {
@@ -230,25 +228,26 @@ public class TestDB {
 		    	HashMap<Integer, Integer> valueActionMap = db.get(state);
 		    	
 		    	for(Integer action : valueActionMap.keySet()){
+		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
+		    		//Das Problem ist hier das \n in der Helper Methode, wird nicht von Buffered Writer erkannt..
 		    		bw.write(Helper.convertIntBoardToString(state));
-		    		System.out.println(Helper.convertIntBoardToString(state));
+		    		//System.out.println(Helper.convertIntBoardToString(state));
 		    		bw.write("\t");
-		    		bw.write(action);
-		    		System.out.println(action.toString());
+		    		bw.write(action.toString());
+		    		//System.out.println(action.toString());
 		    		bw.write("\t");
 		    		bw.write(valueActionMap.get(action).toString());
-		    		System.out.println(valueActionMap.get(action));
+		    		//System.out.println(valueActionMap.get(action));
+		    		bw.newLine();
+					
 		    	
 		    	}
-		    	bw.write("\n");
-	    		bw.write("\n");
-	    		
+			  
+		    	bw.newLine();bw.newLine();
 		    	//System.out.println("\n \n");
 		    }
 
-		    bw.write("test test test");
-		    bw.write("\n");
-		    bw.write("tset tset tset");
+
 
 		    bw.close();
 		} catch (IOException e) {
