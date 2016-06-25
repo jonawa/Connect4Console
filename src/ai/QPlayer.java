@@ -48,21 +48,15 @@ public class QPlayer implements IPlayer {
 			
 			int newQValue;
 			
-			//Falls mit dem Zug der Endstate erreicht wird, verteile Belohnung.
-			//Es macht keinen Sinn hier den next State zu berechnen, da das Spiel zuende ist
-			if(isEndState(currentState, action)){
-				System.out.println("----\n QPlayer sagt er hat gewonnen \n-----");
-				newQValue = REWARD;
-			}
-			else{	
-				//TODO Den nächsten Zustand generieren:
-				int[][] nextState = Helper.deepCopy2DArray(currentState); 
-				int row = Game.placeDiskPossible(action);
-				nextState[row][action] = playerID;
+
+			//TODO Den nächsten Zustand generieren:
+			int[][] nextState = Helper.deepCopy2DArray(currentState); 
+			int row = Game.placeDiskPossible(action);
+			nextState[row][action] = playerID;
 				
 				
-				newQValue= (int) (gamma * maximimumOfallPossibleActions(nextState));
-			}
+			newQValue= (int) (gamma * maximimumOfallPossibleActions(nextState));
+		
 
 			
 			Q.update(currentState, action, newQValue);
@@ -230,21 +224,18 @@ public class QPlayer implements IPlayer {
 
 	@Override
 	public void reactToWinOrLose(boolean win) {
-		
+		//teste ob der letzte State nicht der aktuelle State ist und wirklich eine tiefe Kopie erstellet worden ist:
+		//TODO Rausnehmen, da unnötige Leistung
+		if(Arrays.deepEquals(Game.getBoard(),lastState)){
+			throw new RuntimeException("Die Q KI hat sich nicht den letzten Spielstand gemerkt.");
+		}	
 		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
-		
-		if(!win){
-			//teste ob der letzte State nicht der aktuelle State ist und wirklich eine tiefe Kopie erstellet worden ist:
-			//TODO Rausnehmen, da unnötige Leistung
-			if(Arrays.deepEquals(Game.getBoard(),lastState)){
-				throw new RuntimeException("Die Q KI hat sich nicht den letzten Spielstand gemerkt.");
-			}
-			else{
-				Q.update(lastState, lastAction, PUNISHMENT);
-				
-			}
-				
-			}
+		if(win){
+			Q.update(lastState,lastAction,REWARD);
+		}
+		else{
+			Q.update(lastState, lastAction, PUNISHMENT);	
+		}
 		Q.saveDBToTxt();
 		// Q.update(currentState, action, 1000);
 		

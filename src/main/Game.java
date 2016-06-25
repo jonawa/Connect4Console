@@ -154,6 +154,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 				resetBoard();
+				count = 0;
 			}
 			if (checkWin(2, row, column)){
 				Spieler1.reactToWinOrLose(false);
@@ -163,6 +164,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 				resetBoard();
+				count = 0;
 			}
 			
 		}
