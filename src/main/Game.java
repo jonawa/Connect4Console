@@ -170,6 +170,83 @@ public class Game {
 		}
 		
 	}
+	
+	
+	public static void playTournament(int numberOfGames){
+			
+		IPlayer Spieler1 = new QPlayer(1);
+		IPlayer Spieler2 = new HumanPlayer(2);
+		
+		int column = -1;
+		int row = -1;
+		
+		int winningsOfPlayer1 = 0;
+		int winningsOfPlayer2 = 0;
+		
+		for (int i = 1; i <= numberOfGames; i++) {
+			int numberOfMoves = 0;
+			int count = 0;
+			resetBoard();
+			FINISHED = false;
+			
+			while(!FINISHED){
+			
+				if (count % 2 == 0){
+					column = Spieler1.turn();
+					row = placeDisk(column, Spieler1);
+					numberOfMoves++;
+				}
+				else{ 
+					column = Spieler2.turn();
+					row = placeDisk(column, Spieler2);
+					numberOfMoves++;
+				}
+				count++;
+			
+				//TODO Fehlerbehandlung
+				if(row == -1){
+					System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
+				}
+			
+			
+				System.out.println(Helper.convertIntBoardToString(board));
+			
+
+				//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+				if (checkWin(1, row,column)){
+					winningsOfPlayer1++;
+					System.out.println("---------------------------------");
+					System.out.println("Spieler 1 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
+					System.out.println("---------------------------------");
+					FINISHED = true;
+				}
+				
+				if (checkWin(2, row, column)){
+					winningsOfPlayer2++;
+					System.out.println("---------------------------------");
+					System.out.println("Spieler 2 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
+					System.out.println("---------------------------------");
+					FINISHED = true;
+				}
+			}			
+		}
+		System.out.println("Anzahl der gespielten Spiel: " + numberOfGames);
+		if (winningsOfPlayer1 == winningsOfPlayer2) {
+			System.out.println("Das Turnier ist unentschieden!");
+		}
+		else {
+			if (winningsOfPlayer1 > winningsOfPlayer2) {
+				System.out.println("Sieger des Turniers ist Spieler 1!");
+			}
+			else {
+				System.out.println("Sieger des Turniers ist Spieler 2!");
+			}
+		}
+		
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+	}
+	
 	private static void resetBoard() {
 		
 		if (board == null){
@@ -187,8 +264,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		playGameVsQ();
-		
+		//playGameVsQ();
+		//playGame();
+		playTournament(2);
 	}
 	
 
