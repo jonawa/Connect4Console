@@ -63,9 +63,15 @@ public class Helper {
     	}
     	return copy;
     	
-//    	boolean[][] nv = new boolean[foo.length][foo[0].length];
-//    	for (int i = 0; i < nv.length; i++)
-//    	     nv[i] = Arrays.copyOf(foo[i], foo[i].length);
+
+    }
+    public static boolean deepEquals2DArray(int[][] arr1, int[][] arr2){
+    	boolean result = false;
+    	for(int i = 0; i < arr1.length;i++){
+    		result = Arrays.deepEquals(arr1, arr2);
+    	}
+    	
+    	return result;
     }
 
 }

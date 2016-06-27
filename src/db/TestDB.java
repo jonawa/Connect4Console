@@ -56,7 +56,8 @@ public class TestDB {
 
 	
 	public boolean containsState(int[][] state) {
-		
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
 		return db.containsKey(state);
 	}
 	
@@ -71,7 +72,8 @@ public class TestDB {
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
 	public int getValueOfStateAndAction(int[][]state, int action){
-		
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
 		Integer value = db.get(state).get(action);
 		
 		if (value != null)
@@ -220,6 +222,9 @@ public class TestDB {
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
 	public boolean update(int[][] state, int action, int addValue){
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
+		
 		if(db.containsKey(state) == false)
 			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
 		
