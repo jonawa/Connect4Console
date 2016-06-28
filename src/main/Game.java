@@ -1,11 +1,13 @@
 package main;
 
+import ai.QPlayer;
 import util.Helper;
 
 public class Game {
 	public static boolean BOARDISEMPTY;
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
+	
 	public static final int COLUMNS = 3;
 	public static final int ROWS = 3;
 	/** Beispiel für ein 6*7 Board
@@ -81,7 +83,7 @@ public class Game {
 			System.out.println(Helper.convertIntBoardToString(board));
 			
 
-			
+			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
 			if (checkWin(1, row,column)){
 
 				Spieler1.reactToWinOrLose(true);
@@ -106,6 +108,149 @@ public class Game {
 	/**
 	 * Resets oder wenn noch nicht vorhanden, initialisiert das Board
 	 */
+	
+	public static void playGameVsQ(){
+		
+		//Erzeuge leeres Board.
+		resetBoard();
+	
+		IPlayer Spieler1 = new QPlayer(1);
+		IPlayer Spieler2 = new HumanPlayer(2);
+		FINISHED=false;
+		
+		int column = -1;
+		int row = -1;
+		int count = 0;
+		
+		while(true){
+			
+			
+			if (count % 2 == 0){
+				
+				column = Spieler1.turn();
+				row = placeDisk(column, Spieler1);
+				
+			}
+				
+			else{ 
+				column = Spieler2.turn();
+				row = placeDisk(column, Spieler2);
+				
+			}
+			count++;
+			
+			//TODO Fehlerbehandlung
+			if(row == -1){
+				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
+			}
+			
+			
+			System.out.println(Helper.convertIntBoardToString(board));
+			
+
+			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+			if (checkWin(1, row,column)){
+
+				Spieler1.reactToWinOrLose(true);
+				Spieler2.reactToWinOrLose(false);
+				System.out.println("---------------------------------");
+				System.out.println("Spieler 1 hat gewonnen");
+				System.out.println("---------------------------------");
+				FINISHED = true;
+				resetBoard();
+				count = 0;
+			}
+			if (checkWin(2, row, column)){
+				Spieler1.reactToWinOrLose(false);
+				Spieler2.reactToWinOrLose(true);
+				System.out.println("---------------------------------");
+				System.out.println("Spieler 2 hat gewonnen");
+				System.out.println("---------------------------------");
+				FINISHED = true;
+				resetBoard();
+				count = 0;
+			}
+			
+		}
+		
+	}
+	
+	
+	public static void playTournament(int numberOfGames){
+			
+		IPlayer Spieler1 = new QPlayer(1);
+		IPlayer Spieler2 = new HumanPlayer(2);
+		
+		int column = -1;
+		int row = -1;
+		
+		int winningsOfPlayer1 = 0;
+		int winningsOfPlayer2 = 0;
+		
+		for (int i = 1; i <= numberOfGames; i++) {
+			int numberOfMoves = 0;
+			int count = 0;
+			resetBoard();
+			FINISHED = false;
+			
+			while(!FINISHED){
+			
+				if (count % 2 == 0){
+					column = Spieler1.turn();
+					row = placeDisk(column, Spieler1);
+					numberOfMoves++;
+				}
+				else{ 
+					column = Spieler2.turn();
+					row = placeDisk(column, Spieler2);
+					numberOfMoves++;
+				}
+				count++;
+			
+				//TODO Fehlerbehandlung
+				if(row == -1){
+					System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
+				}
+			
+			
+				System.out.println(Helper.convertIntBoardToString(board));
+			
+
+				//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+				if (checkWin(1, row,column)){
+					winningsOfPlayer1++;
+					System.out.println("---------------------------------");
+					System.out.println("Spieler 1 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
+					System.out.println("---------------------------------");
+					FINISHED = true;
+				}
+				
+				if (checkWin(2, row, column)){
+					winningsOfPlayer2++;
+					System.out.println("---------------------------------");
+					System.out.println("Spieler 2 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
+					System.out.println("---------------------------------");
+					FINISHED = true;
+				}
+			}			
+		}
+		System.out.println("Anzahl der gespielten Spiel: " + numberOfGames);
+		if (winningsOfPlayer1 == winningsOfPlayer2) {
+			System.out.println("Das Turnier ist unentschieden!");
+		}
+		else {
+			if (winningsOfPlayer1 > winningsOfPlayer2) {
+				System.out.println("Sieger des Turniers ist Spieler 1!");
+			}
+			else {
+				System.out.println("Sieger des Turniers ist Spieler 2!");
+			}
+		}
+		
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+	}
+	
 	private static void resetBoard() {
 		
 		if (board == null){
@@ -123,8 +268,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		playGame();
-		
+		//playGameVsQ();
+		//playGame();
+		playTournament(2);
 	}
 	
 
@@ -272,7 +418,7 @@ public class Game {
 	 * @return Rückgabe der Zeile, in die geworfen wird
 	 * 			-1 wenn die Spalte voll oder sonstiger Fehler
 	 */
-	public static int placeDisk(int column, IPlayer player){
+	private static int placeDisk(int column, IPlayer player){
 		//Beginne in der untersten Reihe
 		int row = ROWS -1;
 		
@@ -290,6 +436,30 @@ public class Game {
 		}
 			
 		return -1;
+	}
+	/**
+	 * Mit dieser Methode kann man Testen ob es möglich ist einen Stein in die angebene Spalte zu werfen.
+	 * 
+	 * @param column Spalte in die geworfen werden soll
+	 * @return wenn möglich wird die Zeile zurückgegeben, in der der Stein landet, wenn nicht möglich -1
+	 */
+	public static int placeDiskPossible(int column){
+		
+
+		//Beginne in der untersten Reihe
+		int row = ROWS -1;
+		
+		for(int i = row; i>=0;i-- ){
+			//Sobald ein Feld leer ist, gibt die Zeile dieses Felds zurück
+			if(board[i][column] == 0){
+				
+				return i;
+			}
+				
+		}
+		
+		return -1;
+		
 	}
 	
 	public static void printBoard(){

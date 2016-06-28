@@ -4,8 +4,10 @@ import java.util.Map;
 
 import util.Helper;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -34,6 +36,52 @@ public class TestDB {
 		if (testDB == null)
 			testDB = new TestDB();
 		return testDB;
+	}
+	
+	/**
+	 * Gibt ein HashMap zurück mit Schlüssel Action, und Wert Value
+	 * @param state
+	 * @return
+	 */
+	public HashMap<Integer,Integer> get(int[][] state){
+		if (db.containsKey(state)){
+			
+			 HashMap<Integer, Integer> actionValue;
+			 actionValue = db.get(state);
+			 return actionValue;
+		}
+		return null;
+	}
+	
+
+	
+	public boolean containsState(int[][] state) {
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
+		return db.containsKey(state);
+	}
+	
+
+	
+	/**
+	 * Man übergibt der Mehtode einen State und die Action die ausgeführt werden soll,
+	 * und es wird der Value zurückgegeben, der für diese Action vorgesehen ist.
+	 * @param state
+	 * @param action
+	 * @return
+	 * @throws Exception wenn State und oder Action nicht vorhanden
+	 */
+	public int getValueOfStateAndAction(int[][]state, int action){
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
+		Integer value = db.get(state).get(action);
+		
+		if (value != null)
+			return value;
+		else
+			throw new RuntimeException("Fehler sollte nicht passieren. Eintrag in DB nicht vorhanden");
+
+		
 	}
 	
 	/**
@@ -165,8 +213,7 @@ public class TestDB {
 		return -1;
 	}
 	/**
-	 * Methode wird dazu benutzt, am Ende eines Spiels: alle Actions, in den jeweiligen States ab bzw. aufzuwerten.
-	 * Dabei sucht die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
+	 * Die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
 	 * zu dem aktuellen Wert(value).
 	 * 
 	 * @param state aktuelle Spielposition als 2D Int Array
@@ -175,10 +222,63 @@ public class TestDB {
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
 	public boolean update(int[][] state, int action, int addValue){
+		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
+		//da nur ein oberflächlicher Vergleich gemacht wird
 		
-		//TODO Implementieren
-		return false;
+		if(db.containsKey(state) == false)
+			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
+		
+		
+		int previousValue = db.get(state).get(action); 
+		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
+		db.get(state).put(action, previousValue + addValue);
+		return true;
 	}
+	
+	public void saveDBToTxt(){
+		System.out.println("Datenbank Elemente" + db.size());
+		 FileWriter fw;
+		try {
+			fw = new FileWriter("db.txt");
+		    BufferedWriter bw = new BufferedWriter(fw);
+		    
+		    for(int[][] state : db.keySet()){
+		    	
+		    	HashMap<Integer, Integer> valueActionMap = db.get(state);
+		    	
+		    	for(Integer action : valueActionMap.keySet()){
+		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
+		    		//Das Problem ist hier das \n in der Helper Methode, wird nicht von Buffered Writer erkannt..
+		    		bw.write(Helper.convertIntBoardToString(state));
+		    		//System.out.println(Helper.convertIntBoardToString(state));
+		    		bw.write("\t");
+		    		bw.write(action.toString());
+		    		//System.out.println(action.toString());
+		    		bw.write("\t");
+		    		bw.write(valueActionMap.get(action).toString());
+		    		//System.out.println(valueActionMap.get(action));
+		    		bw.newLine();
+					
+		    	
+		    	}
+			  
+		    	bw.newLine();bw.newLine();
+		    	//System.out.println("\n \n");
+		    }
+
+
+
+		    bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+
+
+
 }
 
 

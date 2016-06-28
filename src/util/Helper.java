@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Arrays;
 
 /**
  * Helper Klasse in dem wir alles auslagern können, was wir nicht in die Main packen wollen, aber keine eigene Klasse rechtfertigt.
@@ -43,6 +44,34 @@ public class Helper {
 		}
 		
 		return sb.toString();
+    }
+    
+    public static String convertIntArrayToString(int[] arr){
+    	StringBuilder sb = new StringBuilder();
+    	for(int i : arr){
+    		sb.append(i);
+    		sb.append(" ");
+    	}
+    	return sb.toString();
+    }
+    
+    public static int[][] deepCopy2DArray(int[][] arr){
+    	
+    	int[][] copy = new int[arr.length][arr[0].length];
+    	for(int i = 0; i < copy.length;i++){
+    		copy[i] = Arrays.copyOf(arr[i], arr[i].length);
+    	}
+    	return copy;
+    	
+
+    }
+    public static boolean deepEquals2DArray(int[][] arr1, int[][] arr2){
+    	boolean result = false;
+    	for(int i = 0; i < arr1.length;i++){
+    		result = Arrays.deepEquals(arr1, arr2);
+    	}
+    	
+    	return result;
     }
 
 }
