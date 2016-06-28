@@ -264,9 +264,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		//playGameVsQ();
+		playGameVsQ();
 		//playGame();
-		playTournament(2);
+		//playTournament(2);
 	}
 	
 
