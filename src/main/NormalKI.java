@@ -47,8 +47,8 @@ public class NormalKI implements IPlayer{
 		
 		//Kann ich in einem diesem Zug gewinnen?
 		for (column=0; column<=Game.COLUMNS-1; column++){
-			row=placeVirtualDisk(column);
-			if ((row!=1) && checkVirtualWin(playerID, win, row, column)){
+			row= placeVirtualDisk(column);
+			if ((row!=-1) && checkVirtualWin(playerID, win, row, column)){
 				if (debug){
 					System.out.println("Ich kann gewinnen! Wähle: "+(column+1));
 				}
@@ -237,7 +237,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 	}
 
 	private static boolean checkWinColumn(int player, int win, int row, int column) {
-		int tokensfound=0;
+		int tokensfound=1;
 		
 		
 		// Schaue in der Spalte nach unten:
@@ -258,7 +258,7 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 
 	private static boolean checkWinRow(int player, int win, int row, int column) {
 		
-		int tokensfound=0;
+		int tokensfound=1;
 		
 		
 		//Schaue rechts:

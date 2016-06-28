@@ -5,9 +5,9 @@ import util.Helper;
 public class Game {
 	public static boolean BOARDISEMPTY;
 	private static boolean FINISHED;
-	public static final int WINCOUNT = 4;
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int WINCOUNT = 3;
+	public static final int COLUMNS = 3;
+	public static final int ROWS = 3;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
@@ -35,6 +35,7 @@ public class Game {
 	public static int[][] getBoard() {
 		return board;
 	}
+	
 
 	public Game() {
 		// TODO Auto-generated constructor stub
@@ -44,6 +45,8 @@ public class Game {
 		
 		//Erzeuge leeres Board.
 		resetBoard();
+		
+		System.out.println(Helper.convertIntBoardToString(board));
 	
 		IPlayer Spieler1 = new NormalKI(1);
 		IPlayer Spieler2 = new HumanPlayer(2);
