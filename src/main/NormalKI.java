@@ -36,7 +36,8 @@ public class NormalKI implements IPlayer{
 		int column;
 		int row;
 		int win= Game.WINCOUNT;
-		int topRow= Game.ROWS-1;
+		// int topRow= Game.ROWS-1;
+		int topRow = 0;
 		
 		if (Game.BOARDISEMPTY){
 			if (debug){
@@ -87,8 +88,8 @@ public class NormalKI implements IPlayer{
 		
 		while (posSolu.hasNext()){
 			possibleColumn=posSolu.next();
-			int nextRow=placeVirtualDisk(possibleColumn) +1;
-			if ((nextRow<=topRow) && (checkVirtualWin(enemyID, Game.WINCOUNT, nextRow, possibleColumn))){  
+			int nextRow=placeVirtualDisk(possibleColumn) -1;
+			if ((nextRow>=topRow) && (checkVirtualWin(enemyID, Game.WINCOUNT, nextRow, possibleColumn))){  
 				posSolu.remove();
 				if (debug){
 					System.out.println("Entferne Möglichkeit, es beleibt:" + possibleSolutions);
@@ -119,8 +120,8 @@ public class NormalKI implements IPlayer{
 		      }  
 		      else
 		      { // füge Züge hinzu, die es meinem Gegener ermöglichen zu gewinnen
-		        int nextRow = placeVirtualDisk(col) + 1;
-		        if ((nextRow <= topRow )&&(checkVirtualWin(enemyID, win, nextRow, col))){
+		        int nextRow = placeVirtualDisk(col) - 1;
+		        if ((nextRow >= topRow )&&(checkVirtualWin(enemyID, win, nextRow, col))){
 		        	veryBadIdeas.add(col);
 		        }
 		      }
@@ -130,7 +131,7 @@ public class NormalKI implements IPlayer{
 		 //alle Möglichkeiten doof?
 		 if (veryBadIdeas.size()==Game.COLUMNS){
 			 do{
-				 column = grn.nextInt(Game.COLUMNS/2)+grn.nextInt(Game.COLUMNS/2);
+				 column = grn.nextInt(Game.COLUMNS/2+1)+grn.nextInt(Game.COLUMNS/2+1);
 			 }
 			 while (Game.getBoard()[topRow][column]!=0);
 			 if (debug){
@@ -139,8 +140,11 @@ public class NormalKI implements IPlayer{
 			 return column;
 		 }
 		 else{
+			 if (debug){
+					System.out.println("Suche eine Spalte die okay ist.");
+				}
 			 do{
-				 column = grn.nextInt(Game.COLUMNS/2)+grn.nextInt(Game.COLUMNS/2);
+				 column = grn.nextInt(Game.COLUMNS/2+1)+grn.nextInt(Game.COLUMNS/2+1);
 			 }
 			 while (veryBadIdeas.contains(column));
 		 }
