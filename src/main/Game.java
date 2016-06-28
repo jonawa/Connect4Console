@@ -51,7 +51,7 @@ public class Game {
 		System.out.println(Helper.convertIntBoardToString(board));
 	
 		IPlayer Spieler1 = new NormalKI(1);
-		IPlayer Spieler2 = new HumanPlayer(2);
+		IPlayer Spieler2 = new NormalKI(2);
 		FINISHED=false;
 		
 		int column = -1;
@@ -98,6 +98,12 @@ public class Game {
 				Spieler2.reactToWinOrLose(true);
 				System.out.println("---------------------------------");
 				System.out.println("Spieler 2 hat gewonnen");
+				System.out.println("---------------------------------");
+				FINISHED = true;
+			}
+			if (boardIsFull()){
+				System.out.println("---------------------------------");
+				System.out.println("Spielergebnis: Unentschieden");
 				System.out.println("---------------------------------");
 				FINISHED = true;
 			}
@@ -170,6 +176,12 @@ public class Game {
 				resetBoard();
 				count = 0;
 			}
+			if (boardIsFull()){
+				System.out.println("---------------------------------");
+				System.out.println("Spielergebnis: Unentschieden");
+				System.out.println("---------------------------------");
+				FINISHED = true;
+			}
 			
 		}
 		
@@ -178,8 +190,8 @@ public class Game {
 	
 	public static void playTournament(int numberOfGames){
 			
-		IPlayer Spieler1 = new QPlayer(1);
-		IPlayer Spieler2 = new HumanPlayer(2);
+		IPlayer Spieler1 = new NormalKI(1);
+		IPlayer Spieler2 = new NormalKI(2);
 		
 		int column = -1;
 		int row = -1;
@@ -232,6 +244,12 @@ public class Game {
 					System.out.println("---------------------------------");
 					FINISHED = true;
 				}
+				if (boardIsFull()){
+					System.out.println("---------------------------------");
+					System.out.println("Spielergebnis: Unentschieden");
+					System.out.println("---------------------------------");
+					FINISHED = true;
+				}
 			}			
 		}
 		System.out.println("Anzahl der gespielten Spiel: " + numberOfGames);
@@ -263,14 +281,23 @@ public class Game {
 		}
 		BOARDISEMPTY=true;
 	}
+	
+	private static boolean boardIsFull(){
+		for (int i=0; i<COLUMNS; i++){
+			if(board[0][i]==0){
+				return false;
+			}
+		}
+		return true;
+	}
 		
 	
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		playGameVsQ();
+		//playGameVsQ();
 		//playGame();
-		//playTournament(2);
+		playTournament(10);
 	}
 	
 
