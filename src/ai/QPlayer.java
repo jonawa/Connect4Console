@@ -172,12 +172,14 @@ public class QPlayer implements IPlayer {
 		
 	}
 	
+	
+	//Funktioniert nicht das checkWin nur das Board in Game prüft und nicht einen beliebigen State
 	private boolean isEndState(final int[][] state, int action){
 		
 		int column = action;
 		int row = Game.placeDiskPossible(column);
 		
-				
+		//TODO ckeckWin anpassen		
 		return Game.checkWin(playerID, row, column);
 
 	}
