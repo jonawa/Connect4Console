@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import db.TestDB;
+import db.TestDB2;
 import main.Game;
 import main.IPlayer;
 import util.Helper;
@@ -16,7 +17,7 @@ public class QPlayer implements IPlayer {
 	public static final int PUNISHMENT = -100; //wenn verloren
 	
 	private final int playerID;
-	private TestDB Q;
+	private TestDB2 Q;
 	private double gamma;
 	
 	
@@ -26,7 +27,7 @@ public class QPlayer implements IPlayer {
 	public QPlayer(int playerID) {
 
 		this.playerID = playerID;
-		Q = TestDB.getDB();
+		Q = TestDB2.getDB();
 		gamma = 0.8;
 	}
 	
@@ -106,6 +107,7 @@ public class QPlayer implements IPlayer {
 			
 			//Wähle höchsten Value aller möglichen nächsten Züge für QPlayer aus.
 			int newMax = maxValueForState(nextStatePlayer);
+			//int newMax = avgValueForState(nextStatePlayer);
 			
 			if(newMax > maxOfallPossibleActions)
 				maxOfallPossibleActions = newMax;
@@ -190,7 +192,7 @@ public class QPlayer implements IPlayer {
 		//TODO hier könnte man außerdem mit der isEndState Methode überprüfen, ob man direkt gewinnen kann
 		//Starte mit einer beliebigen Action, hier wird immer die erstmögliche ausgewählt.
 		int bestAction = actions[0];
-		int bestValue = 0;//Integer.MIN_VALUE;
+		int bestValue = Integer.MIN_VALUE;
 		
 		if(Q.containsState(currentState)){
 			
@@ -217,7 +219,7 @@ public class QPlayer implements IPlayer {
 		
 		if(Q.containsState(state)){
 			maxValue = Integer.MIN_VALUE;
-			
+			System.out.println("bin ich hier mal drin?");
 			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
 			
 			for(Integer action : allActionAndValues.keySet()){
@@ -233,6 +235,28 @@ public class QPlayer implements IPlayer {
 		
 		maxValue = 0;
 		return maxValue; //action
+	}
+	
+	private int avgValueForState(final int[][] state){
+		int avgValue = 0;
+		int count = 0;
+		if(Q.containsState(state)){
+
+			System.out.println("bin ich hier mal drin?");
+			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
+			
+			for(Integer action : allActionAndValues.keySet()){
+				int value = allActionAndValues.get(action);
+				avgValue += value;
+				count++;
+			}
+			
+		}
+		
+		if(count == 0)
+			return 0;
+		else
+			return avgValue / count;
 	}
 	
 	/**

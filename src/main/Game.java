@@ -8,8 +8,8 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 3;
-	public static final int ROWS = 3;
+	public static final int COLUMNS = 4;
+	public static final int ROWS = 4;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
@@ -121,7 +121,7 @@ public class Game {
 		resetBoard();
 	
 		IPlayer Spieler1 = new QPlayer(1);
-		IPlayer Spieler2 = new HumanPlayer(2);
+		IPlayer Spieler2 = new NormalKI(2);
 		FINISHED=false;
 		
 		int column = -1;
@@ -295,9 +295,9 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		//playGameVsQ();
+		playGameVsQ();
 		//playGame();
-		playTournament(10);
+		//playTournament(10);
 	}
 	
 
