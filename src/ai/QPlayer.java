@@ -50,7 +50,7 @@ public class QPlayer implements IPlayer {
 			
 		
 		//Finde neuen Wert für Q:
-		int newQValue= (int) (gamma * maxValueForNextStateAllActions(currentState, action));
+		int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
 		
 
 		//Datenbank mit neuem Wert updaten:	
@@ -117,6 +117,42 @@ public class QPlayer implements IPlayer {
 		return maxOfallPossibleActions;
 	}
 
+	private int avgValueForNextStateAllActions(int[][] state, int action) {
+		
+		int avgOfallPossibleActions = 0;
+		int count = 0;
+		
+		//Simulieren, QPlayer wirft seinen Stein, richtiges Board wird erst verändert nach dem Zug
+		int[][] nextStateOpponent = Helper.deepCopy2DArray(state); 
+		int row = Game.placeDiskPossible(action);
+		nextStateOpponent[row][action] = playerID;
+		
+		//Simulieren wo Gegner hinwerfen könnte:
+		int[] allActionOpponent = generateActions(nextStateOpponent, false);
+		
+		//Für jede mögliche Aktion des Gegners:
+		for(int actionOpponent: allActionOpponent){
+			
+			//Platziere Stein des Gegner im Spielfeld
+			int[][] nextStatePlayer = Helper.deepCopy2DArray(nextStateOpponent);
+			int rowOpponent = Game.placeDiskPossible(actionOpponent);
+			if (playerID == 1)
+				nextStatePlayer[rowOpponent][actionOpponent] = 2; 
+			else //TODO: hier irgendwie Spieler 2 holen?
+				nextStatePlayer[rowOpponent][actionOpponent] = 1;
+			
+			//Wähle höchsten Value aller möglichen nächsten Züge für QPlayer aus.
+			//int newMax = maxValueForState(nextStatePlayer);
+			int avgValue = avgValueForState(nextStatePlayer);
+			
+			avgOfallPossibleActions += avgValue;
+			count++;
+				
+		}
+		if (count == 0) return 0;
+		else return avgOfallPossibleActions/count;
+
+	}
 
 
 	/**
@@ -146,7 +182,7 @@ public class QPlayer implements IPlayer {
 		}
 		//Falls in Q noch nicht der State vorhanden ist, teste welche Züge (Actions) möglich sind und schreibe sie anschließende in die DB (mit Value 0):
 		else{
-			int[] allActions = new int[state.length]; //TODO Anzahl der Zeilen Länge oder? Es geht aber um die Spalten, hier vielleicht ein Fehler deswegen?
+			int[] allActions = new int[state[0].length]; //TODO Anzahl der Zeilen Länge oder? Es geht aber um die Spalten, hier vielleicht ein Fehler deswegen?
 		
 			int actionCount = 0;
 			for (int j = 0;j <= state[0].length-1;j++){

@@ -1,5 +1,7 @@
 package main;
 
+import javax.swing.JOptionPane;
+
 import ai.QPlayer;
 import util.Helper;
 
@@ -8,7 +10,7 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 4;
+	public static final int COLUMNS = 5;
 	public static final int ROWS = 4;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
@@ -43,15 +45,14 @@ public class Game {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void playGame(){
+	public static void playGame(IPlayer Spieler1, IPlayer Spieler2){
 		
 		//Erzeuge leeres Board.
 		resetBoard();
 		
 		System.out.println(Helper.convertIntBoardToString(board));
 	
-		IPlayer Spieler1 = new NormalKI(1);
-		IPlayer Spieler2 = new NormalKI(2);
+
 		FINISHED=false;
 		
 		int column = -1;
@@ -127,8 +128,10 @@ public class Game {
 		int column = -1;
 		int row = -1;
 		int count = 0;
+		int playcount = 0;
+
 		
-		while(true){
+		while(playcount <= 500){
 			
 			
 			if (count % 2 == 0){
@@ -165,6 +168,7 @@ public class Game {
 				FINISHED = true;
 				resetBoard();
 				count = 0;
+				playcount++;
 			}
 			if (checkWin(2, row, column)){
 				Spieler1.reactToWinOrLose(false);
@@ -175,23 +179,31 @@ public class Game {
 				FINISHED = true;
 				resetBoard();
 				count = 0;
+				playcount++;
 			}
 			if (boardIsFull()){
 				System.out.println("---------------------------------");
 				System.out.println("Spielergebnis: Unentschieden");
 				System.out.println("---------------------------------");
 				FINISHED = true;
+				resetBoard();
+				count = 0;
+				playcount++;
 			}
 			
 		}
 		
+		playTournament(100, Spieler1, Spieler2);
+		JOptionPane.showMessageDialog(null,
+			    "Fertig");
+		
+		playGame(Spieler1, new HumanPlayer(2));
 	}
 	
 	
-	public static void playTournament(int numberOfGames){
+	public static void playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
 			
-		IPlayer Spieler1 = new NormalKI(1);
-		IPlayer Spieler2 = new NormalKI(2);
+
 		
 		int column = -1;
 		int row = -1;
