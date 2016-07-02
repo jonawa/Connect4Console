@@ -66,7 +66,7 @@ public class QPlayer implements IPlayer {
 		lastAction = action;
 		
 		//sichert db.txt im Projektordner, zum Testen aktuell, was in der DB steht.
-		Q.saveDBToTxt();
+		Q.saveDBToTxt(); //TODO rausnehmen und nur am Ende einmal speichern
 		
 		return action;
 	}
@@ -116,6 +116,12 @@ public class QPlayer implements IPlayer {
 		
 		return maxOfallPossibleActions;
 	}
+	/**
+	 * Funktioniert ähnlich wie die Methode maxValueForNextStateAllActions, allerdings wird hier anstatt das Maximum der Durchschnitt aller Aktionen gebildet
+	 * @param state
+	 * @param action
+	 * @return
+	 */
 
 	private int avgValueForNextStateAllActions(int[][] state, int action) {
 		
@@ -141,8 +147,7 @@ public class QPlayer implements IPlayer {
 			else //TODO: hier irgendwie Spieler 2 holen?
 				nextStatePlayer[rowOpponent][actionOpponent] = 1;
 			
-			//Wähle höchsten Value aller möglichen nächsten Züge für QPlayer aus.
-			//int newMax = maxValueForState(nextStatePlayer);
+			//Berechne Durchschnitt aller möglichen Züge
 			int avgValue = avgValueForState(nextStatePlayer);
 			
 			avgOfallPossibleActions += avgValue;
@@ -255,7 +260,7 @@ public class QPlayer implements IPlayer {
 		
 		if(Q.containsState(state)){
 			maxValue = Integer.MIN_VALUE;
-			System.out.println("bin ich hier mal drin?");
+
 			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
 			
 			for(Integer action : allActionAndValues.keySet()){
@@ -272,13 +277,17 @@ public class QPlayer implements IPlayer {
 		maxValue = 0;
 		return maxValue; //action
 	}
-	
+	/**
+	 * Berechnet bei einem gegebenen State, den Durchschnitt aller Values, die erreicht werden können
+	 * @param state
+	 * @return
+	 */
 	private int avgValueForState(final int[][] state){
 		int avgValue = 0;
 		int count = 0;
 		if(Q.containsState(state)){
 
-			System.out.println("bin ich hier mal drin?");
+	
 			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
 			
 			for(Integer action : allActionAndValues.keySet()){
