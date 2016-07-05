@@ -496,8 +496,8 @@ public class Game {
 			}
 				
 		}
-		
-		return -1;
+		throw new RuntimeException("In die Spalte soll geworfen werde aber das geht nicht: " + column);
+		//return -5;
 		
 	}
 	

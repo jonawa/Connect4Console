@@ -16,30 +16,30 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 
+ * Database mit Binärcodierung implementiert
  * @author jcawa
  *
  */
-public class TestDB2 {
+public class TestDB3 {
 	
-	private static TestDB2 testDB2;
+	private static TestDB3 testDB3;
 	
 	
-	private  Map<Array2DWrapper, HashMap<Integer, Integer>> db;
+	private  Map<ArrayWrapper, HashMap<Integer, Integer>> db;
 	
-	private TestDB2() {
-		db = new HashMap<Array2DWrapper, HashMap<Integer,Integer>>();
+	private TestDB3() {
+		db = new HashMap<ArrayWrapper, HashMap<Integer,Integer>>();
 	}
 	
 	/**
 	 * Singelton Implementaion, hiermit auf die DB zugreifen.
 	 * @return
 	 */
-	public static TestDB2 getDB(){
+	public static TestDB3 getDB(){
 		//TODO HashMap initialisieren.
-		if (testDB2 == null)
-			testDB2 = new TestDB2();
-		return testDB2;
+		if (testDB3 == null)
+			testDB3 = new TestDB3();
+		return testDB3;
 	}
 	
 	/**
@@ -48,7 +48,11 @@ public class TestDB2 {
 	 * @return
 	 */
 	public HashMap<Integer,Integer> get(int[][] state){
-		Array2DWrapper stateWrap = new Array2DWrapper(state);
+		
+		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
+		int[] stateBinary = Helper.ArraytoBinary(state);
+		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
+		
 		if (db.containsKey(stateWrap)){
 			
 			 HashMap<Integer, Integer> actionValue;
@@ -61,8 +65,11 @@ public class TestDB2 {
 
 	
 	public boolean containsState(int[][] state) {
-
-		Array2DWrapper stateWrap = new Array2DWrapper(state);
+		int[] stateBinary = Helper.ArraytoBinary(state);
+		
+		
+		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
+;
 		return db.containsKey(stateWrap);
 	}
 	
@@ -76,9 +83,11 @@ public class TestDB2 {
 	 * @return
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
-	public int getValueOfStateAndAction(int[][]state, int action){
-
-		Array2DWrapper stateWrap = new Array2DWrapper(state);
+	public int getValueOfStateAndAction(int[][] state, int action){
+		
+		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
+		int[] stateBinary = Helper.ArraytoBinary(state);
+		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
 		
 		Integer value = db.get(stateWrap).get(action);
 		
@@ -103,9 +112,10 @@ public class TestDB2 {
 	 * @param value
 	 */
 	public void put(int[][] state, int action, int value){
-		//TODO Das kann doch eigentlich nicht effizient sein oder?
 		
-		Array2DWrapper stateWrap = new Array2DWrapper(state);
+		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
+		int[] stateBinary = Helper.ArraytoBinary(state);
+		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
 		
 		
 		//Wenn der Zustand/ das aktuelle Board bereits in der DB gespeichert ist:
@@ -149,7 +159,7 @@ public class TestDB2 {
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		
-//		for(int[][] key : db.keySet()){
+//		for(int[] key : db.keySet()){
 //
 //			
 //			HashMap<Integer, Integer> value = db.get(key);
@@ -190,16 +200,16 @@ public class TestDB2 {
 						out.close();
 				         fileOut.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+					
 						e.printStackTrace();
 					}
 			         
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 	}
@@ -214,7 +224,7 @@ public class TestDB2 {
 	 * @return int, gibt die Reihe(action) zurück in die geworfen werden soll
 	 * 
 	 */
-	public int maxValueActionForState(int[][] state){
+	public int maxValueActionForState(int[] state){
 		//TODO Implementieren
 		return -1;
 	}
@@ -228,10 +238,12 @@ public class TestDB2 {
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
 	public boolean update(int[][] state, int action, int addValue){
-		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
-		//da nur ein oberflächlicher Vergleich gemacht wird
+
 		
-		Array2DWrapper stateWrap = new Array2DWrapper(state);
+		int[] stateBinary = Helper.ArraytoBinary(state);
+		
+		
+		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
 
 		
 		if(db.containsKey(stateWrap) == false)
@@ -251,14 +263,14 @@ public class TestDB2 {
 			fw = new FileWriter("db.txt");
 		    BufferedWriter bw = new BufferedWriter(fw);
 		    
-		    for(Array2DWrapper stateWrap : db.keySet()){
+		    for(ArrayWrapper stateWrap : db.keySet()){
 		    	
 		    	HashMap<Integer, Integer> valueActionMap = db.get(stateWrap);
 		    	
 		    	for(Integer action : valueActionMap.keySet()){
 		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
 		    		//Das Problem ist hier das \n in der Helper Methode, wird nicht von Buffered Writer erkannt..
-		    		bw.write(Helper.convertIntBoardToString(stateWrap.getArr()));
+		    		bw.write(Arrays.toString(stateWrap.getArr()));
 		    		//System.out.println(Helper.convertIntBoardToString(state));
 		    		bw.write("\t");
 		    		bw.write(action.toString());
@@ -279,7 +291,7 @@ public class TestDB2 {
 
 		    bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 
@@ -287,8 +299,8 @@ public class TestDB2 {
 
     public static void main(String[] args) {
 		System.out.println("Teste Array List");
-		int[][] arr1 = {{1,2,3},{4,5,6}};
-		int[][] arr2 = {{1,2,3},{4,5,6}};
+		int[] arr1 = {1,2,3};
+		int[] arr2 = {1,2,3};
 		
 		List<int[]> list = Arrays.asList(arr1);
 		List<int[]> list2 = Arrays.asList(arr2);

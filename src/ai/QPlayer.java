@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import db.TestDB;
 import db.TestDB2;
+import db.TestDB3;
 import main.Game;
 import main.IPlayer;
 import util.Helper;
@@ -46,6 +47,8 @@ public class QPlayer implements IPlayer {
 		
 		//aus allen MöglichenActions, die beste.. oder eine zufällig auswählen
 		int[] actions = generateActions(currentState, true);
+		
+		
 		int action = chooseBestAction(currentState, actions);	
 			
 		
@@ -66,7 +69,7 @@ public class QPlayer implements IPlayer {
 		lastAction = action;
 		
 		//sichert db.txt im Projektordner, zum Testen aktuell, was in der DB steht.
-		Q.saveDBToTxt(); //TODO rausnehmen und nur am Ende einmal speichern
+		//Q.saveDBToTxt(); //TODO rausnehmen und nur am Ende einmal speichern
 		
 		return action;
 	}
@@ -130,6 +133,7 @@ public class QPlayer implements IPlayer {
 		
 		//Simulieren, QPlayer wirft seinen Stein, richtiges Board wird erst verändert nach dem Zug
 		int[][] nextStateOpponent = Helper.deepCopy2DArray(state); 
+
 		int row = Game.placeDiskPossible(action);
 		nextStateOpponent[row][action] = playerID;
 		
@@ -236,7 +240,6 @@ public class QPlayer implements IPlayer {
 		int bestValue = Integer.MIN_VALUE;
 		
 		if(Q.containsState(currentState)){
-			
 			for(int action : actions){
 				int value = Q.getValueOfStateAndAction(currentState, action);
 				if(value > bestValue){
@@ -369,8 +372,23 @@ public class QPlayer implements IPlayer {
 	public void testMethods(){
 		//TestGenerateActions();
 		//TestGetMaximum();
-		TestDB();
+		//TestDB();
+		newTestCase();
 
+	}
+
+	private void newTestCase() {
+		
+		int[][] state = {{1,0,0,0,0},
+						 {1,1,0,1,0},
+						 {2,2,2,1,0},
+						 {1,2,1,2,0}};
+		int[] actions = generateActions(state, true);
+		int action = chooseBestAction(state, actions);	
+		
+		
+		
+		
 	}
 
 	private void TestDB() {
