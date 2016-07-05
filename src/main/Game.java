@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Toolkit;
+
 import javax.swing.JOptionPane;
 
 import ai.QPlayer;
@@ -131,7 +133,7 @@ public class Game {
 		int playcount = 0;
 
 		
-		while(playcount <= 500){
+		while(playcount <= 5000){
 			
 			
 			if (count % 2 == 0){
@@ -192,10 +194,11 @@ public class Game {
 			}
 			
 		}
-		
+		java.awt.Toolkit.getDefaultToolkit().beep();
 		playTournament(100, Spieler1, Spieler2);
 		JOptionPane.showMessageDialog(null,
 			    "Fertig");
+
 		
 		playGame(Spieler1, new HumanPlayer(2));
 	}
