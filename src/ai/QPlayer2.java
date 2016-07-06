@@ -140,27 +140,53 @@ public class QPlayer2 implements IPlayer {
 		//Simulieren wo Gegner hinwerfen könnte:
 		int[] allActionOpponent = generateActions(nextStateOpponent, false);
 		
-		//Für jede mögliche Aktion des Gegners:
-		for(int actionOpponent: allActionOpponent){
-			
-			//Platziere Stein des Gegner im Spielfeld
-			int[][] nextStatePlayer = Helper.deepCopy2DArray(nextStateOpponent);
-			int rowOpponent = Game.placeDiskPossible(actionOpponent);
-			if (playerID == 1)
-				nextStatePlayer[rowOpponent][actionOpponent] = 2; 
-			else //TODO: hier irgendwie Spieler 2 holen?
-				nextStatePlayer[rowOpponent][actionOpponent] = 1;
-			
-			//Berechne Durchschnitt aller möglichen Züge
-			int avgValue = avgValueForState(nextStatePlayer);
-			
-			avgOfallPossibleActions += avgValue;
-			count++;
-				
+		//Invertiere das Array um Erfahrungsdaten Bank auf gegnerischen Zug Anwenden zu können.
+		
+		int[][] inversIextStateOpponent = Helper.deepCopy2DArray(nextStateOpponent);
+		for (int i=0; i<Game.ROWS; i++ ){
+			for (int j=0; j<Game.COLUMNS; j++){
+				if (inversIextStateOpponent[i][j]==1){
+					inversIextStateOpponent[i][j]=2;
+				}
+				if (inversIextStateOpponent[i][j]==2){
+					inversIextStateOpponent[i][j]=1;
+				}
+			}
 		}
-		if (count == 0) return 0;
-		else return avgOfallPossibleActions/count;
-
+		
+		
+		int bestAction = allActionOpponent[0];
+		int bestValue = Integer.MIN_VALUE;
+		
+		//Wie berahten jetzt "Wenn ich mein Gegner wäre".
+		//Für jede mögliche Aktion des Gegners:
+		if(Q.containsState(inversIextStateOpponent)){
+			for(int actionOpponent: allActionOpponent){
+				
+				int value = Q.getValueOfStateAndAction(inversIextStateOpponent, actionOpponent);
+				if(value > bestValue){
+					bestValue = value;
+					bestAction = action;
+				}
+			}
+		}
+		// Falls keine Erfahrungswere bestehen, wird eine zufällige Spalte gewählt
+		else{
+			int zufallszahl = (int)(Math.random() * allActionOpponent.length);
+			bestAction=allActionOpponent[zufallszahl];
+		}
+			
+		//Platziere Stein des Gegner für beste Aktion im Spielfeld
+		int[][] nextStatePlayer = Helper.deepCopy2DArray(nextStateOpponent);
+		int rowOpponent = Game.placeDiskPossible(bestAction);
+		if (playerID == 1)
+			nextStatePlayer[rowOpponent][bestAction] = 2; 
+		else //TODO: hier irgendwie Spieler 2 holen?
+			nextStatePlayer[rowOpponent][bestAction] = 1;
+			
+		//Berechne Durchschnitt aller möglichen Züge
+		return avgValueForState(nextStatePlayer);
+		
 	}
 
 
@@ -233,12 +259,11 @@ public class QPlayer2 implements IPlayer {
 	
 	
 	private int chooseBestAction(final int[][] currentState, final int[] actions){
-		//TODO Randomize here
+		
 		//TODO hier könnte man außerdem mit der isEndState Methode überprüfen, ob man direkt gewinnen kann
 		//Starte mit einer beliebigen Action, hier wird immer die erstmögliche ausgewählt.
 		int bestAction = actions[0];
 		int bestValue = Integer.MIN_VALUE;
-		int worstValue = 0;
 		
 		if(Q.containsState(currentState)){
 			for(int action : actions){
@@ -247,15 +272,12 @@ public class QPlayer2 implements IPlayer {
 					bestValue = value;
 					bestAction = action;
 				}
-				if(value<worstValue){
-					worstValue=value;
-				}
-			}
-			if(bestValue==0 && worstValue==0){
-				int zufallszahl = (int)(Math.random() * actions.length);
-				bestAction=actions[zufallszahl];
-			}
-			
+			}			
+		}
+		// Falls keine Erfahrungswere bestehen, wird eine zufällige Spalte gewählt
+		else{
+			int zufallszahl = (int)(Math.random() * actions.length);
+			bestAction=actions[zufallszahl];
 		}
 		return bestAction;
 	}
