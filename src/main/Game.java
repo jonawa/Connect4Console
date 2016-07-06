@@ -310,9 +310,12 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		playGameVsQ();
+		System.out.println("Start Games");
+		//playGameVsQ();
 		//playGame();
-		//playTournament(10);
+		IPlayer Spieler1 = new QPlayer(1);
+		IPlayer Spieler2 = new NormalKI(2);
+		playTournament(100,Spieler1, Spieler2);
 	}
 	
 
