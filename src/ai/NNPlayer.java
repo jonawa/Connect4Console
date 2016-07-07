@@ -31,13 +31,16 @@ public class NNPlayer implements IPlayer {
 	}
 
 	/* (non-Javadoc)
-	 * @see main.IPlayer#turn()
+	 * @see main.IPlayer#turn()^^
 	 */
 	@Override
 	public int turn() {
 		int action = 0;
 		
 		// TODO Hier soll NN die naechste action waehlen.
+		
+		//NN load()
+		//NN -> Test mit 1 Zustand (aktuelles Spielfeld)
 		
 		return action;
 	}
@@ -54,16 +57,12 @@ public class NNPlayer implements IPlayer {
 	public static void main(String[] args) {
 
         // create training set
-        DataSet trainingSet = new DataSet(5, 1);
-        trainingSet.addRow(new DataSetRow(new double[]{0,0,0,0,0}, new double[]{0}));
-        trainingSet.addRow(new DataSetRow(new double[]{0,0,0,0,0}, new double[]{1}));
-        trainingSet.addRow(new DataSetRow(new double[]{0,0,0,0,0}, new double[]{2}));
-        trainingSet.addRow(new DataSetRow(new double[]{0,0,0,0,0}, new double[]{3}));
-        trainingSet.addRow(new DataSetRow(new double[]{0,0,0,0,0}, new double[]{4}));
+        DataSet trainingSet = new DataSet(60, 5);
+        //trainingSet.addRow(new DataSetRow(methUmwandlung(), outputMoeglicheZustaende());
+        
 
         // create multi layer perceptron
-        	// TODO Hier Parameteruebergabe anpassen!
-        MultiLayerPerceptron NNMlp = new MultiLayerPerceptron(TransferFunctionType.TANH, 2, 3, 1);
+        MultiLayerPerceptron NNMlp = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 60, 5);
         
         // learn the training set
         NNMlp.learn(trainingSet);
