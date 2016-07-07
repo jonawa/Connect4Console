@@ -233,7 +233,7 @@ public class QPlayer implements IPlayer {
 	
 	
 	private int chooseBestAction(final int[][] currentState, final int[] actions){
-		//TODO Randomize here
+
 		//TODO hier könnte man außerdem mit der isEndState Methode überprüfen, ob man direkt gewinnen kann
 		//Starte mit einer beliebigen Action, hier wird immer die erstmögliche ausgewählt.
 		int bestAction = actions[0];
@@ -248,6 +248,9 @@ public class QPlayer implements IPlayer {
 				}
 			}
 		}
+		//Falls nicht in Datenbank vorhanden, zufällige Spalte auswählen
+//		int zufallszahl = (int)(Math.random() * actions.length);
+//		bestAction = actions[zufallszahl];
 		return bestAction;
 	}
 	
