@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import db.Array2DWrapper;
 import db.TurnWrapper;
+import main.Game;
 
 /**
  * Helper Klasse in dem wir alles auslagern können, was wir nicht in die Main packen wollen, aber keine eigene Klasse rechtfertigt.
@@ -71,11 +72,30 @@ public class Helper {
 		for(int[] rows : board){
 			for(int token : rows){		
 				sb.append(token);
+				sb.append("\t");
 			}
 
 		}
 		
 		return sb.toString();
+    }
+    
+    public static String convertActionToOuput(int action, int length){
+    	StringBuilder sb = new StringBuilder();
+    	int[] arr = new int[length];
+    	for(int i = 0; i < length;i++){
+    		if(i == action){
+    			arr[i] = 1;
+    		}
+    		else arr[i] = 0;
+    	}
+    	
+    	for(int elem : arr){
+    		sb.append(elem);
+    		sb.append("\t");
+    	}
+    	
+    	return sb.toString();
     }
     
     public static String convertIntArrayToString(int[] arr){
@@ -166,6 +186,37 @@ public class Helper {
 		    		bw.write("\t");
 		    		int action = turn.getAction();
 		    		bw.write(Integer.toString(action));
+		    		bw.newLine();
+		    }
+		    
+
+
+		    bw.close();
+		} 
+		    catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
+   /**
+    *  
+    * @param dataSet
+    * @param filename
+    */
+    public static void saveTurnWrapperArrayToTxt2(ArrayList<TurnWrapper> dataSet, String filename){
+		try {
+			FileWriter fw = new FileWriter(filename);
+		    BufferedWriter bw = new BufferedWriter(fw);
+		    
+		    //Für jeden Zug im Array:
+		    for(TurnWrapper turn : dataSet){
+		    		int count = 0;
+		    		bw.write(Helper.convertIntBoardTo1DString(turn.getState()));
+		    		
+		    		
+		    		int action = turn.getAction();
+		    		bw.write(Helper.convertActionToOuput(action, Game.COLUMNS));
 		    		bw.newLine();
 		    }
 		    

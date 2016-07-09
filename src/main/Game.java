@@ -4,6 +4,8 @@ package main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+
+import ai.NNPlayer2;
 import ai.QPlayer;
 import db.Array2DWrapper;
 import db.TurnWrapper;
@@ -15,8 +17,8 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 5;
-	public static final int ROWS = 4;
+	public static final int COLUMNS = 3;
+	public static final int ROWS = 3;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
@@ -403,7 +405,7 @@ public class Game {
 	public static void main(String[] args) {
 		//testCheck4Win();
 		//playGameVsQ();
-		//playGame();
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
 		generateDataSets();
 
@@ -414,7 +416,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 10000;
+		final int numberOfTrainingGames = 20000;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -426,7 +428,7 @@ public class Game {
 //		}
 		
 		//schreibt das Array in die Datenbank
-		Helper.saveTurnWrapperArrayToTxt(list, "dataset.txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset.txt");
 		
 	}
 
