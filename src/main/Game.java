@@ -1,17 +1,13 @@
 package main;
 
-import java.awt.Toolkit;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-
-import javax.net.ssl.HandshakeCompletedListener;
 import javax.swing.JOptionPane;
-
 import ai.QPlayer;
 import db.Array2DWrapper;
 import db.TurnWrapper;
+import ai.QPlayer2;
 import util.Helper;
 
 public class Game {
@@ -130,7 +126,7 @@ public class Game {
 		//Erzeuge leeres Board.
 		resetBoard();
 	
-		IPlayer Spieler1 = new QPlayer(1);
+		IPlayer Spieler1 = new QPlayer2(1);
 		IPlayer Spieler2 = new NormalKI(2);
 		FINISHED=false;
 		
@@ -140,7 +136,9 @@ public class Game {
 		int playcount = 0;
 
 		
-		while(playcount <= 1000){
+
+		while(playcount <= 10000){
+
 			
 			
 			if (count % 2 == 0){
@@ -404,15 +402,11 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		System.out.println("Start Games");
 		//playGameVsQ();
+		//playGame();
 		
 		generateDataSets();
-		
-		//playGame();
-//		IPlayer Spieler1 = new QPlayer(1);
-//		IPlayer Spieler2 = new NormalKI(2);
-//		playTournament(100,Spieler1, Spieler2);
+
 	}
 	
 
