@@ -258,6 +258,7 @@ public class TestDB2 {
 		    	for(Integer action : valueActionMap.keySet()){
 		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
 		    		//Das Problem ist hier das \n in der Helper Methode, wird nicht von Buffered Writer erkannt..
+
 		    		bw.write(Helper.convertIntBoardToString(stateWrap.getArr()));
 		    		//System.out.println(Helper.convertIntBoardToString(state));
 		    		bw.write("\t");

@@ -1,10 +1,12 @@
 package main;
 
-import java.awt.Toolkit;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
-
 import ai.QPlayer;
+import db.Array2DWrapper;
+import db.TurnWrapper;
 import ai.QPlayer2;
 import util.Helper;
 
@@ -134,7 +136,9 @@ public class Game {
 		int playcount = 0;
 
 		
+
 		while(playcount <= 10000){
+
 			
 			
 			if ((count+playcount) % 2 == 0){
@@ -285,6 +289,93 @@ public class Game {
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
 	}
 	
+	/**
+	 * Methode, die zwei Spieler gegeneinander spielen lässt.
+	 * ACHTUNG: Es werden nur die Züge von Spieler 2 gespeichert.
+	 * Dabei am Ende eine ArrayList zurückgegeben, die TurnWrapper beinhaltet.
+	 * TurnWrapper geben je einen Spielstand (state) und den Zug vom Spieler auf diesem Spielfeld (action) zurück.
+	 * 
+	 * Intern benutzt die Methode zunächst eine HashMap, um neue Spielzüge effizienter zu speichern.
+	 * Anschließend wird die HashMap in eine ArrayList umgewandelt, die zurückgegeben wird.
+	 * @param Spieler1 
+	 * @param Spieler2
+	 * @param numGames
+	 * @return ArrayList mit TurnWrappern
+	 */
+	public static ArrayList<TurnWrapper> generateDataSetForNN(IPlayer Spieler1, IPlayer Spieler2, int numGames){
+		
+		resetBoard();
+		
+		System.out.println("Starte Generation von Datenset für NN");
+		
+		int column = -1;
+		int row = -1;
+		int count = 0;
+		
+		//Hier wird zuerst eine HashMap benutzt, die dann später in ein Array umgewandelt wird.
+		HashMap<Array2DWrapper, Integer> dataSet = new HashMap<Array2DWrapper, Integer>();
+		
+		for(int i = 0; i < numGames; i++){
+			
+			if (count % 2 == 0){
+				
+				column = Spieler1.turn();
+				row = placeDisk(column, Spieler1);
+				
+			}
+				
+			else{ 
+				column = Spieler2.turn();
+				row = placeDisk(column, Spieler2);
+				
+				//Das Datenset wird nur für Spieler 2 erstellt
+				//Falls DatenSet diesen State und Action noch nicht kennt, füge ein, ansonsten passiert nichts.
+				Array2DWrapper stateWrap = new Array2DWrapper(Helper.deepCopy2DArray(Game.getBoard()));
+				
+				if (!dataSet.containsKey(stateWrap)){
+					dataSet.put(stateWrap, row);
+				}
+				
+				
+			}
+			count++;
+			
+			if(row == -1){
+				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
+			}
+			
+
+
+			//Falls gewonnen, verloren oder untentschieden, einfach Board reseten und weitermachen
+			if (checkWin(1, row,column)){
+				resetBoard();
+			}
+			if (checkWin(2, row, column)){
+				resetBoard();
+			}
+			if (boardIsFull()){
+				resetBoard();
+			}
+			
+		}
+		System.out.println("Datenset Anzahl an Elementen: " + dataSet.size());
+		System.out.println("Erstelle jetzt die ArrayList: ");
+		
+		
+		//Umwandlung der HashMap in ein Array:
+		ArrayList<TurnWrapper> dataSetArray = new ArrayList<TurnWrapper>(dataSet.size());
+		
+		for(Array2DWrapper state: dataSet.keySet()){
+			TurnWrapper turn = new TurnWrapper(state.getArr(), dataSet.get(state).intValue());
+			dataSetArray.add(turn);
+			
+		}
+		System.out.println("Erstellen der ArrayList abgeschlossen");
+		
+		return dataSetArray;
+		
+	}
+	
 	private static void resetBoard() {
 		
 		if (board == null){
@@ -311,14 +402,33 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		System.out.println("Start Games");
-		playGameVsQ();
+		//playGameVsQ();
 		//playGame();
-		/*IPlayer Spieler1 = new QPlayer(1);
-		IPlayer Spieler2 = new NormalKI(2);
-		playTournament(100,Spieler1, Spieler2);*/
+		
+		generateDataSets();
+
 	}
 	
+
+
+	private static void generateDataSets() {
+		
+		//Anzahl der Spiele die gespielt werden soll:
+		final int numberOfTrainingGames = 10000;
+		
+		//generiert das Array
+		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
+		
+		
+		//hier nur Ausgabe an Konsole zum Testen:
+//		for(TurnWrapper turn : list){
+//			System.out.println(Helper.convertIntBoardToString2(turn.getState()) +"\t" + turn.getAction());
+//		}
+		
+		//schreibt das Array in die Datenbank
+		Helper.saveTurnWrapperArrayToTxt(list, "dataset.txt");
+		
+	}
 
 
 	/**
