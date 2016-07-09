@@ -217,13 +217,14 @@ public class QPlayer2 implements IPlayer {
 		}
 		//Falls in Q noch nicht der State vorhanden ist, teste welche Züge (Actions) möglich sind und schreibe sie anschließende in die DB (mit Value 0):
 		else{
-			int[] allActions = new int[state[0].length]; //TODO Anzahl der Zeilen Länge oder? Es geht aber um die Spalten, hier vielleicht ein Fehler deswegen?
+			
+			int[] allActions = new int[Game.COLUMNS]; 
 		
 			int actionCount = 0;
-			for (int j = 0;j <= state[0].length-1;j++){
-				for(int i = state.length -1; i >=0 ;i--){
+			for (int j = 0; j<= Game.COLUMNS-1; j++){
+				for(int i = Game.ROWS -1; i >=0; i--){
 					if(state[i][j] == 0){
-						allActions[actionCount] = j;
+						allActions[actionCount] = j; //wirklich j? warum dann nicht einfach obere Zeile kontrulieren?
 						actionCount++;
 						break;
 						

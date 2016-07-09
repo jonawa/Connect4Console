@@ -137,7 +137,7 @@ public class Game {
 		while(playcount <= 10000){
 			
 			
-			if (count % 2 == 0){
+			if ((count+playcount) % 2 == 0){
 				
 				column = Spieler1.turn();
 				row = placeDisk(column, Spieler1);
@@ -223,7 +223,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if (count % 2 == 0){
+				if ((count+i) % 2 == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
