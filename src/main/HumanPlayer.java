@@ -54,5 +54,10 @@ public class HumanPlayer implements IPlayer{
 		
 		return playerID;
 	}
+	@Override
+	public void setLearning(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
