@@ -34,11 +34,12 @@ public class NNPlayer2 implements IPlayer{
 	public void learnNNPlayer(){
 		DataSet ds = null;
 		try {
-			 ds = TrainingSetImport.importFromFile("dataset.txt", 9, 3, ",");
+			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 55 Elemente sind Output
+			  * getrennt sind die Daten durch ein Komma */
+			 ds = TrainingSetImport.importFromFile("dataset.txt", 60, 5, ",");
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
-			
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -47,15 +48,19 @@ public class NNPlayer2 implements IPlayer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//	
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 9, 6, 3);
+		
+		//	MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 120, 5);
 
+		//LearningRule setzten
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
-        learningRule.setMaxError(0.15);
+        learningRule.setMaxError(0.05);
         learningRule.setLearningRate(0.2);
         learningRule.setMomentum(0.7);
-
+        
 		myMlPerceptron.setLearningRule(learningRule);
+		
+		//hier wird das Netz trainiert
 		System.out.println("Starte lernen");
 		myMlPerceptron.learn(ds);
 		
@@ -72,7 +77,7 @@ public class NNPlayer2 implements IPlayer{
 		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
 		
 		//Generate output to calculate the next move
-		double[] input = Helper.convertIntBoardToDoubleArray(currentBoard);
+		double[] input = TrainNNetwork.convertBoard(currentBoard);
 		myMlPerceptron.setInput(input);
         myMlPerceptron.calculate();
        

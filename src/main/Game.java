@@ -11,6 +11,7 @@ import ai.QPlayer;
 import db.Array2DWrapper;
 import db.TurnWrapper;
 import ai.QPlayer2;
+import ai.RandomPlayer;
 import util.Helper;
 
 public class Game {
@@ -235,7 +236,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if ((count+i) % 2 == 0){
+				if ((count) % 2 == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
@@ -263,6 +264,7 @@ public class Game {
 					System.out.println("Spieler 1 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				
 				if (checkWin(2, row, column)){
@@ -271,12 +273,14 @@ public class Game {
 					System.out.println("Spieler 2 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				if (boardIsFull()){
 					System.out.println("---------------------------------");
 					System.out.println("Spielergebnis: Unentschieden");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 			}			
 		}
@@ -424,18 +428,17 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-<<<<<<< HEAD
+
 		//playGameVsQ();
-		//generateDataSets();
-		playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		
-=======
-		playGameVsQ();
+		generateDataSets();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		//generateDataSets();
->>>>>>> 22e8bc043f0e90382d739f02d6dbdd90116b4c50
+		
+
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		playTournament(20, new NormalKI(1), new NNPlayer2(2));
+		
+
 
 	}
 	
@@ -444,7 +447,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 1000;
+		final int numberOfTrainingGames = 100;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);

@@ -56,4 +56,10 @@ public class RandomPlayer implements IPlayer {
 		
 	}
 
+	@Override
+	public void setLearning(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

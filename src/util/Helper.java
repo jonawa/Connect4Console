@@ -83,6 +83,21 @@ public class Helper {
 		return sb.toString();
     }
     
+    public static String convertBoardToOutputNN(int[][] board){
+    	double[] d = TrainNNetwork.convertBoard(board);
+    	return convertDoubleArrayToString(d);
+    }
+    
+    
+    private static String convertDoubleArrayToString(double[] arr){
+    	StringBuilder sb = new StringBuilder();
+    	for(double elem : arr){
+    		sb.append(elem);
+    		sb.append(",");
+    	}
+    	return sb.toString();
+    }
+    
     public static double[] convertIntBoardToDoubleArray(int[][] board){
     	int elemCount = board.length * board[0].length;
     	double[] result = new double[elemCount];
@@ -230,7 +245,7 @@ public class Helper {
 		    //Für jeden Zug im Array:
 		    for(TurnWrapper turn : dataSet){
 		    		int count = 0;
-		    		bw.write(Helper.convertIntBoardTo1DString(turn.getState()));
+		    		bw.write(Helper.convertBoardToOutputNN(turn.getState()));
 		    		
 		    		
 		    		int action = turn.getAction();
