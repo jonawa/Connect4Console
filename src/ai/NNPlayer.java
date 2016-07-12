@@ -3,13 +3,12 @@
  */
 package ai;
 
-import java.util.Arrays;
+import main.Game;
 import main.IPlayer;
+import util.Helper;
+import util.TrainNNetwork;
+
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.data.DataSet;
-import org.neuroph.core.data.DataSetRow;
-import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.util.TransferFunctionType;
 
 
 /**
@@ -20,6 +19,8 @@ public class NNPlayer implements IPlayer {
 
 	private final int playerID;
 	
+	private NeuralNetwork trainedNNet;
+	
 	/**
 	 * Generates an AI Player for the game Connect Four 
 	 * which uses a neural network to react to the move of the enemy.
@@ -28,6 +29,9 @@ public class NNPlayer implements IPlayer {
 	 */
 	public NNPlayer(int playerID) {
 		this.playerID = playerID;
+		//Load trained neural network from file
+			// TODO Achtung, hier immer den richtigen Namen einfuegen!
+		trainedNNet = NeuralNetwork.createFromFile("NewNeuralNetwork1.nnet");
 	}
 
 	/* (non-Javadoc)
@@ -36,12 +40,16 @@ public class NNPlayer implements IPlayer {
 	@Override
 	public int turn() {
 		int action = 0;
+		//Get current board
+		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
 		
-		// TODO Hier soll NN die naechste action waehlen.
+		//Generate output to calculate the next move
+		trainedNNet.setInput(TrainNNetwork.convertBoard(currentBoard));
+        trainedNNet.calculate();
+        double[ ] netOutput = trainedNNet.getOutput();
 		
-		//NN load()
-		//NN -> Test mit 1 Zustand (aktuelles Spielfeld)
-		
+        //Turn output into an action for the next move
+        action = getMax(netOutput);
 		return action;
 	}
 
@@ -53,49 +61,18 @@ public class NNPlayer implements IPlayer {
 		// not required?
 	}
 	
-	// erstmal zum testen, spaeter aendern!
-	public static void main(String[] args) {
-
-        // create training set
-        DataSet trainingSet = new DataSet(60, 5);
-        //trainingSet.addRow(new DataSetRow(methUmwandlung(), outputMoeglicheZustaende());
-        
-
-        // create multi layer perceptron
-        MultiLayerPerceptron NNMlp = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 60, 5);
-        
-        // learn the training set
-        NNMlp.learn(trainingSet);
-
-        // test perceptron
-        System.out.println("Testing trained neural network");
-        testNeuralNetwork(NNMlp, trainingSet);
-
-        // save trained neural network
-        NNMlp.save("NNMlp.nnet");
-
-        // load saved neural network
-        NeuralNetwork loadedMlp = NeuralNetwork.createFromFile("NNMlp.nnet");
-
-        // test loaded neural network
-        System.out.println("Testing loaded neural network");
-        testNeuralNetwork(loadedMlp, trainingSet);
-
-    }
-
-    public static void testNeuralNetwork(NeuralNetwork nnet, DataSet testSet) {
-
-        for(DataSetRow dataRow : testSet.getRows()) {
-
-            nnet.setInput(dataRow.getInput());
-            nnet.calculate();
-            double[ ] networkOutput = nnet.getOutput();
-            System.out.print("Input: " + Arrays.toString(dataRow.getInput()) );
-            System.out.println(" Output: " + Arrays.toString(networkOutput) ); 
-
-        }
-
-    }
+	/**
+	 * Returns the maximum value for an array.
+	 * @param array 
+	 */
+	private int getMax(double[] array) {
+		int max = 0;
+		for (double i : array) {
+			max = (int) Math.max(max, i);
+		}
+		return max;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see main.IPlayer#getPlayerID()
@@ -103,6 +80,12 @@ public class NNPlayer implements IPlayer {
 	@Override
 	public int getPlayerID() {
 		return playerID;
+	}
+
+	@Override
+	public void setLearning(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
