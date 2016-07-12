@@ -300,6 +300,12 @@ public static boolean checkVirtualWin(int player, int win, int row, int column){
 	public int getPlayerID() {
 		return playerID;
 	}
+
+	@Override
+	public void setLearning(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

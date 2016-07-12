@@ -18,8 +18,10 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 3;
-	public static final int ROWS = 3;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
+	
+	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
@@ -138,9 +140,9 @@ public class Game {
 		int count = 0;
 		int playcount = 0;
 
-		
+		Spieler1.setLearning(true);
 
-		while(playcount <= 10000){
+		while(playcount <= 20000){
 
 			
 			
@@ -157,6 +159,7 @@ public class Game {
 				
 			}
 			count++;
+			tokensOnField++;
 			
 			//TODO Fehlerbehandlung
 			if(row == -1){
@@ -202,6 +205,8 @@ public class Game {
 			}
 			
 		}
+		Spieler1.setLearning(false);
+		
 		java.awt.Toolkit.getDefaultToolkit().beep();
 		playTournament(100, Spieler1, Spieler2);
 		JOptionPane.showMessageDialog(null,
@@ -403,6 +408,7 @@ public class Game {
 			}
 		}
 		BOARDISEMPTY=true;
+		tokensOnField=0;
 	}
 	
 	private static boolean boardIsFull(){
@@ -418,11 +424,18 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
+<<<<<<< HEAD
 		//playGameVsQ();
 		//generateDataSets();
 		playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
 		
+=======
+		playGameVsQ();
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		
+		//generateDataSets();
+>>>>>>> 22e8bc043f0e90382d739f02d6dbdd90116b4c50
 
 	}
 	

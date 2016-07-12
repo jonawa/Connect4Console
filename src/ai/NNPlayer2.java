@@ -110,6 +110,11 @@ public class NNPlayer2 implements IPlayer{
 		// TODO Auto-generated method stub
 		return playerID;
 	}
+	@Override
+	public void setLearning(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

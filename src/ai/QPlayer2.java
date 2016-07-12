@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 import db.TestDB;
 import db.TestDB2;
@@ -20,6 +21,8 @@ public class QPlayer2 implements IPlayer {
 	private final int playerID;
 	private TestDB2 Q;
 	private double gamma;
+	private int epsilon;
+	private boolean learning=true;
 	
 	
 	private int[][] lastState;
@@ -52,12 +55,13 @@ public class QPlayer2 implements IPlayer {
 		int action = chooseBestAction(currentState, actions);	
 			
 		
-		//Finde neuen Wert für Q:
-		int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
-		
+		//Finde neuen Wert für Q, außer es ist mein letzter Zug:
+		if (Game.tokensOnField<Game.ROWS*Game.COLUMNS-2){
+			int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
 
-		//Datenbank mit neuem Wert updaten:	
-		Q.update(currentState, action, newQValue);
+			//Datenbank mit neuem Wert updaten:	
+			Q.update(currentState, action, newQValue);
+		}
 		
 		
 		
@@ -266,7 +270,15 @@ public class QPlayer2 implements IPlayer {
 		int bestAction = actions[0];
 		int bestValue = Integer.MIN_VALUE;
 		
-		if(Q.containsState(currentState)){
+		if (learning){
+			Random grn = new Random();
+			epsilon=grn.nextInt(100)+1;
+		}
+		else {
+			epsilon=100;
+		}
+		
+		if(Q.containsState(currentState) && epsilon>20){
 			for(int action : actions){
 				int value = Q.getValueOfStateAndAction(currentState, action);
 				if(value > bestValue){
@@ -277,6 +289,7 @@ public class QPlayer2 implements IPlayer {
 		}
 		// Falls keine Erfahrungswere bestehen, wird eine zufällige Spalte gewählt
 		else{
+			System.out.println("Wähle zufällig");
 			int zufallszahl = (int)(Math.random() * actions.length);
 			bestAction=actions[zufallszahl];
 		}
@@ -521,6 +534,14 @@ public class QPlayer2 implements IPlayer {
 		
 		System.out.println("\n---------------End Test-------------------");
 		
+	}
+
+	public boolean isLearning() {
+		return learning;
+	}
+
+	public void setLearning(boolean learning) {
+		this.learning = learning;
 	}
 
 }

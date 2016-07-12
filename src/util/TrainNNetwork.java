@@ -56,12 +56,30 @@ public class TrainNNetwork {
 
     }
     
-    public static double[] convertBoardToInput(int[][] board) {
-    	double[] input = new double[60];
-    	
-    	// TODO Umwandlung
-    	
-    	return input;
+    public static double[] convertBoard(int[][] board) {
+    	double[] converted = new double [board.length * board[0].length * 3];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                switch (board [i][j]){
+                    case 0 :    
+                        converted [(i * board[0].length *3) + (j*3)    ] = 1;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 0;
+                        break;
+                    case 1 :
+                        converted [(i * board[0].length *3) + (j*3)    ] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 1;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 0;
+                        break;
+                    case 2 :
+                        converted [(i * board[0].length *3) + (j*3)    ] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 1;
+                        break;
+                }
+            }
+        }
+    	return converted;
     }
-
+    
 }

@@ -17,6 +17,9 @@ public interface IPlayer {
 	 * @return
 	 */
 	public int getPlayerID();
+
+
+	public void setLearning(boolean b);
 	
 
 }
