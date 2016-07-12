@@ -18,8 +18,8 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 5;
-	public static final int ROWS = 4;
+	public static final int COLUMNS = 3;
+	public static final int ROWS = 3;
 	
 	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board
@@ -112,7 +112,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 			}
-			if (boardIsFull()){
+			if (boardIsFull() && !FINISHED){
 				System.out.println("---------------------------------");
 				System.out.println("Spielergebnis: Unentschieden");
 				System.out.println("---------------------------------");
@@ -424,18 +424,13 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-<<<<<<< HEAD
 		//playGameVsQ();
 		//generateDataSets();
 		playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		
-=======
-		playGameVsQ();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		//playGameVsQ();
+		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
 		
 		//generateDataSets();
->>>>>>> 22e8bc043f0e90382d739f02d6dbdd90116b4c50
 
 	}
 	
