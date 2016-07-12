@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
+import ai.NNPlayer;
 import ai.NNPlayer2;
 import ai.QPlayer;
 import db.Array2DWrapper;
@@ -317,8 +318,11 @@ public class Game {
 		//Hier wird zuerst eine HashMap benutzt, die dann später in ein Array umgewandelt wird.
 		HashMap<Array2DWrapper, Integer> dataSet = new HashMap<Array2DWrapper, Integer>();
 		
-		for(int i = 0; i < numGames; i++){
+		
+		int i = 0;
+		while (i < numGames){
 			
+			System.out.println(Helper.convertIntBoardToString(Game.getBoard()));
 			if (count % 2 == 0){
 				
 				column = Spieler1.turn();
@@ -328,16 +332,20 @@ public class Game {
 				
 			else{ 
 				column = Spieler2.turn();
-				row = placeDisk(column, Spieler2);
+				
 				
 				//Das Datenset wird nur für Spieler 2 erstellt
 				//Falls DatenSet diesen State und Action noch nicht kennt, füge ein, ansonsten passiert nichts.
 				Array2DWrapper stateWrap = new Array2DWrapper(Helper.deepCopy2DArray(Game.getBoard()));
 				
+				//Falls State und Action nicht schon vorhanden, füge neues Set hinzu
+				//stateWrap = Spielfeld, column = Action, die diesem Spielfeld ausgeführt wird (also Reihe in die geworfen wird)
 				if (!dataSet.containsKey(stateWrap)){
-					dataSet.put(stateWrap, row);
+					dataSet.put(stateWrap, column);
 				}
 				
+				//jetzt wird der Stein platziert
+				row = placeDisk(column, Spieler2);
 				
 			}
 			count++;
@@ -351,12 +359,18 @@ public class Game {
 			//Falls gewonnen, verloren oder untentschieden, einfach Board reseten und weitermachen
 			if (checkWin(1, row,column)){
 				resetBoard();
+				count = 0;
+				i++;
 			}
 			if (checkWin(2, row, column)){
 				resetBoard();
+				count = 0;
+				i++;
 			}
 			if (boardIsFull()){
+				count = 0;
 				resetBoard();
+				i++;
 			}
 			
 		}
@@ -405,9 +419,10 @@ public class Game {
 	public static void main(String[] args) {
 		//testCheck4Win();
 		//playGameVsQ();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		//generateDataSets();
+		playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		generateDataSets();
+		
 
 	}
 	
@@ -416,7 +431,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 20000;
+		final int numberOfTrainingGames = 1000;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -587,7 +602,9 @@ public class Game {
 				
 				//Stein wird ins Spielfeld geworfen:
 				board[i][column] = player.getPlayerID(); 
-				if (BOARDISEMPTY==true){BOARDISEMPTY=false;}
+				if (BOARDISEMPTY==true)
+					{BOARDISEMPTY=false;}
+				
 				return i;
 			}
 				

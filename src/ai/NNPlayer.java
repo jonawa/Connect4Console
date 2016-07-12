@@ -31,7 +31,7 @@ public class NNPlayer implements IPlayer {
 		this.playerID = playerID;
 		//Load trained neural network from file
 			// TODO Achtung, hier immer den richtigen Namen einfuegen!
-		trainedNNet = NeuralNetwork.createFromFile("NewNeuralNetwork1.nnet");
+		trainedNNet = NeuralNetwork.load("NewNeuralNetwork1.nnet");
 	}
 
 	/* (non-Javadoc)
