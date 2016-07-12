@@ -20,6 +20,7 @@ public class NNPlayer implements IPlayer {
 	private final int playerID;
 	
 	private NeuralNetwork trainedNNet;
+	//tes von ahhmad
 	
 	/**
 	 * Generates an AI Player for the game Connect Four 
