@@ -431,13 +431,10 @@ public class Game {
 
 
 		//playGameVsQ();
-		generateDataSets();
+		//generateDataSets();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
-		playTournament(20, new NormalKI(1), new NNPlayer2(2));
+		playTournament(100, new NormalKI(1), new NNPlayer2(2));
 		
 
 
