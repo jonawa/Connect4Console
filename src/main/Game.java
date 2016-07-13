@@ -17,7 +17,7 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 5;
+	public static final int COLUMNS = 3;
 	public static final int ROWS = 4;
 	
 	public static int tokensOnField;
@@ -131,7 +131,7 @@ public class Game {
 		resetBoard();
 	
 		IPlayer Spieler1 = new QPlayer2(1);
-		IPlayer Spieler2 = new NormalKI(2);
+		IPlayer Spieler2 = new NormalKI2(2);
 		FINISHED=false;
 		
 		int column = -1;
@@ -140,8 +140,9 @@ public class Game {
 		int playcount = 0;
 
 		Spieler1.setLearning(true);
+		Spieler2.setLearning(true);
 
-		while(playcount <= 20000){
+		while(playcount <= 200){
 
 			
 			
@@ -204,21 +205,24 @@ public class Game {
 			}
 			
 		}
-		Spieler1.setLearning(false);
 		
 		java.awt.Toolkit.getDefaultToolkit().beep();
-		playTournament(100, Spieler1, Spieler2);
+		playTournament(4, Spieler1, Spieler2);
 		JOptionPane.showMessageDialog(null,
 			    "Fertig");
 
 		
 		playGame(Spieler1, new HumanPlayer(2));
+		
 	}
 	
 	
 	public static void playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
 			
 
+		Spieler1.setLearning(false);
+		Spieler2.setLearning(false);
+		
 		
 		int column = -1;
 		int row = -1;
@@ -245,6 +249,7 @@ public class Game {
 					numberOfMoves++;
 				}
 				count++;
+				tokensOnField++;
 			
 				//TODO Fehlerbehandlung
 				if(row == -1){
