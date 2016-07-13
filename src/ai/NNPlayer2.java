@@ -1,30 +1,135 @@
 package ai;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.learning.DataSet;
+import org.neuroph.core.learning.DataSetRow;
+import org.neuroph.core.learning.LearningRule;
+import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.MomentumBackpropagation;
+import org.neuroph.util.TrainingSetImport;
+import org.neuroph.util.TransferFunctionType;
 
+import main.Game;
 import main.IPlayer;
+import util.Helper;
+import util.TrainNNetwork;
 
-public class NNPlayer2 implements IPlayer{
+public class NNPlayer2 implements IPlayer {
 	private final int playerID;
 	private NeuralNetwork nn;
-	
+	private MultiLayerPerceptron myMlPerceptron;
+
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
-		nn = NeuralNetwork.load("NewNeuralNetwork1.nnet");
-		
-		
-		
+		learnNNPlayer();
 	}
+
+	public void learnNNPlayer() {
+		DataSet ds = null;
+		try {
+			/*
+			 * Datenset muss erstellt werden und wird eingelesen, die ersten 60
+			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
+			 * sind die Daten durch ein Komma
+			 */
+			ds = TrainingSetImport.importFromFile("datasetOld.txt", 9, 3, ",");
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
+		// Neuronen, 5 Output Neuronen
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 9, 6, 3);
+
+		// LearningRule setzten
+		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
+		learningRule.setMaxError(0.05);
+		learningRule.setLearningRate(0.2);
+		learningRule.setMomentum(0.7);
+
+		myMlPerceptron.setLearningRule(learningRule);
+
+		// hier wird das Netz trainiert
+		System.out.println("Starte lernen");
+		myMlPerceptron.learn(ds);
+
+		System.out.println("Lernen abgeschlossen");
+	}
+
 	@Override
 	public int turn() {
-		// TODO Auto-generated method stub
-		return 0;
+		int action = 0;
+		// Get current board
+		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
+
+		// Generate output to calculate the next move
+		double[] input = Helper.convertIntBoardToDoubleArray(currentBoard);
+		myMlPerceptron.setInput(input);
+		myMlPerceptron.calculate();
+
+		double[] netOutput = myMlPerceptron.getOutput();
+		System.out.println(Arrays.toString(netOutput));
+
+		// Turn output into an action for the next move
+		action = getMax(netOutput);
+
+		// Check output
+		while (!isActionAllowed(currentBoard, action)) {
+			for (int i = 2; i < Game.COLUMNS; i++) {
+				action = getNextMax(netOutput, i);
+			}
+		}
+
+		System.out.println(action);
+		return action;
+	}
+
+	private int getNextMax(double[] array, int count) {
+		Arrays.sort(array);
+		return (int) array[array.length-count];
+	}
+
+	private boolean isActionAllowed(int[][] board, int action) {
+		int emptyRow = 0;
+		for (int i = Game.ROWS - 1; i >= 0; i--) {
+			if (board[i][action] == 0) {
+				emptyRow = i;
+			} else {
+				emptyRow = -1;
+			}
+		}
+		if (emptyRow == -1) {
+			return false;
+		}
+		return true;
+	}
+
+	private int getMax(double[] array) {
+		double max = 0;
+		int row = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] > max) {
+				max = array[i];
+				row = i;
+			}
+		}
+		return row;
 	}
 
 	@Override
 	public void reactToWinOrLose(boolean win) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -32,12 +137,11 @@ public class NNPlayer2 implements IPlayer{
 		// TODO Auto-generated method stub
 		return playerID;
 	}
+
 	@Override
 	public void setLearning(boolean b) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
 
 }

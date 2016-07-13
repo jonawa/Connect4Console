@@ -19,7 +19,10 @@ import main.Game;
  */
 public class Helper {
 
-
+	public static void main(String[] args) {
+		int[][] board = {{0,0,0},{1,1,2},{2,2,2}};
+		System.out.println(Arrays.toString(convertIntBoardToDoubleArray(board)));
+	}
    
     /**
      * Konvertiert ein beliebiges int 2D Array in einen String zur Ausgabe 
@@ -72,12 +75,42 @@ public class Helper {
 		for(int[] rows : board){
 			for(int token : rows){		
 				sb.append(token);
-				sb.append("\t");
+				sb.append(",");
 			}
 
 		}
 		
 		return sb.toString();
+    }
+    
+    public static String convertBoardToOutputNN(int[][] board){
+    	double[] d = TrainNNetwork.convertBoard(board);
+    	return convertDoubleArrayToString(d);
+    }
+    
+    
+    private static String convertDoubleArrayToString(double[] arr){
+    	StringBuilder sb = new StringBuilder();
+    	for(double elem : arr){
+    		sb.append(elem);
+    		sb.append(",");
+    	}
+    	return sb.toString();
+    }
+    
+    public static double[] convertIntBoardToDoubleArray(int[][] board){
+    	int elemCount = board.length * board[0].length;
+    	double[] result = new double[elemCount];
+    	int a = 0;
+		for(int i = 0; i< board.length; i++){
+			for(int j = 0; j < board[0].length; j++){		
+				result[a] = (double) board[i][j];
+				a++;
+			}
+
+		}
+		return result;
+		
     }
     
     public static String convertActionToOuput(int action, int length){
@@ -92,7 +125,7 @@ public class Helper {
     	
     	for(int elem : arr){
     		sb.append(elem);
-    		sb.append("\t");
+    		sb.append(",");
     	}
     	
     	return sb.toString();
@@ -212,7 +245,7 @@ public class Helper {
 		    //Für jeden Zug im Array:
 		    for(TurnWrapper turn : dataSet){
 		    		int count = 0;
-		    		bw.write(Helper.convertIntBoardTo1DString(turn.getState()));
+		    		bw.write(Helper.convertBoardToOutputNN(turn.getState()));
 		    		
 		    		
 		    		int action = turn.getAction();

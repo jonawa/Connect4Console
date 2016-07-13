@@ -31,7 +31,7 @@ public class NNPlayer implements IPlayer {
 		this.playerID = playerID;
 		//Load trained neural network from file
 			// TODO Achtung, hier immer den richtigen Namen einfuegen!
-		trainedNNet = NeuralNetwork.createFromFile("NewNeuralNetwork1.nnet");
+		trainedNNet = NeuralNetwork.load("NewNeuralNetwork1.nnet");
 	}
 
 	/* (non-Javadoc)
@@ -44,7 +44,7 @@ public class NNPlayer implements IPlayer {
 		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
 		
 		//Generate output to calculate the next move
-		trainedNNet.setInput(TrainNNetwork.convertBoardToInput(currentBoard));
+		trainedNNet.setInput(TrainNNetwork.convertBoard(currentBoard));
         trainedNNet.calculate();
         double[ ] netOutput = trainedNNet.getOutput();
 		

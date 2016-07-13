@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
+import ai.NNPlayer;
 import ai.NNPlayer2;
 import ai.QPlayer;
 import db.Array2DWrapper;
 import db.TurnWrapper;
 import ai.QPlayer2;
+import ai.RandomPlayer;
 import util.Helper;
 
 public class Game {
@@ -111,7 +113,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 			}
-			if (boardIsFull()){
+			if (boardIsFull() && !FINISHED){
 				System.out.println("---------------------------------");
 				System.out.println("Spielergebnis: Unentschieden");
 				System.out.println("---------------------------------");
@@ -238,7 +240,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if ((count+i) % 2 == 0){
+				if ((count) % 2 == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
@@ -267,6 +269,7 @@ public class Game {
 					System.out.println("Spieler 1 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				
 				if (checkWin(2, row, column)){
@@ -275,12 +278,14 @@ public class Game {
 					System.out.println("Spieler 2 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				if (boardIsFull()){
 					System.out.println("---------------------------------");
 					System.out.println("Spielergebnis: Unentschieden");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 			}			
 		}
@@ -327,8 +332,11 @@ public class Game {
 		//Hier wird zuerst eine HashMap benutzt, die dann später in ein Array umgewandelt wird.
 		HashMap<Array2DWrapper, Integer> dataSet = new HashMap<Array2DWrapper, Integer>();
 		
-		for(int i = 0; i < numGames; i++){
+		
+		int i = 0;
+		while (i < numGames){
 			
+			System.out.println(Helper.convertIntBoardToString(Game.getBoard()));
 			if (count % 2 == 0){
 				
 				column = Spieler1.turn();
@@ -338,16 +346,20 @@ public class Game {
 				
 			else{ 
 				column = Spieler2.turn();
-				row = placeDisk(column, Spieler2);
+				
 				
 				//Das Datenset wird nur für Spieler 2 erstellt
 				//Falls DatenSet diesen State und Action noch nicht kennt, füge ein, ansonsten passiert nichts.
 				Array2DWrapper stateWrap = new Array2DWrapper(Helper.deepCopy2DArray(Game.getBoard()));
 				
+				//Falls State und Action nicht schon vorhanden, füge neues Set hinzu
+				//stateWrap = Spielfeld, column = Action, die diesem Spielfeld ausgeführt wird (also Reihe in die geworfen wird)
 				if (!dataSet.containsKey(stateWrap)){
-					dataSet.put(stateWrap, row);
+					dataSet.put(stateWrap, column);
 				}
 				
+				//jetzt wird der Stein platziert
+				row = placeDisk(column, Spieler2);
 				
 			}
 			count++;
@@ -361,12 +373,18 @@ public class Game {
 			//Falls gewonnen, verloren oder untentschieden, einfach Board reseten und weitermachen
 			if (checkWin(1, row,column)){
 				resetBoard();
+				count = 0;
+				i++;
 			}
 			if (checkWin(2, row, column)){
 				resetBoard();
+				count = 0;
+				i++;
 			}
 			if (boardIsFull()){
+				count = 0;
 				resetBoard();
+				i++;
 			}
 			
 		}
@@ -415,10 +433,16 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-		playGameVsQ();
+
+
+		//playGameVsQ();
+		//generateDataSets();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		//generateDataSets();
+		playTournament(100, new NormalKI(1), new NNPlayer2(2));
+		
+
+
 
 	}
 	
@@ -427,7 +451,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 20000;
+		final int numberOfTrainingGames = 100;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -598,7 +622,9 @@ public class Game {
 				
 				//Stein wird ins Spielfeld geworfen:
 				board[i][column] = player.getPlayerID(); 
-				if (BOARDISEMPTY==true){BOARDISEMPTY=false;}
+				if (BOARDISEMPTY==true)
+					{BOARDISEMPTY=false;}
+				
 				return i;
 			}
 				
