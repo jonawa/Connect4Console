@@ -9,6 +9,8 @@ import ai.NNPlayer;
 import ai.NNPlayer2;
 import ai.QPlayer;
 import db.Array2DWrapper;
+import db.TestDB;
+import db.TestDB2;
 import db.TurnWrapper;
 import ai.QPlayer2;
 import ai.RandomPlayer;
@@ -127,13 +129,18 @@ public class Game {
 	 * Resets oder wenn noch nicht vorhanden, initialisiert das Board
 	 */
 	
-	public static void playGameVsQ(){
+	/**
+	 * Spieler ist der QPlayer, Spieler 2, die KI, mit der trainiert werden soll
+	 * @param Spieler1
+	 * @param Spieler2
+	 * @param numberTrainGames
+	 */
+	public static void trainQPlayer(IPlayer Spieler1, IPlayer Spieler2, int numberTrainGames){
 		
 		//Erzeuge leeres Board.
 		resetBoard();
 	
-		IPlayer Spieler1 = new QPlayer2(1);
-		IPlayer Spieler2 = new NormalKI2(2);
+
 		FINISHED=false;
 		
 		int column = -1;
@@ -144,7 +151,7 @@ public class Game {
 		Spieler1.setLearning(true);
 		Spieler2.setLearning(true);
 
-		while(playcount <= 200){
+		while(playcount <= numberTrainGames){
 
 			
 			
@@ -209,12 +216,11 @@ public class Game {
 		}
 		
 		java.awt.Toolkit.getDefaultToolkit().beep();
-		playTournament(4, Spieler1, Spieler2);
 		JOptionPane.showMessageDialog(null,
-			    "Fertig");
+			    "Training  des QPlayer beendet!");
 
 		
-		playGame(Spieler1, new HumanPlayer(2));
+
 		
 	}
 	
@@ -434,12 +440,21 @@ public class Game {
 	public static void main(String[] args) {
 		//testCheck4Win();
 
-
-		//playGameVsQ();
+		IPlayer qPlayer = new QPlayer2(1);
+		IPlayer normalKI = new NormalKI2(2);
+		trainQPlayer(qPlayer, normalKI, 1000);
 		//generateDataSets();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		playTournament(100, new NormalKI(1), new NNPlayer2(2));
+		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
+		
+		TestDB2.getDB().saveDB("testSaveDB.ser");
+		playTournament(1000, qPlayer, normalKI);
+
+		
+		TestDB2.getDB().loadDB("testSaveDB.ser");
+		trainQPlayer(qPlayer, normalKI, 1000);
+		playTournament(1000, qPlayer, normalKI);
 		
 
 

@@ -1,9 +1,12 @@
 package db;
 
 
+import java.io.Serializable;
+
+
 import util.Helper;
 
-public final class Array2DWrapper {
+public final class Array2DWrapper implements Serializable{
 	
 	private final int[][] arr;
 	
