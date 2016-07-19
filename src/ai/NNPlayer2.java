@@ -29,7 +29,12 @@ public class NNPlayer2 implements IPlayer {
 		learnNNPlayer();
 	}
 
-	public void learnNNPlayer() {
+	public NNPlayer2(int playerID, int columns, int rows, int wincount) {
+		this.playerID = playerID;
+		learnNNPlayer(columns, rows, wincount);
+	}
+
+	private void learnNNPlayer() {
 		DataSet ds = null;
 		try {
 			/*
@@ -37,7 +42,44 @@ public class NNPlayer2 implements IPlayer {
 			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
 			 * sind die Daten durch ein Komma
 			 */
-			ds = TrainingSetImport.importFromFile("datasetOld.txt", 9, 3, ",");
+			ds = TrainingSetImport.importFromFile("dataset3x3-3.txt", 9, 3, ",");
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
+		// Neuronen, 5 Output Neuronen
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 9, 6, 3);
+
+		// LearningRule setzten
+		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
+		learningRule.setMaxError(0.05);
+		learningRule.setLearningRate(0.2);
+		learningRule.setMomentum(0.7);
+
+		myMlPerceptron.setLearningRule(learningRule);
+
+		// hier wird das Netz trainiert
+		System.out.println("Starte lernen");
+		myMlPerceptron.learn(ds);
+
+		System.out.println("Lernen abgeschlossen");
+	}
+	
+	public void learnNNPlayer(int columns, int rows, int wincount) {
+		DataSet ds = null;
+		try {
+			/*
+			 * Datenset muss erstellt werden und wird eingelesen, die ersten 60
+			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
+			 * sind die Daten durch ein Komma
+			 */
+			ds = TrainingSetImport.importFromFile("dataset"+columns+"x"+rows+"-"+wincount+".txt", 9, 3, ",");
 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
