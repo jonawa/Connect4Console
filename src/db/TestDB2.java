@@ -2,13 +2,17 @@ package db;
 
 import java.util.Map;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import util.Helper;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
@@ -178,46 +182,59 @@ public class TestDB2 {
 	}
 
 	/**
-	 * Achtung noch nicht vollständig und ungetestet
+	 * Speichert die Datenbank, filename ist Pfad und Dateiname zusammen, als Endung am besten .ser eingeben
 	 */
-	public void saveDB(){
+	public void saveDB(String filename){
+
+		
+		try{
+			FileOutputStream fileOut = new FileOutputStream(filename);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(db);
+			out.close();
+			fileOut.close();
+			System.out.println("Die Datenbank wurde serialisiert");
+		}
+		catch(IOException i){
+			System.out.println("Fehler beim Speichern der Datenbank!");
+			i.printStackTrace();
+		}
+			
+	}
+	/**
+	 * lädt die Datenbank und weist der TestDB2 die gelandene Datenbank zu
+	 * @param filename
+	 */
+	public void loadDB(String filename){
+		
+
+		Map<Array2DWrapper, HashMap<Integer, Integer>> dbLoaded = null;
+		FileInputStream fileIn;
 		try {
-			FileOutputStream fileOut =
-			         new FileOutputStream("");
-			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			         try {
-						out.writeObject(db);
-						out.close();
-				         fileOut.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			         
+			fileIn = new FileInputStream (filename);
+			ObjectInputStream in = new ObjectInputStream (fileIn);
+			dbLoaded = (Map<Array2DWrapper, HashMap<Integer, Integer>>) in.readObject();
+			db = dbLoaded;
+			in.close();
+			fileIn.close();
+			System.out.println("Die Datenbank wurde erfolgreich geladen");
+			}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e){
+			e.printStackTrace();
 		}
+
+		
+		
 	}
 	
-	/**
-	 * Der Methode wird ein 2D Int Array übergeben. Die Datenbank überprüft, ob dieser State vorhanden ist.
-	 * Falls nicht wird -1 zurückgeben, falls vorhanden wird die Action aus der Datenbank gesucht, die den höchsten Value hat.
-	 * Die Action ist ein Wert von 0 bis zur Größe des aktuellen Spielfeldes -1.
-	 * Also die Spalte mit dem höchsten Wert
-	 * 
-	 * @param state aktuelle Spielposition als 2D Int Array
-	 * @return int, gibt die Reihe(action) zurück in die geworfen werden soll
-	 * 
-	 */
-	public int maxValueActionForState(int[][] state){
-		//TODO Implementieren
-		return -1;
-	}
+
 	/**
 	 * Die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
 	 * zu dem aktuellen Wert(value).

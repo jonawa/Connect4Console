@@ -21,7 +21,7 @@ public class QPlayer2 implements IPlayer {
 	private final int playerID;
 	private TestDB2 Q;
 	private double gamma;
-	private int epsilon;
+	private int epsilon = 20;
 	private boolean learning=true;
 	
 	
@@ -56,7 +56,8 @@ public class QPlayer2 implements IPlayer {
 			
 		
 		//Finde neuen Wert für Q, außer es ist mein letzter Zug:
-		if (Game.tokensOnField<Game.ROWS*Game.COLUMNS-2){
+		System.out.println(Game.tokensOnField);
+		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
 			int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
 
 			//Datenbank mit neuem Wert updaten:	
@@ -270,15 +271,16 @@ public class QPlayer2 implements IPlayer {
 		int bestAction = actions[0];
 		int bestValue = Integer.MIN_VALUE;
 		
+		int zz;
 		if (learning){
 			Random grn = new Random();
-			epsilon=grn.nextInt(100)+1;
+			zz =grn.nextInt(100)+1;
 		}
 		else {
-			epsilon=100;
+			zz=100;
 		}
 		
-		if(Q.containsState(currentState) && epsilon>20){
+		if(Q.containsState(currentState) && zz>epsilon){
 			for(int action : actions){
 				int value = Q.getValueOfStateAndAction(currentState, action);
 				if(value > bestValue){

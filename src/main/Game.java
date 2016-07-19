@@ -9,8 +9,11 @@ import ai.NNPlayer;
 import ai.NNPlayer2;
 import ai.QPlayer;
 import db.Array2DWrapper;
+import db.TestDB;
+import db.TestDB2;
 import db.TurnWrapper;
 import ai.QPlayer2;
+import ai.RandomPlayer;
 import util.Helper;
 
 public class Game {
@@ -18,7 +21,7 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 5;
+	public static final int COLUMNS = 3;
 	public static final int ROWS = 4;
 	
 	public static int tokensOnField;
@@ -112,7 +115,7 @@ public class Game {
 				System.out.println("---------------------------------");
 				FINISHED = true;
 			}
-			if (boardIsFull()){
+			if (boardIsFull() && !FINISHED){
 				System.out.println("---------------------------------");
 				System.out.println("Spielergebnis: Unentschieden");
 				System.out.println("---------------------------------");
@@ -126,13 +129,18 @@ public class Game {
 	 * Resets oder wenn noch nicht vorhanden, initialisiert das Board
 	 */
 	
-	public static void playGameVsQ(){
+	/**
+	 * Spieler ist der QPlayer, Spieler 2, die KI, mit der trainiert werden soll
+	 * @param Spieler1
+	 * @param Spieler2
+	 * @param numberTrainGames
+	 */
+	public static void trainQPlayer(IPlayer Spieler1, IPlayer Spieler2, int numberTrainGames){
 		
 		//Erzeuge leeres Board.
 		resetBoard();
 	
-		IPlayer Spieler1 = new QPlayer2(1);
-		IPlayer Spieler2 = new NormalKI(2);
+
 		FINISHED=false;
 		
 		int column = -1;
@@ -141,8 +149,9 @@ public class Game {
 		int playcount = 0;
 
 		Spieler1.setLearning(true);
+		Spieler2.setLearning(true);
 
-		while(playcount <= 20000){
+		while(playcount <= numberTrainGames){
 
 			
 			
@@ -205,21 +214,23 @@ public class Game {
 			}
 			
 		}
-		Spieler1.setLearning(false);
 		
 		java.awt.Toolkit.getDefaultToolkit().beep();
-		playTournament(100, Spieler1, Spieler2);
 		JOptionPane.showMessageDialog(null,
-			    "Fertig");
+			    "Training  des QPlayer beendet!");
 
 		
-		playGame(Spieler1, new HumanPlayer(2));
+
+		
 	}
 	
 	
 	public static void playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
 			
 
+		Spieler1.setLearning(false);
+		Spieler2.setLearning(false);
+		
 		
 		int column = -1;
 		int row = -1;
@@ -235,7 +246,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if ((count+i) % 2 == 0){
+				if ((count) % 2 == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
@@ -246,6 +257,7 @@ public class Game {
 					numberOfMoves++;
 				}
 				count++;
+				tokensOnField++;
 			
 				//TODO Fehlerbehandlung
 				if(row == -1){
@@ -263,6 +275,7 @@ public class Game {
 					System.out.println("Spieler 1 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				
 				if (checkWin(2, row, column)){
@@ -271,12 +284,14 @@ public class Game {
 					System.out.println("Spieler 2 hat nach "+ numberOfMoves + " Spielzuegen gewonnen");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 				if (boardIsFull()){
 					System.out.println("---------------------------------");
 					System.out.println("Spielergebnis: Unentschieden");
 					System.out.println("---------------------------------");
 					FINISHED = true;
+					count = 0;
 				}
 			}			
 		}
@@ -424,18 +439,25 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-<<<<<<< HEAD
-		//playGameVsQ();
+
+		IPlayer qPlayer = new QPlayer2(1);
+		IPlayer normalKI = new NormalKI2(2);
+		trainQPlayer(qPlayer, normalKI, 1000);
 		//generateDataSets();
-		playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		
-=======
-		playGameVsQ();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2));
 		
-		//generateDataSets();
->>>>>>> 22e8bc043f0e90382d739f02d6dbdd90116b4c50
+		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
+		
+		TestDB2.getDB().saveDB("testSaveDB.ser");
+		playTournament(1000, qPlayer, normalKI);
+
+		
+		TestDB2.getDB().loadDB("testSaveDB.ser");
+		trainQPlayer(qPlayer, normalKI, 1000);
+		playTournament(1000, qPlayer, normalKI);
+		
+
+
 
 	}
 	
@@ -444,7 +466,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 1000;
+		final int numberOfTrainingGames = 100;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
