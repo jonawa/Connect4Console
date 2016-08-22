@@ -22,7 +22,7 @@ public class Game {
 	public static final int WINCOUNT = 3;
 	
 	public static final int COLUMNS = 3;
-	public static final int ROWS = 4;
+	public static final int ROWS = 3;
 	
 	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board
@@ -440,23 +440,23 @@ public class Game {
 	public static void main(String[] args) {
 		//testCheck4Win();
 
-		IPlayer qPlayer = new QPlayer2(1);
-		IPlayer normalKI = new NormalKI2(2);
-		trainQPlayer(qPlayer, normalKI, 1000);
-		//generateDataSets();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		//IPlayer qPlayer = new QPlayer2(1);
+		//IPlayer normalKI = new NormalKI2(2);
+		//trainQPlayer(qPlayer, normalKI, 1000);
 		
 		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
 		
-		TestDB2.getDB().saveDB("testSaveDB.ser");
-		playTournament(1000, qPlayer, normalKI);
+		//TestDB2.getDB().saveDB("testSaveDB.ser");
+		//playTournament(1000, qPlayer, normalKI);
 
 		
-		TestDB2.getDB().loadDB("testSaveDB.ser");
-		trainQPlayer(qPlayer, normalKI, 1000);
-		playTournament(1000, qPlayer, normalKI);
+		//TestDB2.getDB().loadDB("testSaveDB.ser");
+		//trainQPlayer(qPlayer, normalKI, 1000);
 		
-
+		//playTournament(1000, qPlayer, normalKI);
+		
+		generateDataSets();
+		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
 
 
 	}
@@ -478,7 +478,8 @@ public class Game {
 //		}
 		
 		//schreibt das Array in die Datenbank
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset.txt");
+		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset"+COLUMNS+"x"+ROWS+"-"+WINCOUNT+".txt");
 		
 	}
 
