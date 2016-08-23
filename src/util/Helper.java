@@ -99,18 +99,29 @@ public class Helper {
     }
     
     public static double[] convertIntBoardToDoubleArray(int[][] board){
-    	int elemCount = board.length * board[0].length;
-    	double[] result = new double[elemCount];
-    	int a = 0;
-		for(int i = 0; i< board.length; i++){
-			for(int j = 0; j < board[0].length; j++){		
-				result[a] = (double) board[i][j];
-				a++;
-			}
-
-		}
-		return result;
-		
+    	double[] converted = new double [board.length * board[0].length * 3];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                switch (board [i][j]){
+                    case 0 :    
+                        converted [(i * board[0].length *3) + (j*3)    ] = 1;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 0;
+                        break;
+                    case 1 :
+                        converted [(i * board[0].length *3) + (j*3)    ] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 1;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 0;
+                        break;
+                    case 2 :
+                        converted [(i * board[0].length *3) + (j*3)    ] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 1] = 0;
+                        converted [(i * board[0].length *3) + (j*3) + 2] = 1;
+                        break;
+                }
+            }
+        }
+    	return converted;
     }
     
     public static String convertActionToOuput(int action, int length){

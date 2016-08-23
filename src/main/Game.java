@@ -455,9 +455,13 @@ public class Game {
 		
 		//playTournament(1000, qPlayer, normalKI);
 		
-		generateDataSets();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
+		//generateDataSets();
+		
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		
+		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
+		//int inputLayer, int hiddenLayer, int outputLayer, double maxError, double learningRate, double momentum
+		playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 27, 6, 3, 0.05, 0.2, 0.7));
 
 	}
 	
@@ -479,9 +483,10 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset"+COLUMNS+"x"+ROWS+"-"+WINCOUNT+".txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_"+COLUMNS+"x"+ROWS+"_"+WINCOUNT+"G.txt");
 		
 	}
+
 
 
 	/**
