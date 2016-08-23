@@ -41,11 +41,11 @@ public class NNPlayer2 implements IPlayer {
 	}
 	
 	public NNPlayer2(int playerID, int columns, int rows, int wincount, 
-			int inputLayer, int hiddenLayer, int outputLayer, double maxError, double learningRate, double momentum) {
+		 int hiddenLayer, double maxError, double learningRate, double momentum) {
 		this.playerID = playerID;
-		inputLayerValue = inputLayer;
+		inputLayerValue = columns*rows*3;
 		hiddenLayerValue = hiddenLayer;
-		outputLayerValue = outputLayer;
+		outputLayerValue = columns;
 		maxErrorValue = maxError;
 		learningRateValue = learningRate;
 		momentumValue = momentum;
