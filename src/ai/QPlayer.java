@@ -178,7 +178,7 @@ public class QPlayer implements IPlayer {
 	private int[] generateActions(final int[][] state, boolean forQPlayer){
 		int[] possibleActions = null;
 		
-		//Falls in der Datenbank Q bereits der State vorhanden ist, frage die möglichen Actions ab und gib sie zurücl
+		//Falls in der Datenbank Q bereits der State vorhanden ist, frage die möglichen Actions ab und gib sie zurück
 		if(forQPlayer && Q.containsState(state)){
 			
 			possibleActions = new int[Q.get(state).keySet().size()];
@@ -187,14 +187,13 @@ public class QPlayer implements IPlayer {
 				possibleActions[i] = action;
 				i++;
 			}
-			
 		}
 		//Falls in Q noch nicht der State vorhanden ist, teste welche Züge (Actions) möglich sind und schreibe sie anschließende in die DB (mit Value 0):
 		else{
 			int[] allActions = new int[state[0].length]; //TODO Anzahl der Zeilen Länge oder? Es geht aber um die Spalten, hier vielleicht ein Fehler deswegen?
 		
 			int actionCount = 0;
-			for (int j = 0;j <= state[0].length-1;j++){
+			for (int j = 0; j <= state[0].length-1;j++){
 				for(int i = state.length -1; i >=0 ;i--){
 					if(state[i][j] == 0){
 						allActions[actionCount] = j;

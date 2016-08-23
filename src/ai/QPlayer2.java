@@ -289,7 +289,7 @@ public class QPlayer2 implements IPlayer {
 				}
 			}			
 		}
-		// Falls keine Erfahrungswere bestehen, wird eine zufällige Spalte gewählt
+		// Falls keine Erfahrungswere bestehen oder epsilon-greedy greift, wird eine zufällige Spalte gewählt
 		else{
 			System.out.println("Wähle zufällig");
 			int zufallszahl = (int)(Math.random() * actions.length);
@@ -404,7 +404,7 @@ public class QPlayer2 implements IPlayer {
 		else{
 			Q.update(lastState, lastAction, PUNISHMENT);	
 		}
-		Q.saveDBToTxt();
+		//Q.saveDBToTxt();
 		// Q.update(currentState, action, 1000);
 		
 	}

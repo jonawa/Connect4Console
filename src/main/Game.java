@@ -19,13 +19,19 @@ import util.Helper;
 public class Game {
 	public static boolean BOARDISEMPTY;
 	private static boolean FINISHED;
+	
+	//__________________________________________________________________________
+	// Spieleinstellungen: 
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 3;
-	public static final int ROWS = 3;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
+	
+	private static boolean abwechselnd = false;
+	//__________________________________________________________________________
 	
 	public static int tokensOnField;
-	/** Beispiel für ein 6*7 Board
+	/** Beispiel für ein 6*7 Board . [6][7]
 	 * 							{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
 								{0,0,0,0,0,0,0},
@@ -148,6 +154,10 @@ public class Game {
 		int count = 0;
 		int playcount = 0;
 
+		int indicator;
+		if (abwechselnd) indicator=1;
+		else indicator=0;
+		
 		Spieler1.setLearning(true);
 		Spieler2.setLearning(true);
 
@@ -155,7 +165,7 @@ public class Game {
 
 			
 			
-			if ((count+playcount) % 2 == 0){
+			if ((count+playcount*indicator) % 2 == 0){
 				
 				column = Spieler1.turn();
 				row = placeDisk(column, Spieler1);
@@ -238,6 +248,10 @@ public class Game {
 		int winningsOfPlayer1 = 0;
 		int winningsOfPlayer2 = 0;
 		
+		int indicator;
+		if (abwechselnd) indicator=1;
+		else indicator=0;
+		
 		for (int i = 1; i <= numberOfGames; i++) {
 			int numberOfMoves = 0;
 			int count = 0;
@@ -246,7 +260,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if ((count) % 2 == 0){
+				if (((count+numberOfGames*indicator) % 2) == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
@@ -439,15 +453,19 @@ public class Game {
 
 	public static void main(String[] args) {
 		//testCheck4Win();
-
-		//IPlayer qPlayer = new QPlayer2(1);
-		//IPlayer normalKI = new NormalKI2(2);
-		//trainQPlayer(qPlayer, normalKI, 1000);
+		
+		IPlayer qPlayer = new QPlayer2(1);
+		IPlayer normalKI = new NormalKI2(2);
+		TestDB2.getDB().loadDB("testSaveDB.ser");
+		//trainQPlayer(qPlayer, normalKI, 300000);
 		
 		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
+		playTournament(10000, qPlayer, normalKI);
 		
-		//TestDB2.getDB().saveDB("testSaveDB.ser");
-		//playTournament(1000, qPlayer, normalKI);
+		// Gib Spieleinstellungen aus:
+		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
+		TestDB2.getDB().saveDB("testSaveDB.ser");
+		
 
 		
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
@@ -455,7 +473,7 @@ public class Game {
 		
 		//playTournament(1000, qPlayer, normalKI);
 		
-		generateDataSets();
+		//generateDataSets();
 		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
 
 
