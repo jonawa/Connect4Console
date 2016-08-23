@@ -21,8 +21,8 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 3;
-	public static final int ROWS = 3;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board
@@ -461,8 +461,8 @@ public class Game {
 		
 		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
 		//int inputLayer, int hiddenLayer, int outputLayer, double maxError, double learningRate, double momentum
-		playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 27, 6, 3, 0.05, 0.2, 0.7));
-
+		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 27, 6, 3, 0.05, 0.2, 0.7));
+		playTournament(100, new NormalKI(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
 	}
 	
 
@@ -470,7 +470,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		final int numberOfTrainingGames = 1000;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
