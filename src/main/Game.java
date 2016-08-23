@@ -441,7 +441,7 @@ public class Game {
 		//testCheck4Win();
 
 		//IPlayer qPlayer = new QPlayer2(1);
-		IPlayer normalKI = new NormalKI2(2);
+		//IPlayer normalKI = new NormalKI2(2);
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
 		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
@@ -461,8 +461,8 @@ public class Game {
 		
 		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
 		//int hiddenLayer, double maxError, double learningRate, double momentum
-		playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
-		//playTournament(1000, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+		playTournament(1000, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
 	}
 	
 

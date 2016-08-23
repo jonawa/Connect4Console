@@ -167,7 +167,7 @@ public class NNPlayer2 implements IPlayer {
 			} else {
 				emptyRow = -1;
 			}
-		}
+		}	
 		if (emptyRow == -1) {
 			return false;
 		}
