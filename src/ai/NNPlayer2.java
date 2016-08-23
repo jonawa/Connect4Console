@@ -23,6 +23,12 @@ public class NNPlayer2 implements IPlayer {
 	private final int playerID;
 	private NeuralNetwork nn;
 	private MultiLayerPerceptron myMlPerceptron;
+	private int inputLayerValue;
+	private int hiddenLayerValue;
+	private int outputLayerValue;
+	private double maxErrorValue;
+	private double learningRateValue;
+	private double momentumValue;
 
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
@@ -31,6 +37,18 @@ public class NNPlayer2 implements IPlayer {
 
 	public NNPlayer2(int playerID, int columns, int rows, int wincount) {
 		this.playerID = playerID;
+		learnNNPlayer(columns, rows, wincount);
+	}
+	
+	public NNPlayer2(int playerID, int columns, int rows, int wincount, 
+		 int hiddenLayer, double maxError, double learningRate, double momentum) {
+		this.playerID = playerID;
+		inputLayerValue = columns*rows*3;
+		hiddenLayerValue = hiddenLayer;
+		outputLayerValue = columns;
+		maxErrorValue = maxError;
+		learningRateValue = learningRate;
+		momentumValue = momentum;
 		learnNNPlayer(columns, rows, wincount);
 	}
 
@@ -42,7 +60,7 @@ public class NNPlayer2 implements IPlayer {
 			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
 			 * sind die Daten durch ein Komma
 			 */
-			ds = TrainingSetImport.importFromFile("dataset3x3-3.txt", 9, 3, ",");
+			ds = TrainingSetImport.importFromFile("dataset3x3-3.txt", inputLayerValue, outputLayerValue, ",");
 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -54,13 +72,13 @@ public class NNPlayer2 implements IPlayer {
 
 		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
 		// Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 9, 6, 3);
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
 
 		// LearningRule setzten
 		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
-		learningRule.setMaxError(0.05);
-		learningRule.setLearningRate(0.2);
-		learningRule.setMomentum(0.7);
+		learningRule.setMaxError(maxErrorValue);
+		learningRule.setLearningRate(learningRateValue);
+		learningRule.setMomentum(momentumValue);
 
 		myMlPerceptron.setLearningRule(learningRule);
 
@@ -79,7 +97,7 @@ public class NNPlayer2 implements IPlayer {
 			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
 			 * sind die Daten durch ein Komma
 			 */
-			ds = TrainingSetImport.importFromFile("dataset"+columns+"x"+rows+"-"+wincount+".txt", 9, 3, ",");
+			ds = TrainingSetImport.importFromFile("dataset_"+columns+"x"+rows+"_"+wincount+"G.txt", inputLayerValue, outputLayerValue, ",");
 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -91,13 +109,13 @@ public class NNPlayer2 implements IPlayer {
 
 		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
 		// Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 9, 6, 3);
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
 
 		// LearningRule setzten
 		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
-		learningRule.setMaxError(0.05);
-		learningRule.setLearningRate(0.2);
-		learningRule.setMomentum(0.7);
+		learningRule.setMaxError(maxErrorValue);
+		learningRule.setLearningRate(learningRateValue);
+		learningRule.setMomentum(momentumValue);
 
 		myMlPerceptron.setLearningRule(learningRule);
 

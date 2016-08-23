@@ -29,6 +29,7 @@ public class Game {
 	
 	private static boolean abwechselnd = false;
 	//__________________________________________________________________________
+
 	
 	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board . [6][7]
@@ -452,12 +453,36 @@ public class Game {
 	
 
 	public static void main(String[] args) {
-		//testCheck4Win();
+	
+		trainAndTestQ();
+		//TestDB2.getDB().loadDB("testSaveDB.ser");
+		//trainQPlayer(qPlayer, normalKI, 1000);
 		
+		//playTournament(1000, qPlayer, normalKI);
+		
+		//generateDataSets();
+
+		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
+
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		
+		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
+		//int hiddenLayer, double maxError, double learningRate, double momentum
+		//generateDataSets();
+		//playGame(new NNPlayer2(1, COLUMNS, ROWS, WINCOUNT, 27, 0.05, 0.2, 0.7) , new HumanPlayer(2));
+		//playTournament(100, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+
+	}
+	
+
+
+	private static void trainAndTestQ() {
+				
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 300000);
+
 		
 		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
 		playTournament(10000, qPlayer, normalKI);
@@ -465,26 +490,13 @@ public class Game {
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 		TestDB2.getDB().saveDB("testSaveDB.ser");
-		
-
-		
-		//TestDB2.getDB().loadDB("testSaveDB.ser");
-		//trainQPlayer(qPlayer, normalKI, 1000);
-		
-		//playTournament(1000, qPlayer, normalKI);
-		
-		//generateDataSets();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
-
 	}
-	
 
 
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		final int numberOfTrainingGames = 1000;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -497,9 +509,10 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset"+COLUMNS+"x"+ROWS+"-"+WINCOUNT+".txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_"+COLUMNS+"x"+ROWS+"_"+WINCOUNT+"G.txt");
 		
 	}
+
 
 
 	/**
