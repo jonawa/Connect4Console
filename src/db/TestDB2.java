@@ -321,6 +321,10 @@ public class TestDB2 {
 		System.out.println(list3.equals(list4));
 		
 	}
+    
+    public int getSize(){
+    	return db.size();
+    }
 
 
 }

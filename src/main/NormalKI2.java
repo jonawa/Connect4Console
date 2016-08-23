@@ -178,13 +178,10 @@ public class NormalKI2 implements IPlayer{
 		int[][] state = Game.getBoard();
 		
 		for (int j = 0; j<= Game.COLUMNS-1; j++){
-			for(int i = Game.ROWS -1; i >=0; i--){
-				if(state[i][j] == 0){
-					allActions[actionCount] = j; //wirklich j? warum dann nicht einfach obere Zeile kontrulieren?
-					actionCount++;
-					break;
-					
-				}
+			if(state[0][j] == 0){
+				allActions[actionCount] = j; 
+				actionCount++;
+				break;		
 			}
 		}
 		//System.out.println(Helper.convertIntArrayToString(allActions));
