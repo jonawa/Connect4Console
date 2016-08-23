@@ -24,13 +24,13 @@ public class HumanPlayer implements IPlayer{
 	 */
 	@Override
 	public int turn() {
-		System.out.format("Spielzug eingeben 0-%d: ",Game.COLUMNS-1);
+		System.out.format("Spielzug eingeben 1-%d: ",Game.COLUMNS);
 		Scanner sc = new Scanner(System.in);
 		
 		int column = -1;
 		
 			try{
-				column = sc.nextInt();
+				column = sc.nextInt()-1;
 				if (column <0 || column > Game.COLUMNS- 1)
 					throw new InputMismatchException();
 			}

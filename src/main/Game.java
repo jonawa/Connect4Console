@@ -27,7 +27,7 @@ public class Game {
 	public static final int COLUMNS = 5;
 	public static final int ROWS = 4;
 	
-	private static boolean abwechselnd = false;
+	private static boolean abwechselnd = true;
 	//__________________________________________________________________________
 
 	
@@ -266,7 +266,8 @@ public class Game {
 		int winningsOfPlayer2 = 0;
 		
 		int indicator;
-		if (abwechselnd) indicator=1;
+		if (abwechselnd) 
+			indicator=1;
 		else indicator=0;
 		
 		for (int i = 1; i <= numberOfGames; i++) {
@@ -277,7 +278,7 @@ public class Game {
 			
 			while(!FINISHED){
 			
-				if (((count+numberOfGames*indicator) % 2) == 0){
+				if (((count+i*indicator) % 2) == 0){
 					column = Spieler1.turn();
 					row = placeDisk(column, Spieler1);
 					numberOfMoves++;
@@ -516,12 +517,13 @@ public class Game {
 		//trainQPlayer(qPlayer, normalKI, 300000);
 
 		
-		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
+
 		playTournament(10000, qPlayer, normalKI);
 		
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 		TestDB2.getDB().saveDB("testSaveDB.ser");
+//		playTournament(10, qPlayer, new HumanPlayer(2));
 	}
 
 
