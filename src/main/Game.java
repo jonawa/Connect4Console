@@ -129,6 +129,8 @@ public class Game {
 	 * Resets oder wenn noch nicht vorhanden, initialisiert das Board
 	 */
 	
+	
+
 	/**
 	 * Spieler ist der QPlayer, Spieler 2, die KI, mit der trainiert werden soll
 	 * @param Spieler1
@@ -224,10 +226,24 @@ public class Game {
 		
 	}
 	
-	
-	public static void playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
+	/**
+	 * 
+	 * @param numberOfGames
+	 * @param Spieler1
+	 * @param Spieler2
+	 * @return double[0] => Anzahl der gewonnen Spiele von Spieler 1
+	 * 			double[1] => Anzahl der gewonnen Spiele von Spieler 2
+	 * 			double[2] ==> Anzahl der Spiele, die unentschieden ausgegangen sind.
+	 * 
+	 */
+	public static int[] playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
 			
-
+		int numberOfWinsPlayer1 = 0;
+		int numberOfWinsPlayer2 = 0;
+		int numberOfDraws = 0;
+		
+		int[] result = new int[3];
+		
 		Spieler1.setLearning(false);
 		Spieler2.setLearning(false);
 		
@@ -276,6 +292,8 @@ public class Game {
 					System.out.println("---------------------------------");
 					FINISHED = true;
 					count = 0;
+					
+					numberOfWinsPlayer1++;
 				}
 				
 				if (checkWin(2, row, column)){
@@ -285,6 +303,8 @@ public class Game {
 					System.out.println("---------------------------------");
 					FINISHED = true;
 					count = 0;
+					
+					numberOfWinsPlayer2++;
 				}
 				if (boardIsFull()){
 					System.out.println("---------------------------------");
@@ -292,8 +312,17 @@ public class Game {
 					System.out.println("---------------------------------");
 					FINISHED = true;
 					count = 0;
+					
+					numberOfDraws++;
 				}
-			}			
+				
+				
+			}	
+			
+			//Schreiben die Daten in das Array
+			result[0] = numberOfWinsPlayer1;
+			result[1] = numberOfWinsPlayer2;
+			result[2] = numberOfDraws;
 		}
 		System.out.println("Anzahl der gespielten Spiel: " + numberOfGames);
 		if (winningsOfPlayer1 == winningsOfPlayer2) {
@@ -310,6 +339,9 @@ public class Game {
 		
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+		
+		
+		return null;
 	}
 	
 	/**
