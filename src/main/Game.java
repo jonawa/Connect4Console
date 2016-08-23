@@ -21,8 +21,8 @@ public class Game {
 	private static boolean FINISHED;
 	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 3;
-	public static final int ROWS = 3;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	public static int tokensOnField;
 	/** Beispiel für ein 6*7 Board
@@ -441,7 +441,7 @@ public class Game {
 		//testCheck4Win();
 
 		//IPlayer qPlayer = new QPlayer2(1);
-		//IPlayer normalKI = new NormalKI2(2);
+		IPlayer normalKI = new NormalKI2(2);
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
 		//playTournament(100, new NormalKI(1), new NNPlayer2(2));
@@ -455,10 +455,14 @@ public class Game {
 		
 		//playTournament(1000, qPlayer, normalKI);
 		
-		generateDataSets();
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
-
+		//generateDataSets();
+		
+		//playGame(new HumanPlayer(1), new NNPlayer2(2));
+		
+		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
+		//int hiddenLayer, double maxError, double learningRate, double momentum
+		playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+		//playTournament(1000, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
 	}
 	
 
@@ -479,9 +483,10 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset"+COLUMNS+"x"+ROWS+"-"+WINCOUNT+".txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_"+COLUMNS+"x"+ROWS+"_"+WINCOUNT+"G.txt");
 		
 	}
+
 
 
 	/**
