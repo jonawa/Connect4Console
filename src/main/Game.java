@@ -461,8 +461,11 @@ public class Game {
 		
 		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
 		//int inputLayer, int hiddenLayer, int outputLayer, double maxError, double learningRate, double momentum
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 27, 6, 3, 0.05, 0.2, 0.7));
+		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
 		playTournament(100, new NormalKI(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
+	
+		//NNPlayer2 nnPlayer = new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7);
+		//nnPlayer.learnAndSaveNNPlayer();
 	}
 	
 
@@ -470,10 +473,10 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 1000;
+		final int numberOfTrainingGames = 500;
 		
 		//generiert das Array
-		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
+		ArrayList<TurnWrapper> list =  generateDataSetForNN(new RandomPlayer(1), new NormalKI(2),numberOfTrainingGames);
 		
 		
 		//hier nur Ausgabe an Konsole zum Testen:

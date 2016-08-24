@@ -22,7 +22,7 @@ import util.TrainNNetwork;
 public class NNPlayer2 implements IPlayer {
 	private final int playerID;
 	private NeuralNetwork nn;
-	private MultiLayerPerceptron myMlPerceptron;
+	private MultiLayerPerceptron nnMLPerceptron;
 	private int inputLayerValue;
 	private int hiddenLayerValue;
 	private int outputLayerValue;
@@ -49,7 +49,21 @@ public class NNPlayer2 implements IPlayer {
 		maxErrorValue = maxError;
 		learningRateValue = learningRate;
 		momentumValue = momentum;
-		learnNNPlayer(columns, rows, wincount);
+		//learnNNPlayer(columns, rows, wincount);
+		
+		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
+		// Neuronen, 5 Output Neuronen
+		nnMLPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
+
+		// LearningRule setzen
+		MomentumBackpropagation learningRule = (MomentumBackpropagation) nnMLPerceptron.getLearningRule();
+		learningRule.setMaxError(maxErrorValue);
+		learningRule.setLearningRate(learningRateValue);
+		learningRule.setMomentum(momentumValue);
+
+		nnMLPerceptron.setLearningRule(learningRule);
+		System.out.println("NNPlayer wurde erstellt.");
+		
 	}
 
 	private void learnNNPlayer() {
@@ -72,19 +86,19 @@ public class NNPlayer2 implements IPlayer {
 
 		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
 		// Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
+		nnMLPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
 
 		// LearningRule setzten
-		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
+		MomentumBackpropagation learningRule = (MomentumBackpropagation) nnMLPerceptron.getLearningRule();
 		learningRule.setMaxError(maxErrorValue);
 		learningRule.setLearningRate(learningRateValue);
 		learningRule.setMomentum(momentumValue);
 
-		myMlPerceptron.setLearningRule(learningRule);
+		nnMLPerceptron.setLearningRule(learningRule);
 
 		// hier wird das Netz trainiert
 		System.out.println("Starte lernen");
-		myMlPerceptron.learn(ds);
+		nnMLPerceptron.learn(ds);
 
 		System.out.println("Lernen abgeschlossen");
 	}
@@ -109,35 +123,69 @@ public class NNPlayer2 implements IPlayer {
 
 		// MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden
 		// Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
+		nnMLPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, inputLayerValue, hiddenLayerValue, outputLayerValue);
 
 		// LearningRule setzten
-		MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
+		MomentumBackpropagation learningRule = (MomentumBackpropagation) nnMLPerceptron.getLearningRule();
 		learningRule.setMaxError(maxErrorValue);
 		learningRule.setLearningRate(learningRateValue);
 		learningRule.setMomentum(momentumValue);
 
-		myMlPerceptron.setLearningRule(learningRule);
+		nnMLPerceptron.setLearningRule(learningRule);
 
 		// hier wird das Netz trainiert
 		System.out.println("Starte lernen");
-		myMlPerceptron.learn(ds);
+		nnMLPerceptron.learn(ds);
 
 		System.out.println("Lernen abgeschlossen");
 	}
 
+	
+	public void learnAndSaveNNPlayer() {
+		DataSet ds = null;
+		try {
+			/*
+			 * Datenset muss erstellt werden und wird eingelesen, die ersten 60
+			 * Elemete sind Input, die nächsten 55 Elemente sind Output getrennt
+			 * sind die Daten durch ein Komma
+			 */
+			ds = TrainingSetImport.importFromFile("dataset_"+Game.COLUMNS+"x"+Game.ROWS+"_"+Game.WINCOUNT+"G.txt", inputLayerValue, outputLayerValue, ",");
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// hier wird das Netz trainiert
+		System.out.println("Starte lernen");
+		nnMLPerceptron.learn(ds);
+
+		System.out.println("Lernen abgeschlossen");
+		
+		// save the trained network into file
+		nnMLPerceptron.save("nnPlayer2_learned.nnet");
+		
+		System.out.println("NNPlayer wurde gespeichert.");
+	}
+	
 	@Override
 	public int turn() {
 		int action = 0;
+		
+		nnMLPerceptron.load("NNPlayer2_learned.nnet");
+		
 		// Get current board
 		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
 
 		// Generate output to calculate the next move
 		double[] input = Helper.convertIntBoardToDoubleArray(currentBoard);
-		myMlPerceptron.setInput(input);
-		myMlPerceptron.calculate();
+		nnMLPerceptron.setInput(input);
+		nnMLPerceptron.calculate();
 
-		double[] netOutput = myMlPerceptron.getOutput();
+		double[] netOutput = nnMLPerceptron.getOutput();
 		System.out.println(Arrays.toString(netOutput));
 
 		// Turn output into an action for the next move
