@@ -462,10 +462,27 @@ public class Game {
 		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
 		//int inputLayer, int hiddenLayer, int outputLayer, double maxError, double learningRate, double momentum
 		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
-		playTournament(100, new NormalKI(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
+		//playTournament(100, new NormalKI(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7));
 	
 		//NNPlayer2 nnPlayer = new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7);
 		//nnPlayer.learnAndSaveNNPlayer();
+		TestNN(1,100);
+	}
+	
+	private static void TestNN(int playerID, int j ) {
+		// TODO Auto-generated method stub
+		int IputLayer = COLUMNS * ROWS * 3;
+		int HiddenLayer = IputLayer * 2;
+		int OutputLayer = COLUMNS;
+		int NormalKIID = 0;
+		switch (playerID){
+			case 1 :
+				NormalKIID = 2;
+				break;
+			case 2 :
+				NormalKIID = 1;
+		}
+		playTournament(j, new NormalKI(NormalKIID), new NNPlayer2(playerID, COLUMNS, ROWS, WINCOUNT, IputLayer, HiddenLayer, OutputLayer, 0.05, 0.2, 0.7));		
 	}
 	
 
