@@ -27,7 +27,7 @@ public class Game {
 	public static final int COLUMNS = 5;
 	public static final int ROWS = 4;
 	
-	private static boolean abwechselnd = true;
+	
 	//__________________________________________________________________________
 
 	
@@ -143,8 +143,9 @@ public class Game {
 	 * @param Spieler1
 	 * @param Spieler2
 	 * @param numberTrainGames
+	 * @param abwechselnd Wenn True lernt der QPlayer beide Seiten, wenn false lernt er nur die von einer Seite
 	 */
-	public static void trainQPlayer(IPlayer Spieler1, IPlayer Spieler2, int numberTrainGames){
+	public static void trainQPlayer(IPlayer Spieler1, IPlayer Spieler2, int numberTrainGames, boolean abwechselnd){
 		
 		//Erzeuge leeres Board.
 		resetBoard();
@@ -242,12 +243,14 @@ public class Game {
 	 * @param numberOfGames
 	 * @param Spieler1
 	 * @param Spieler2
+	 * @param abwechselnd Wenn true, Spielen die beiden Spieler im Turnier abwechselnds
+	 * 						Wenn false, spielt immer SPieler 1 zuerst
 	 * @return double[0] => Anzahl der gewonnen Spiele von Spieler 1
 	 * 			double[1] => Anzahl der gewonnen Spiele von Spieler 2
 	 * 			double[2] ==> Anzahl der Spiele, die unentschieden ausgegangen sind.
 	 * 
 	 */
-	public static int[] playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2){
+	public static int[] playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2, boolean abwechselnd){
 			
 		int numberOfWinsPlayer1 = 0;
 		int numberOfWinsPlayer2 = 0;
@@ -487,7 +490,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
+		//trainAndTestQ();
+		trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
@@ -509,16 +513,28 @@ public class Game {
 	
 
 
+	private static void trainAndTestNN() {
+		IPlayer player1 = new NormalKI2(1);
+		IPlayer player2 = new NNPlayer2(2);
+
+		generateDataSets();
+		playTournament(1000,player1,player2,false);
+//		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
+		
+		
+	}
+
+
 	private static void trainAndTestQ() {
 				
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
-		//trainQPlayer(qPlayer, normalKI, 300000);
+		//trainQPlayer(qPlayer, normalKI, 300000, true);
 
 		
 
-		playTournament(10000, qPlayer, normalKI);
+		playTournament(10000, qPlayer, normalKI,true);
 		
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
@@ -543,7 +559,7 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_"+COLUMNS+"x"+ROWS+"_"+WINCOUNT+"G.txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset.txt");
 		
 	}
 

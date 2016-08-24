@@ -354,20 +354,7 @@ public class QPlayer2 implements IPlayer {
 			return avgValue / count;
 	}
 	
-	/**
-	 * Da nicht alle Möglichkeiten zu gewinnen und zu verlieren in einer Matrix bewertet werden.
-	 * Gibt diese Methode den Reward zurück mit Hilfe der checkWin Methode
-	 * Also return 100, wenn gewonnen.
-	 * @param state
-	 * @return
-	 */
-//wird erstmal nicht gebraucht, da Reward erst nach dem Spielende über die Methode reactToWinOrLose verteilt wird.
-	private int getReward(int[][] state, int action){
-		if(isEndState(state, action))
-			return REWARD;
-		
-		return 0;
-	}
+
 	
 	/**
 	 * Sobald der Algo an einem Punkt angelangt ist, an dem er die nächsten möglichen Züge noch nicht in seiner Datenbank hat (Am Anfang ist das immer der Fall)
@@ -404,15 +391,13 @@ public class QPlayer2 implements IPlayer {
 		else{
 			Q.update(lastState, lastAction, PUNISHMENT);	
 		}
-		//Q.saveDBToTxt();
-		// Q.update(currentState, action, 1000);
 		
 	}
 	
 
 	@Override
 	public int getPlayerID() {
-		// TODO Auto-generated method stub
+
 		return playerID;
 	}
 	

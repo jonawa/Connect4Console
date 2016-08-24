@@ -6,11 +6,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * 
+ *
+ *
+ */
 public class NormalKI2 implements IPlayer{
 	
 	private int playerID;
 	private int enemyID;
-	private boolean debug = true;
+	private boolean debug = false;
 	private int epsilon = 20;
 	private boolean learning = true;
 	
@@ -30,7 +35,7 @@ public class NormalKI2 implements IPlayer{
 	@Override
 	public int turn() {
 		
-		int zz;
+		int zz; //Zufallszahl
 		if (learning){
 			Random grn = new Random();
 			zz =grn.nextInt(100)+1;
