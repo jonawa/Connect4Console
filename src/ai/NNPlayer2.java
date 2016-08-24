@@ -201,11 +201,18 @@ public class NNPlayer2 implements IPlayer {
 		System.out.println(action);
 		return action;
 	}
-
+ 
 	private int getNextMax(double[] array, int count) {
-		Arrays.sort(array);
-		return (int) array[array.length-count];
-	}
+        double[] arrCopy = Arrays.copyOf(array, array.length);
+        Arrays.sort(array);
+        //nächst höchster Wert
+        double nextMax = array[array.length-count];
+        for(int i= 0 ; i < arrCopy.length;i++){
+            if(arrCopy[i] == nextMax)
+                return i;
+        }
+        return -1;
+    }
 
 	private boolean isActionAllowed(int[][] board, int action) {
 		int emptyRow = 0;
@@ -252,4 +259,7 @@ public class NNPlayer2 implements IPlayer {
 
 	}
 
+	public MultiLayerPerceptron getNnMLPerceptron() {
+		return nnMLPerceptron;
+	}
 }

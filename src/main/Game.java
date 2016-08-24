@@ -466,7 +466,7 @@ public class Game {
 	
 		//NNPlayer2 nnPlayer = new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 60, 120, 5, 0.05, 0.2, 0.7);
 		//nnPlayer.learnAndSaveNNPlayer();
-		TestNN(1,100);
+		TestNN(2,100);
 	}
 	
 	private static void TestNN(int playerID, int j ) {
@@ -482,7 +482,11 @@ public class Game {
 			case 2 :
 				NormalKIID = 1;
 		}
-		playTournament(j, new NormalKI(NormalKIID), new NNPlayer2(playerID, COLUMNS, ROWS, WINCOUNT, IputLayer, HiddenLayer, OutputLayer, 0.05, 0.2, 0.7));		
+		
+		NNPlayer2 nnPlayer = new NNPlayer2(playerID, COLUMNS, ROWS, WINCOUNT, IputLayer, HiddenLayer, OutputLayer, 0.05, 0.2, 0.7);
+		nnPlayer.getNnMLPerceptron().load("NNPlayer2_learned.nnet");
+		
+		playTournament(j, new NormalKI(NormalKIID), nnPlayer);		
 	}
 	
 
