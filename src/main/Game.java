@@ -534,7 +534,7 @@ public class Game {
 		IPlayer player1 = new NNPlayer2(1);
 
 
-		playTournament(10,player1,player2,false);
+		playTournament(1000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -771,8 +771,7 @@ public class Game {
 			}
 				
 		}
-		throw new RuntimeException("In die Spalte soll geworfen werde aber das geht nicht: " + column);
-		//return -5;
+		return -1;
 		
 	}
 	

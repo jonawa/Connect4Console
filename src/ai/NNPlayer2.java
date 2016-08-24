@@ -27,9 +27,9 @@ public class NNPlayer2 implements IPlayer{
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
 		
-		learnNNPlayer();	
-//		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
-//		System.out.println("NN geladen");
+//		learnNNPlayer();	
+		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
+		System.out.println("NN geladen");
 	}
 	
 	public void learnNNPlayer(){
@@ -97,11 +97,13 @@ public class NNPlayer2 implements IPlayer{
         
         //TODO hier hängt es sich irgendwo auf
 		while (!isActionAllowed(currentBoard, action)) {
-			for (int i = 2; i < Game.COLUMNS; i++) {
+      // while (Game.placeDiskPossible(action) == -1) {
+			for (int i = 1; i < Game.COLUMNS; i++) {
 				action = getNextMax(netOutput, i);
+				if(action != -1)
+					break;
 			}
 		}
-
 
 
 
@@ -112,7 +114,7 @@ public class NNPlayer2 implements IPlayer{
 		double[] arrCopy = Arrays.copyOf(array, array.length);
 		Arrays.sort(array);
 		//nächst höchster Wert
-		double nextMax = array[array.length-count];
+		double nextMax = array[array.length-count-1];
 		//schauen an welcher Position der nächstehöchste Wert im ursprünglichen Array steht
 		for(int i= 0 ; i < arrCopy.length;i++){
 			if(arrCopy[i] == nextMax)
