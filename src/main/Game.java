@@ -502,8 +502,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		//trainAndTestQ();
-		trainAndTestNN();
+		trainAndTestQ();
+		//trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		

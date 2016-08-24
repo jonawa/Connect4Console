@@ -22,6 +22,11 @@ public class QPlayer2 implements IPlayer {
 	private TestDB2 Q;
 	private double gamma;
 	private int epsilon = 20;
+	
+	/**
+	 * Variable bestimmt ob der QPlayer neue Datenbankeinträge macht oder nicht
+	 * wird im Turniermodus ausgestellt, da dort nur der vorhanden Stand getestet wird.
+	 */
 	private boolean learning=true;
 	
 	// zur Auswertung:
@@ -62,9 +67,11 @@ public class QPlayer2 implements IPlayer {
 		System.out.println(Game.tokensOnField);
 		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
 			int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
-
-			//Datenbank mit neuem Wert updaten:	
-			Q.update(currentState, action, newQValue);
+			
+			if(learning){
+				//Datenbank mit neuem Wert updaten:	
+				Q.update(currentState, action, newQValue);
+			}
 		}
 		
 		
@@ -245,9 +252,11 @@ public class QPlayer2 implements IPlayer {
 			for(int a = 0; a <actionCount;a++){
 				possibleActions[a] = allActions[a];
 			}
-			
-			//in Datenbank Q schreiben und die Values mit 0 initialisieren, da bisher noch nicht betrachtet:
-			initializeState(state, possibleActions);
+			//Falls der QPlayer gerade ein Turnier spielt, werden keine neuen Datenbankeinträge gemacht
+			if(learning){
+				//in Datenbank Q schreiben und die Values mit 0 initialisieren, da bisher noch nicht betrachtet:
+				initializeState(state, possibleActions);
+			}
 		}
 		
 		return possibleActions;
