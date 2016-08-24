@@ -97,32 +97,27 @@ public class NNPlayer2 implements IPlayer{
         
         //TODO hier hängt es sich irgendwo auf
 		while (!isActionAllowed(currentBoard, action)) {
-      // while (Game.placeDiskPossible(action) == -1) {
-			for (int i = 1; i < Game.COLUMNS; i++) {
-				action = getNextMax(netOutput, i);
-				if(action != -1)
-					break;
-			}
+			action = getNextMax(netOutput, action);
 		}
-
-
 
 		return action;
 	}
 
 	private int getNextMax(double[] array, int count) {
-		double[] arrCopy = Arrays.copyOf(array, array.length);
-		Arrays.sort(array);
-		//nächst höchster Wert
-		double nextMax = array[array.length-count-1];
-		//schauen an welcher Position der nächstehöchste Wert im ursprünglichen Array steht
-		for(int i= 0 ; i < arrCopy.length;i++){
-			if(arrCopy[i] == nextMax)
-				//Position des nächsthöchsten Wertes zurückgeben
-				return i;
-		}
-		return -1;
-	
+		double Max = array [count];
+	    double[] arrCopy = Arrays.copyOf(array, array.length);
+	    Arrays.sort(arrCopy);
+	    double nextMax = 0;
+	    for(int i= 0 ; i < arrCopy.length;i++)
+	    	if(arrCopy[i] == Max){
+	    		nextMax = arrCopy [i-1];
+	            break;
+	    	}
+	    for(int j= 0 ; j < array.length;j++)
+	    	if(array[j] == nextMax){
+	    		return j;
+	           }
+	    return -1;	
 	}
 
 	private boolean isActionAllowed(int[][] board, int action) {
