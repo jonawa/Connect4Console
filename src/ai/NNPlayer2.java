@@ -26,9 +26,7 @@ public class NNPlayer2 implements IPlayer{
 	
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
-		learnNNPlayer();
-		
-		
+		learnNNPlayer();	
 	}
 	
 	public void learnNNPlayer(){
@@ -81,14 +79,48 @@ public class NNPlayer2 implements IPlayer{
 		myMlPerceptron.setInput(input);
         myMlPerceptron.calculate();
        
-        double[ ] netOutput =  myMlPerceptron.getOutput();
+        double[] netOutput =  myMlPerceptron.getOutput();
+        
+     // Turn output into an action for the next move
+     		action = getMax(netOutput);
+
         System.out.println(Arrays.toString(netOutput));
 		
-        //Turn output into an action for the next move
-        action = getMax(netOutput);
-        System.out.println(action);
+		// Check output
+        
+        //TODO hier hängt es sich irgendwo auf
+		while (!isActionAllowed(currentBoard, action)) {
+			for (int i = 2; i < Game.COLUMNS; i++) {
+				action = getNextMax(netOutput, i);
+			}
+		}
+
+
+
+
 		return action;
 	}
+
+	private int getNextMax(double[] array, int count) {
+		Arrays.sort(array);
+		return (int)array.length-count;
+	}
+
+	private boolean isActionAllowed(int[][] board, int action) {
+		int emptyRow = 0;
+		for (int i = Game.ROWS - 1; i >= 0; i--) {
+			if (board[i][action] == 0) {
+				emptyRow = i;
+			} else {
+				emptyRow = -1;
+			}
+		}
+		if (emptyRow == -1) {
+			return false;
+		}
+		return true;
+	}
+
 	
 	private int getMax(double[] array) {
 		double max = 0;
