@@ -102,8 +102,18 @@ public class NNPlayer2 implements IPlayer{
 	}
 
 	private int getNextMax(double[] array, int count) {
+		double[] arrCopy = Arrays.copyOf(array, array.length);
 		Arrays.sort(array);
-		return (int)array.length-count;
+		//nächst höchster Wert
+		double nextMax = array[array.length-count];
+		//schauen an welcher Position der nächstehöchste Wert im ursprünglichen Array steht
+		for(int i= 0 ; i < arrCopy.length;i++){
+			if(arrCopy[i] == nextMax)
+				//Position des nächsthöchsten Wertes zurückgeben
+				return i;
+		}
+		return -1;
+	
 	}
 
 	private boolean isActionAllowed(int[][] board, int action) {

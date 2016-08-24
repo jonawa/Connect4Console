@@ -254,10 +254,10 @@ public class Game {
 	public static int[] playTournament(int numberOfGames, IPlayer Spieler1, IPlayer Spieler2, boolean abwechselnd){
 
 		
-		QPlayer2 qp = (QPlayer2)Spieler1; //Typecast um getAnzUnbekannterZustaenste() aufzurufen
-		qp.setAnzUnbekannteZustaende(0);
-		qp.setAnzZuegeMitWertungNulll(0);
-		
+	//	QPlayer2 qp = (QPlayer2)Spieler1; //Typecast um getAnzUnbekannterZustaenste() aufzurufen
+//		qp.setAnzUnbekannteZustaende(0);
+//		qp.setAnzZuegeMitWertungNulll(0);
+//		
 		
 
 		int numberOfWinsPlayer1 = 0;
@@ -369,8 +369,8 @@ public class Game {
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
 		
-		System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
-		System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
+		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
+		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
 		
 		return result;
 	}
@@ -502,8 +502,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
-		//trainAndTestNN();
+		//trainAndTestQ();
+		trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
@@ -529,7 +529,7 @@ public class Game {
 		IPlayer player1 = new NormalKI2(1);
 		IPlayer player2 = new NNPlayer2(2);
 
-		generateDataSets();
+		//generateDataSets();
 		playTournament(1000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
