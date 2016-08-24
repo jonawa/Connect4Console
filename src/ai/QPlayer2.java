@@ -100,9 +100,9 @@ public class QPlayer2 implements IPlayer {
 	 * @param action Zug der vom QPlayer ausgewählt worden ist.
 	 * @return erfolgsversprechenster Wert, den der QPlayer aus diese State mit dieser Action erreichen kann
 	 */
-	private int maxValueForNextStateAllActions(int[][] state, int action) {
+	private double maxValueForNextStateAllActions(int[][] state, int action) {
 		
-		int maxOfallPossibleActions = Integer.MIN_VALUE;
+		double maxOfallPossibleActions = Double.MIN_VALUE;
 		
 		//Simulieren, QPlayer wirft seinen Stein, richtiges Board wird erst verändert nach dem Zug
 		int[][] nextStateOpponent = Helper.deepCopy2DArray(state); 
@@ -124,7 +124,7 @@ public class QPlayer2 implements IPlayer {
 				nextStatePlayer[rowOpponent][actionOpponent] = 1;
 			
 			//Wähle höchsten Value aller möglichen nächsten Züge für QPlayer aus.
-			int newMax = maxValueForState(nextStatePlayer);
+			double newMax = maxValueForState(nextStatePlayer);
 			//int newMax = avgValueForState(nextStatePlayer);
 			
 			if(newMax > maxOfallPossibleActions)
@@ -141,7 +141,7 @@ public class QPlayer2 implements IPlayer {
 	 * @return
 	 */
 
-	private int avgValueForNextStateAllActions(int[][] state, int action) {
+	private double avgValueForNextStateAllActions(int[][] state, int action) {
 		
 		int avgOfallPossibleActions = 0;
 		int count = 0;
@@ -171,14 +171,14 @@ public class QPlayer2 implements IPlayer {
 		
 		
 		int bestAction = allActionOpponent[0];
-		int bestValue = Integer.MIN_VALUE;
+		Double bestValue = Double.MIN_VALUE;
 		
 		//Wie berahten jetzt "Wenn ich mein Gegner wäre".
 		//Für jede mögliche Aktion des Gegners:
 		if(Q.containsState(inversIextStateOpponent)){
 			for(int actionOpponent: allActionOpponent){
 				
-				int value = Q.getValueOfStateAndAction(inversIextStateOpponent, actionOpponent);
+				double value = Q.getValueOfStateAndAction(inversIextStateOpponent, actionOpponent);
 				if(value > bestValue){
 					bestValue = value;
 					bestAction = action;
@@ -286,7 +286,7 @@ public class QPlayer2 implements IPlayer {
 		int[] bestActions=new int[actions.length];;
 		int anz=0; // Anzahl der Elemente im Array
 		
-		int bestValue = Integer.MIN_VALUE;
+		double bestValue = Double.MIN_VALUE;
 		
 		int zz;
 		if (learning){
@@ -300,7 +300,7 @@ public class QPlayer2 implements IPlayer {
 		if(Q.containsState(currentState)){
 			if (zz>epsilon){
 				for(int i=0; i<actions.length; i++){
-					int value = Q.getValueOfStateAndAction(currentState, actions[i]);
+					double value = Q.getValueOfStateAndAction(currentState, actions[i]);
 					if(value >= bestValue){
 						if(value>bestValue){ 
 						// verwerfe Array wenn neuer Best-Wert gefunden wurde
@@ -347,17 +347,17 @@ public class QPlayer2 implements IPlayer {
 	 * @param state
 	 * @return
 	 */
-	private int maxValueForState(final int[][] state){
+	private double maxValueForState(final int[][] state){
 		//max[Q(next state, all actions] //wobei next state schon der ist, der übergeben wird
-		int maxValue;
+		double maxValue;
 		
 		if(Q.containsState(state)){
-			maxValue = Integer.MIN_VALUE;
+			maxValue = Double.MIN_VALUE;
 
-			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
+			HashMap<Integer,Double> allActionAndValues = Q.get(state);
 			
 			for(Integer action : allActionAndValues.keySet()){
-				int value = allActionAndValues.get(action);
+				double value = allActionAndValues.get(action);
 				if(value > maxValue)
 					maxValue = value;
 			}
@@ -375,16 +375,16 @@ public class QPlayer2 implements IPlayer {
 	 * @param state
 	 * @return
 	 */
-	private int avgValueForState(final int[][] state){
-		int avgValue = 0;
+	private double avgValueForState(final int[][] state){
+		double avgValue = 0;
 		int count = 0;
 		if(Q.containsState(state)){
 
 	
-			HashMap<Integer,Integer> allActionAndValues = Q.get(state);
+			HashMap<Integer,Double> allActionAndValues = Q.get(state);
 			
 			for(Integer action : allActionAndValues.keySet()){
-				int value = allActionAndValues.get(action);
+				double value = allActionAndValues.get(action);
 				avgValue += value;
 				count++;
 			}
@@ -412,7 +412,7 @@ public class QPlayer2 implements IPlayer {
 	public void initializeState(int[][] state, int[] possibleActions){
 		
 		for(int action : possibleActions){
-			Q.put(state, action, 0);
+			Q.put(state, action, 0.0);
 			
 		}
 	}
@@ -523,7 +523,7 @@ public class QPlayer2 implements IPlayer {
 		Q.put(state,2,50);
 		Q.put(state, 3, 100);
 		Q.saveDBToTxt();
-		int max = qp.maxValueForState(state); 
+		double max = qp.maxValueForState(state); 
 		System.out.println("Max sollte 100 sein: " + max);
 		
 		int bestAction = qp.chooseBestAction(state, generateActions(state, true));

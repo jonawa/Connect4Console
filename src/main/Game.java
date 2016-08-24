@@ -504,8 +504,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		//trainAndTestQ();
-		trainAndTestNN();
+		trainAndTestQ();
+		//trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
@@ -545,13 +545,13 @@ public class Game {
 				
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
-		TestDB2.getDB().loadDB("testSaveDB.ser");
+		//TestDB2.getDB().loadDB("testSaveDB.ser");
 
-		//trainQPlayer(qPlayer, normalKI, 300000, true);
+		trainQPlayer(qPlayer, normalKI, 5000, true);
 
 		
 
-		playTournament(10000, qPlayer, normalKI,true);
+		playTournament(1000, qPlayer, normalKI,true);
 
 		//trainQPlayer(qPlayer, normalKI, 1000);
 
@@ -560,7 +560,7 @@ public class Game {
 		
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
-		TestDB2.getDB().saveDB("testSaveDB.ser");
+		//TestDB2.getDB().saveDB("testSaveDB.ser");
 //		playTournament(10, qPlayer, new HumanPlayer(2));
 	}
 

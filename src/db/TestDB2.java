@@ -29,10 +29,10 @@ public class TestDB2 {
 	private static TestDB2 testDB2;
 	
 	
-	private  Map<Array2DWrapper, HashMap<Integer, Integer>> db;
+	private  Map<Array2DWrapper, HashMap<Integer, Double>> db;
 	
 	private TestDB2() {
-		db = new HashMap<Array2DWrapper, HashMap<Integer,Integer>>();
+		db = new HashMap<Array2DWrapper, HashMap<Integer,Double>>();
 	}
 	
 	/**
@@ -51,11 +51,11 @@ public class TestDB2 {
 	 * @param state
 	 * @return
 	 */
-	public HashMap<Integer,Integer> get(int[][] state){
+	public HashMap<Integer,Double> get(int[][] state){
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		if (db.containsKey(stateWrap)){
 			
-			 HashMap<Integer, Integer> actionValue;
+			 HashMap<Integer, Double> actionValue;
 			 actionValue = db.get(stateWrap);
 			 return actionValue;
 		}
@@ -80,11 +80,11 @@ public class TestDB2 {
 	 * @return
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
-	public int getValueOfStateAndAction(int[][]state, int action){
+	public Double getValueOfStateAndAction(int[][]state, int action){
 
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		
-		Integer value = db.get(stateWrap).get(action);
+		Double value = db.get(stateWrap).get(action);
 		
 		if (value != null)
 			return value;
@@ -106,7 +106,7 @@ public class TestDB2 {
 	 * @param action
 	 * @param value
 	 */
-	public void put(int[][] state, int action, int value){
+	public void put(int[][] state, int action, double value){
 		//TODO Das kann doch eigentlich nicht effizient sein oder?
 		
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
@@ -115,7 +115,7 @@ public class TestDB2 {
 		//Wenn der Zustand/ das aktuelle Board bereits in der DB gespeichert ist:
 		if (db.containsKey(stateWrap)){
 			
-			 HashMap<Integer, Integer> key;
+			 HashMap<Integer, Double> key;
 			 key = db.get(stateWrap);
 			 if (key == null){
 				 //Wenn kein Spielzug für Boardstate vorhanden, füge den aktuellen hinzu:
@@ -137,7 +137,7 @@ public class TestDB2 {
 		else{
 			//neue HashMap erzeugen:
 			//TODO könnte man mit max mögliche Züge initialisieren
-			HashMap<Integer, Integer> key = new HashMap<Integer,Integer>();
+			HashMap<Integer, Double> key = new HashMap<Integer,Double>();
 			key.put(action, value);
 			db.put(stateWrap, key);
 			
@@ -208,12 +208,12 @@ public class TestDB2 {
 	public void loadDB(String filename){
 		
 
-		Map<Array2DWrapper, HashMap<Integer, Integer>> dbLoaded = null;
+		Map<Array2DWrapper, HashMap<Integer, Double>> dbLoaded = null;
 		FileInputStream fileIn;
 		try {
 			fileIn = new FileInputStream (filename);
 			ObjectInputStream in = new ObjectInputStream (fileIn);
-			dbLoaded = (Map<Array2DWrapper, HashMap<Integer, Integer>>) in.readObject();
+			dbLoaded = (Map<Array2DWrapper, HashMap<Integer, Double>>) in.readObject();
 			db = dbLoaded;
 			in.close();
 			fileIn.close();
@@ -244,7 +244,7 @@ public class TestDB2 {
 	 * @param addValue Bewertung als int, von dem was hinzugefügt werden soll zum aktuellen Value
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
-	public boolean update(int[][] state, int action, int addValue){
+	public boolean update(int[][] state, int action, double addValue){
 		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
 		//da nur ein oberflächlicher Vergleich gemacht wird
 		
@@ -255,7 +255,7 @@ public class TestDB2 {
 			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
 		
 		
-		int previousValue = db.get(stateWrap).get(action); 
+		double previousValue = db.get(stateWrap).get(action); 
 		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
 		db.get(stateWrap).put(action, previousValue + addValue);
 		return true;
@@ -270,7 +270,7 @@ public class TestDB2 {
 		    
 		    for(Array2DWrapper stateWrap : db.keySet()){
 		    	
-		    	HashMap<Integer, Integer> valueActionMap = db.get(stateWrap);
+		    	HashMap<Integer, Double> valueActionMap = db.get(stateWrap);
 		    	
 		    	for(Integer action : valueActionMap.keySet()){
 		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
