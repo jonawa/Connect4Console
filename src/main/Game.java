@@ -368,6 +368,7 @@ public class Game {
 		
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 		
 		System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
 		System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
@@ -543,20 +544,15 @@ public class Game {
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
 
-		//trainQPlayer(qPlayer, normalKI, 300000, true);
+		//trainQPlayer(qPlayer, normalKI, 1500000, true);
+		playTournament(10000, qPlayer, normalKI, true);
 
-		
-
-		playTournament(10000, qPlayer, normalKI,true);
-
-		//trainQPlayer(qPlayer, normalKI, 1000);
-
-		
+			
 
 		
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
-		TestDB2.getDB().saveDB("testSaveDB.ser");
+		//TestDB2.getDB().saveDB("testSaveDB.ser");
 //		playTournament(10, qPlayer, new HumanPlayer(2));
 	}
 

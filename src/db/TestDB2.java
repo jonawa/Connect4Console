@@ -257,7 +257,11 @@ public class TestDB2 {
 		
 		int previousValue = db.get(stateWrap).get(action); 
 		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
-		db.get(stateWrap).put(action, previousValue + addValue);
+		//db.get(stateWrap).put(action, previousValue + addValue);
+		
+		// addValue wird schon vorher mit dem alten Wert verrechnet. 
+		// Die Vorgänger zustände vom Ende werden fest gesetzt 
+		db.get(stateWrap).put(action, addValue);
 		return true;
 	}
 	
