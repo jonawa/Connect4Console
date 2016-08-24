@@ -24,6 +24,9 @@ public class QPlayer2 implements IPlayer {
 	private int epsilon = 20;
 	private boolean learning=true;
 	
+	// zur Auswertung:
+	private int anzUnbekannteZustaende;
+	private int anzZuegeMitWertungNulll;
 	
 	private int[][] lastState;
 	private int lastAction;
@@ -268,7 +271,12 @@ public class QPlayer2 implements IPlayer {
 		
 		//TODO hier könnte man außerdem mit der isEndState Methode überprüfen, ob man direkt gewinnen kann
 		//Starte mit einer beliebigen Action, hier wird immer die erstmögliche ausgewählt.
-		int bestAction = actions[0];
+		int bestAction;
+		
+		//Füge Array hinzu, um bei mehrern gleich guten Möglichkeiten alle zuspeichern
+		int[] bestActions=new int[actions.length];;
+		int anz=0; // Anzahl der Elemente im Array
+		
 		int bestValue = Integer.MIN_VALUE;
 		
 		int zz;
@@ -280,17 +288,43 @@ public class QPlayer2 implements IPlayer {
 			zz=100;
 		}
 		
-		if(Q.containsState(currentState) && zz>epsilon){
-			for(int action : actions){
-				int value = Q.getValueOfStateAndAction(currentState, action);
-				if(value > bestValue){
-					bestValue = value;
-					bestAction = action;
+		if(Q.containsState(currentState)){
+			if (zz>epsilon){
+				for(int i=0; i<actions.length; i++){
+					int value = Q.getValueOfStateAndAction(currentState, actions[i]);
+					if(value >= bestValue){
+						if(value>bestValue){ 
+						// verwerfe Array wenn neuer Best-Wert gefunden wurde
+							bestActions = new int[actions.length];
+							anz=0;
+						}
+							
+							bestValue = value;
+							bestActions[anz] = actions[i];
+							anz++;
+					}
 				}
-			}			
+				//Wähle einen zufälligen Zug aus dem Array bestactions
+				System.out.println("Wähle aus "+ anz+" Möglichkeiten");
+				int zufallszahl = (int)(Math.random() * anz);
+				System.out.println("Wähle Möglichkeiten Nr. " + (zufallszahl+1));
+				bestAction=bestActions[zufallszahl];
+				
+				if (Q.getValueOfStateAndAction(currentState, bestAction) == 0) anzZuegeMitWertungNulll++;
+				
+			}
+			else {
+				
+				//Wähle weil epsilon-greedy greift 
+				System.out.println("Wähle zufällig");
+				int zufallszahl = (int)(Math.random() * actions.length);
+				bestAction=actions[zufallszahl];
+			}
 		}
-		// Falls keine Erfahrungswere bestehen oder epsilon-greedy greift, wird eine zufällige Spalte gewählt
+		
 		else{
+			// Wähle zufällig weil Zustand unbekannt 
+			anzUnbekannteZustaende++;
 			System.out.println("Wähle zufällig");
 			int zufallszahl = (int)(Math.random() * actions.length);
 			bestAction=actions[zufallszahl];
@@ -529,6 +563,22 @@ public class QPlayer2 implements IPlayer {
 
 	public void setLearning(boolean learning) {
 		this.learning = learning;
+	}
+
+	public int getAnzUnbekannteZustaende() {
+		return anzUnbekannteZustaende;
+	}
+
+	public void setAnzUnbekannteZustaende(int anzUnbekannteZustaende) {
+		this.anzUnbekannteZustaende = anzUnbekannteZustaende;
+	}
+
+	public int getAnzZuegeMitWertungNulll() {
+		return anzZuegeMitWertungNulll;
+	}
+
+	public void setAnzZuegeMitWertungNulll(int anzZuegeMitWertungNulll) {
+		this.anzZuegeMitWertungNulll = anzZuegeMitWertungNulll;
 	}
 
 }
