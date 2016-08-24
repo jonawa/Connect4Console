@@ -43,10 +43,10 @@ public class QPlayer2 implements IPlayer {
 		gamma = 0.8;
 	}
 	
-	public static void main(String[] args) {
-		QPlayer2 qplayer = new QPlayer2(1);
-		qplayer.testMethods();
-	}
+//	public static void main(String[] args) {
+//		QPlayer2 qplayer = new QPlayer2(1);
+//		qplayer.testMethods();
+//	}
 	
 	
 	
@@ -66,7 +66,7 @@ public class QPlayer2 implements IPlayer {
 		//Finde neuen Wert für Q, außer es ist mein letzter Zug:
 		System.out.println(Game.tokensOnField);
 		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
-			int newQValue= (int) (gamma * avgValueForNextStateAllActions(currentState, action));
+			double newQValue=  gamma * avgValueForNextStateAllActions(currentState, action);
 			
 			if(learning){
 				//Datenbank mit neuem Wert updaten:	
@@ -319,7 +319,7 @@ public class QPlayer2 implements IPlayer {
 				System.out.println("Wähle Möglichkeiten Nr. " + (zufallszahl+1));
 				bestAction=bestActions[zufallszahl];
 				
-				if (Q.getValueOfStateAndAction(currentState, bestAction) == 0) anzZuegeMitWertungNulll++;
+			//	if (Q.getValueOfStateAndAction(currentState, bestAction) == 0) anzZuegeMitWertungNulll++;
 				
 			}
 			else {

@@ -772,7 +772,8 @@ public class Game {
 			}
 				
 		}
-		return -1;
+		//return -1;
+		throw new RuntimeException("Das ist dumm, warum schmeiﬂt er falsch");
 		
 	}
 	
