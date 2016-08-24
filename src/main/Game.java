@@ -22,10 +22,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 3;
+	public static final int WINCOUNT = 4;
 	
-	public static final int COLUMNS = 5;
-	public static final int ROWS = 4;
+	public static final int COLUMNS = 7;
+	public static final int ROWS = 6;
 	
 	
 	//__________________________________________________________________________
@@ -409,12 +409,6 @@ public class Game {
 			if (count % 2 == 0){
 				
 				column = Spieler1.turn();
-				row = placeDisk(column, Spieler1);
-				
-			}
-				
-			else{ 
-				column = Spieler2.turn();
 				
 				
 				//Das Datenset wird nur für Spieler 2 erstellt
@@ -428,6 +422,14 @@ public class Game {
 				}
 				
 				//jetzt wird der Stein platziert
+				row = placeDisk(column, Spieler1);
+				
+			}
+				
+			else{ 
+				column = Spieler2.turn();
+				
+
 				row = placeDisk(column, Spieler2);
 				
 			}
@@ -526,11 +528,13 @@ public class Game {
 
 
 	private static void trainAndTestNN() {
-		IPlayer player1 = new NormalKI2(1);
-		IPlayer player2 = new NNPlayer2(2);
-
+		
 		//generateDataSets();
-		playTournament(1000,player1,player2,false);
+		IPlayer player2 = new NormalKI(2);
+		IPlayer player1 = new NNPlayer2(1);
+
+
+		playTournament(10,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -564,7 +568,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 1000;
+		final int numberOfTrainingGames = 100;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -577,7 +581,7 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset.txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_neu.txt");
 		
 	}
 
