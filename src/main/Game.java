@@ -22,10 +22,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 4;
+	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	
 	//__________________________________________________________________________
@@ -504,24 +504,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		//trainAndTestQ();
-		trainAndTestNN();
-		//TestDB2.getDB().loadDB("testSaveDB.ser");
-		//trainQPlayer(qPlayer, normalKI, 1000);
-		
-		//playTournament(1000, qPlayer, normalKI);
-		
-		//generateDataSets();
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
-		//int hiddenLayer, double maxError, double learningRate, double momentum
-		//generateDataSets();
-		//playGame(new NNPlayer2(1, COLUMNS, ROWS, WINCOUNT, 27, 0.05, 0.2, 0.7) , new HumanPlayer(2));
-		//playTournament(100, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+		trainAndTestQ();
+		//trainAndTestNN();
 
 	}
 	
@@ -547,17 +531,12 @@ public class Game {
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
 
-		//trainQPlayer(qPlayer, normalKI, 300000, true);
-
-		
-
+		trainQPlayer(qPlayer, normalKI, 10000, true);
 		playTournament(10000, qPlayer, normalKI,true);
 
 		//trainQPlayer(qPlayer, normalKI, 1000);
 
-		
-
-		
+	
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 		TestDB2.getDB().saveDB("testSaveDB.ser");
