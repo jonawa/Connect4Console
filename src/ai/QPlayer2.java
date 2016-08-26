@@ -22,7 +22,7 @@ public class QPlayer2 implements IPlayer {
 	private TestDB2 Q;
 	private double gamma;
 	private int epsilon = 20;
-	private double alpha = 0.1;
+	private double alpha = 0.05;
 	
 	/**
 	 * Variable bestimmt ob der QPlayer neue Datenbankeinträge macht oder nicht
@@ -68,11 +68,13 @@ public class QPlayer2 implements IPlayer {
 		System.out.println(Game.tokensOnField);
 		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
 			double newQValue= (gamma * avgValueForNextStateAllActions(currentState, action));
-			double newQValue2 = (1-alpha)*Q.getValueOfStateAndAction(currentState,  action)+ 
-					alpha*(gamma*avgValueForNextStateAllActions(currentState, action));
+			//double newQValue2 = (1-alpha)*Q.getValueOfStateAndAction(currentState,  action)+ 
+			//		alpha*(gamma*avgValueForNextStateAllActions(currentState, action));
+			//alpha wird jetzt über die update Methode verrechnet,
+			//um Konflikte im Turniermodus zu umgehen
 			if(learning){
 				//Datenbank mit neuem Wert updaten:	
-				Q.update(currentState, action, newQValue2);
+				Q.update(currentState, action, newQValue, alpha);
 			}
 		}
 		
@@ -415,10 +417,10 @@ public class QPlayer2 implements IPlayer {
 		}	
 		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
 		if(win){
-			Q.update(lastState,lastAction,REWARD);
+			Q.update(lastState, lastAction,REWARD, 1.0); // 1.0 richtig?
 		}
 		else{
-			Q.update(lastState, lastAction, PUNISHMENT);	
+			Q.update(lastState, lastAction, PUNISHMENT, 1.0);	
 		}
 		
 	}

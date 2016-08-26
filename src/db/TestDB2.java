@@ -233,7 +233,7 @@ public class TestDB2 {
 	 * @param addValue Bewertung als int, von dem was hinzugefügt werden soll zum aktuellen Value
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
-	public boolean update(int[][] state, int action, double addValue){
+	public boolean update(int[][] state, int action, double addValue, double alpha){
 		//TODO solange die Arrays verwendet werden und deren Equals Methode verwendet wird, klappt das ganze nicht,
 		//da nur ein oberflächlicher Vergleich gemacht wird
 		
@@ -247,7 +247,9 @@ public class TestDB2 {
 		double previousValue = db.get(stateWrap).get(action); 
 		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
 		//db.get(stateWrap).put(action, previousValue + addValue);
-		db.get(stateWrap).put(action, addValue);
+		//db.get(stateWrap).put(action, addValue);
+		db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
+		
 		
 		return true;
 	}

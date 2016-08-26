@@ -531,8 +531,8 @@ public class Game {
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
 
-		trainQPlayer(qPlayer, normalKI, 10000, true);
-		playTournament(10000, qPlayer, normalKI,true);
+		//trainQPlayer(qPlayer, normalKI, 1000, true);
+		//playTournament(1000, qPlayer, normalKI,true);
 
 		//trainQPlayer(qPlayer, normalKI, 1000);
 
@@ -540,7 +540,7 @@ public class Game {
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 		TestDB2.getDB().saveDB("testSaveDB.ser");
-//		playTournament(10, qPlayer, new HumanPlayer(2));
+		playTournament(10, qPlayer, new HumanPlayer(2), true);
 	}
 
 
