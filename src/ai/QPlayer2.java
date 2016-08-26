@@ -271,7 +271,7 @@ public class QPlayer2 implements IPlayer {
 		//Füge Array hinzu, um bei mehrern gleich guten Möglichkeiten alle zuspeichern
 		int[] bestActions=new int[actions.length];;
 		int anz=0; // Anzahl der Elemente im Array
-		double bestValue = -10000.0 ; //Double.MIN_VALUE;
+		double bestValue = PUNISHMENT-1 ; //Double.MIN_VALUE;
 		int zz; //Zufallszahl für Spaltenauswahl
 		
 		if (learning){
@@ -281,15 +281,15 @@ public class QPlayer2 implements IPlayer {
 		else {
 			zz=100;
 		}
-		Q.saveDBToTxt();
+		//Q.saveDBToTxt();
 		
 		if(Q.containsState(currentState)){
 			if (zz>epsilon){
 				for(int i=0; i<actions.length; i++){
 					double value = Q.getValueOfStateAndAction(currentState, actions[i]);
-					System.out.println(actions[i] + ", value: " + value + ", bestvalue: " +bestValue);
+					//System.out.println(actions[i] + ", value: " + value + ", bestvalue: " +bestValue);
 					if(Double.compare(value, bestValue) >= 0){
-						System.out.println("Besseren Wert gefunden");
+						//System.out.println("Besseren Wert gefunden");
 						if(value>bestValue){ 
 						// verwerfe Array wenn neuer Best-Wert gefunden wurde
 							bestActions = new int[actions.length];
@@ -314,7 +314,7 @@ public class QPlayer2 implements IPlayer {
 			else {
 				
 				//Wähle zufällig weil epsilon-greedy greift 
-				System.out.println("Wähle zufällig");
+				System.out.println("Wähle zufällig (epsilon)");
 				int zufallszahl = (int)(Math.random() * actions.length);
 				bestAction=actions[zufallszahl];
 			}
@@ -323,7 +323,7 @@ public class QPlayer2 implements IPlayer {
 		else{
 			// Wähle zufällig weil Zustand unbekannt 
 			anzUnbekannteZustaende++;
-			System.out.println("Wähle zufällig");
+			System.out.println("Wähle zufällig (Zustand unbekannt)");
 			int zufallszahl = (int)(Math.random() * actions.length);
 			bestAction=actions[zufallszahl];
 		}
