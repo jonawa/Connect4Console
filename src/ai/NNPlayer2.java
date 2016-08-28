@@ -28,7 +28,7 @@ public class NNPlayer2 implements IPlayer{
 		//learnNNPlayer();
 		
 		//Gespeichertes Netz laden
-		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer_Save1.nnet");
+		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL180_300.nnet");
 		System.out.println("NN geladen.");
 	}
 	
@@ -37,7 +37,7 @@ public class NNPlayer2 implements IPlayer{
 		try {
 			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 5 Elemente sind Output,
 			  * getrennt sind die Daten durch ein Komma */
-			 ds = TrainingSetImport.importFromFile("dataset.txt", 60, 5, ",");
+			 ds = TrainingSetImport.importFromFile("dataset_5x4_3G_p2_300.txt", 60, 5, ",");
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -51,7 +51,7 @@ public class NNPlayer2 implements IPlayer{
 		}
 		
 		//MultilayerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 120, 5);
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 180, 5);
 
 		//LearningRule setzen
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
@@ -68,7 +68,7 @@ public class NNPlayer2 implements IPlayer{
 		System.out.println("Lernen abgeschlossen");
 		
 		//Netz speichern
-		myMlPerceptron.save("NNPlayer_Save1.nnet");
+		myMlPerceptron.save("NNPlayer2_HL180_300.nnet");
 		System.out.println("NNPlayer wurde gespeichert!");
 		}
 
