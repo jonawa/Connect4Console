@@ -55,7 +55,7 @@ public class NNPlayer2 implements IPlayer{
 
 		//LearningRule setzten
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
-        learningRule.setMaxError(0.1);
+        learningRule.setMaxError(0.3);
         learningRule.setLearningRate(0.2);
         learningRule.setMomentum(0.7);
         
@@ -96,11 +96,21 @@ public class NNPlayer2 implements IPlayer{
 		// Check output
         
         //TODO hier hängt es sich irgendwo auf
-		while (!isActionAllowed(currentBoard, action)) {
-			for (int i = 2; i < Game.COLUMNS; i++) {
-				action = getNextMax(netOutput, i);
-			}
-		}
+//		while (!isActionAllowed(currentBoard, action)) {
+//			for (int i = 2; i < Game.COLUMNS; i++) {
+//				action = getNextMax(netOutput, i);
+//				Arrays.
+//			}
+//		}
+        int count = 1;
+        while (!isActionAllowed(currentBoard, action)) {
+        	action = getNextMax(netOutput, count);
+        	count++;
+        	
+        	if(count > 7)
+        		throw new RuntimeException("Wieso größer als 7 alle müssten jetzt einmal druch sein");
+        
+        }
 
 
 
@@ -108,20 +118,25 @@ public class NNPlayer2 implements IPlayer{
 		return action;
 	}
 
-	private int getNextMax(double[] array, int count) {
+	private static int getNextMax(double[] array, int count) {
+		
 		double[] arrCopy = Arrays.copyOf(array, array.length);
-		Arrays.sort(array);
+		Arrays.sort(arrCopy);
 		//nächst höchster Wert
-		double nextMax = array[array.length-count];
+		double nextMax = arrCopy[arrCopy.length-count-1];
 		//schauen an welcher Position der nächstehöchste Wert im ursprünglichen Array steht
-		for(int i= 0 ; i < arrCopy.length;i++){
-			if(arrCopy[i] == nextMax)
+		for(int i = 0 ; i < arrCopy.length;i++){
+			if(Double.compare(array[i], nextMax) == 0)
+			//if(arrCopy[i] == nextMax)
+				
 				//Position des nächsthöchsten Wertes zurückgeben
 				return i;
 		}
 		return -1;
 	
 	}
+	
+
 
 	private boolean isActionAllowed(int[][] board, int action) {
 		int emptyRow = 0;
@@ -168,6 +183,30 @@ public class NNPlayer2 implements IPlayer{
 	public void setLearning(boolean b) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+  public static void main(String[] args) {
+//		
+////		double[] array = {0.1, 0.5, 0.3};
+////		double[] arrCopy = Arrays.copyOf(array, array.length);
+////		
+////		array[1] = 0.666;
+////		
+////		System.out.println(Arrays.toString(arrCopy));
+////		System.out.println(Arrays.toString(array));
+////		System.out.println(Arrays.equals(array, arrCopy));
+//		
+		double[] netOutput = {0.2, 0.7114, 1.22, 1.89, 6.736, 0.161, 3.412};
+        int count = 0;
+        while (true) {
+        	int nextMax = getNextMax(netOutput, count);
+        	System.out.println(nextMax + " ist " +  netOutput[nextMax]);
+        	count++;
+        	
+        	if(count > 7)
+        		throw new RuntimeException("Wieso größer als 7 alle müssten jetzt einmal druch sein");
+        
+        }
 	}
 	
 	

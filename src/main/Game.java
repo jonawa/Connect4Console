@@ -354,7 +354,7 @@ public class Game {
 		}
 		else {
 			if (winningsOfPlayer1 > winningsOfPlayer2) {
-				System.out.println("Sieger des Turniers ist Spieler 1!");
+				System.out.println("Sieger des Turniers ist Spieler 1! ");
 			}
 			else {
 				System.out.println("Sieger des Turniers ist Spieler 2!");
@@ -366,8 +366,8 @@ public class Game {
 		result[1] = numberOfWinsPlayer2;
 		result[2] = numberOfDraws;
 		
-		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
-		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1 " + Spieler1.getClass().toString() + " : " + winningsOfPlayer1);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler " + Spieler1.getClass().toString() + " : " + winningsOfPlayer2);
 		
 		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
 		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
@@ -529,12 +529,12 @@ public class Game {
 
 	private static void trainAndTestNN() {
 		
-		//generateDataSets();
+		generateDataSets();
 		IPlayer player2 = new NormalKI(2);
 		IPlayer player1 = new NNPlayer2(1);
 
 
-		playTournament(10,player1,player2,false);
+		playTournament(1000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -568,7 +568,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		final int numberOfTrainingGames = 500;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
