@@ -532,11 +532,11 @@ public class Game {
 	private static void trainAndTestNN() {
 		
 		//generateDataSets();
-		IPlayer player2 = new NormalKI(1);
-		IPlayer player1 = new NNPlayer2(2);
+		IPlayer player2 = new NormalKI(2);
+		IPlayer player1 = new NNPlayer2(1);
 
 
-		playTournament(10000,player1,player2,false);
+		playTournament(10000,player1,player2,true);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -570,7 +570,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		final int numberOfTrainingGames = 200;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -583,7 +583,7 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_neu.txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_5x4_3G_p1.txt");
 		
 	}
 
