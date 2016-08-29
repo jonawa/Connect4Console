@@ -29,8 +29,8 @@ public class NNPlayer2 implements IPlayer{
 		this.playerID = playerID;
 		
 		learnNNPlayer();	
-//		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
-//		System.out.println("NN geladen");
+		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
+		System.out.println("NN geladen");
 	}
 	
 	public void learnNNPlayer(){
@@ -56,7 +56,7 @@ public class NNPlayer2 implements IPlayer{
 
 		//LearningRule setzten
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
-        learningRule.setMaxError(0.05);
+        learningRule.setMaxError(0.1);
         learningRule.setLearningRate(0.2);
         learningRule.setMomentum(0.7);
         
@@ -64,16 +64,17 @@ public class NNPlayer2 implements IPlayer{
 		
 		//hier wird das Netz trainiert
 		System.out.println("Starte lernen");
-		System.out.println("To stop learning, type stop");
-		//myMlPerceptron.learn(ds);
-		myMlPerceptron.learnInNewThread(ds);
-		Scanner scanner = new Scanner(System.in);
-		String input = scanner.nextLine();
-		if(input == "stop")
-			
-			myMlPerceptron.stopLearning();
-		
+//		System.out.println("To stop learning, type stop");
+		myMlPerceptron.learn(ds);
+//		myMlPerceptron.learnInNewThread(ds);
 	
+//		Scanner scanner = new Scanner(System.in);
+//		String input = scanner.nextLine();
+//		if(input == "stop")
+//			
+//			myMlPerceptron.stopLearning();
+//		
+		
 	    
 		
 		//Das NeuralNetwork lokal speichern
