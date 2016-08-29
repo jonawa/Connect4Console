@@ -21,23 +21,34 @@ import util.TrainNNetwork;
 
 public class NNPlayer2 implements IPlayer{
 	private final int playerID;
-	private NeuralNetwork nn;
 	private MultiLayerPerceptron myMlPerceptron;
 	
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
+<<<<<<< HEAD
 		
 //		learnNNPlayer();	
 		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
 		System.out.println("NN geladen");
+=======
+		//learnNNPlayer();
+		
+		//Gespeichertes Netz laden
+		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL180_300.nnet");
+		System.out.println("NN geladen.");
+>>>>>>> NNPlayerV5
 	}
 	
 	public void learnNNPlayer(){
 		DataSet ds = null;
 		try {
-			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 55 Elemente sind Output
+			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 5 Elemente sind Output,
 			  * getrennt sind die Daten durch ein Komma */
+<<<<<<< HEAD
 			 ds = TrainingSetImport.importFromFile("dataset_neu.txt", 126, 7, ",");
+=======
+			 ds = TrainingSetImport.importFromFile("dataset_5x4_3G_p2_300.txt", 60, 5, ",");
+>>>>>>> NNPlayerV5
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -50,10 +61,15 @@ public class NNPlayer2 implements IPlayer{
 			e.printStackTrace();
 		}
 		
+<<<<<<< HEAD
 		//	MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
 		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 126, 252, 7);
+=======
+		//MultilayerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
+		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 180, 5);
+>>>>>>> NNPlayerV5
 
-		//LearningRule setzten
+		//LearningRule setzen
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
         learningRule.setMaxError(0.1);
         learningRule.setLearningRate(0.2);
@@ -61,7 +77,7 @@ public class NNPlayer2 implements IPlayer{
         
 		myMlPerceptron.setLearningRule(learningRule);
 		
-		//hier wird das Netz trainiert
+		//Netz trainieren
 		System.out.println("Starte lernen");
 		myMlPerceptron.learn(ds);
 		
@@ -70,6 +86,10 @@ public class NNPlayer2 implements IPlayer{
 		System.out.println("NN gespeichert!");
 		
 		System.out.println("Lernen abgeschlossen");
+		
+		//Netz speichern
+		myMlPerceptron.save("NNPlayer2_HL180_300.nnet");
+		System.out.println("NNPlayer wurde gespeichert!");
 		}
 
 	
@@ -87,16 +107,16 @@ public class NNPlayer2 implements IPlayer{
         myMlPerceptron.calculate();
        
         double[] netOutput =  myMlPerceptron.getOutput();
+		
         
-     // Turn output into an action for the next move
-     		action = getMax(netOutput);
-
+        // Turn output into an action for the next move
+     	action = getMax(netOutput);
+     	
         System.out.println(Arrays.toString(netOutput));
 		
 		// Check output
-        
-        //TODO hier hängt es sich irgendwo auf
 		while (!isActionAllowed(currentBoard, action)) {
+<<<<<<< HEAD
       // while (Game.placeDiskPossible(action) == -1) {
 			for (int i = 1; i < Game.COLUMNS; i++) {
 				action = getNextMax(netOutput, i);
@@ -107,10 +127,16 @@ public class NNPlayer2 implements IPlayer{
 
 
 
+=======
+			action = getNextMax(netOutput, action);
+		}
+
+>>>>>>> NNPlayerV5
 		return action;
 	}
 
 	private int getNextMax(double[] array, int count) {
+<<<<<<< HEAD
 		double[] arrCopy = Arrays.copyOf(array, array.length);
 		Arrays.sort(array);
 		//nächst höchster Wert
@@ -123,6 +149,22 @@ public class NNPlayer2 implements IPlayer{
 		}
 		return -1;
 	
+=======
+		double Max = array [count];
+	    double[] arrCopy = Arrays.copyOf(array, array.length);
+	    Arrays.sort(arrCopy);
+	    double nextMax = 0;
+	    for(int i= 0 ; i < arrCopy.length;i++)
+	    	if(arrCopy[i] == Max){
+	    		nextMax = arrCopy [i-1];
+	            break;
+	    	}
+	    for(int j= 0 ; j < array.length;j++)
+	    	if(array[j] == nextMax){
+	    		return j;
+	           }
+	    return -1;		
+>>>>>>> NNPlayerV5
 	}
 
 	private boolean isActionAllowed(int[][] board, int action) {

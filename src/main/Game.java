@@ -370,6 +370,10 @@ public class Game {
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
 		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 		
+		int sum = winningsOfPlayer1 + winningsOfPlayer2;
+		int draws = numberOfGames - sum;
+		System.out.println("Anzahl der unentschiedenen Spiele: " + draws);
+>>>>>>> NNPlayerV5
 		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
 		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
 		
