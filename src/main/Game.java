@@ -22,10 +22,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 4;
+	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	
 	//__________________________________________________________________________
@@ -167,8 +167,6 @@ public class Game {
 
 		while(playcount <= numberTrainGames){
 
-			
-			
 			if ((count+playcount*indicator) % 2 == 0){
 				
 				column = Spieler1.turn();
@@ -189,8 +187,8 @@ public class Game {
 				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
 			}
 			
-			
-			System.out.println(Helper.convertIntBoardToString(board));
+			// Board ausgeben?
+			//System.out.println(Helper.convertIntBoardToString(board));
 			
 
 			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
@@ -205,6 +203,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			if (checkWin(2, row, column)){
 				Spieler1.reactToWinOrLose(false);
@@ -216,6 +216,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			if (boardIsFull()){
 				System.out.println("---------------------------------");
@@ -225,6 +227,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			
 		}
@@ -366,11 +370,15 @@ public class Game {
 		result[1] = numberOfWinsPlayer2;
 		result[2] = numberOfDraws;
 		
-		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1 " + Spieler1.getClass().toString() + " : " + winningsOfPlayer1);
-		System.out.println("Anzahl der gewonnenen Spiele von Spieler " + Spieler2.getClass().toString() + " : " + winningsOfPlayer2);
+
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
+		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
+
 		
-		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
-		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
+		QPlayer2 qp = (QPlayer2)Spieler1;
+		System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
+		System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
 		
 		return result;
 	}
@@ -506,24 +514,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		//trainAndTestQ();
-		trainAndTestNN();
-		//TestDB2.getDB().loadDB("testSaveDB.ser");
-		//trainQPlayer(qPlayer, normalKI, 1000);
-		
-		//playTournament(1000, qPlayer, normalKI);
-		
-		//generateDataSets();
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
-		//int hiddenLayer, double maxError, double learningRate, double momentum
-		//generateDataSets();
-		//playGame(new NNPlayer2(1, COLUMNS, ROWS, WINCOUNT, 27, 0.05, 0.2, 0.7) , new HumanPlayer(2));
-		//playTournament(100, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
+		trainAndTestQ();
+		//trainAndTestNN();
 
 	}
 	
@@ -551,21 +543,13 @@ public class Game {
 		IPlayer normalKI = new NormalKI2(2);
 		TestDB2.getDB().loadDB("testSaveDB.ser");
 
-		//trainQPlayer(qPlayer, normalKI, 300000, true);
-
-		
-
+		//trainQPlayer(qPlayer, normalKI, 64000, true);
 		playTournament(10000, qPlayer, normalKI,true);
-
-		//trainQPlayer(qPlayer, normalKI, 1000);
-
-		
-
-		
+	
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 		TestDB2.getDB().saveDB("testSaveDB.ser");
-//		playTournament(10, qPlayer, new HumanPlayer(2));
+		//playTournament(10, qPlayer, new HumanPlayer(2), true);
 	}
 
 
