@@ -367,7 +367,7 @@ public class Game {
 		result[2] = numberOfDraws;
 		
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1 " + Spieler1.getClass().toString() + " : " + winningsOfPlayer1);
-		System.out.println("Anzahl der gewonnenen Spiele von Spieler " + Spieler1.getClass().toString() + " : " + winningsOfPlayer2);
+		System.out.println("Anzahl der gewonnenen Spiele von Spieler " + Spieler2.getClass().toString() + " : " + winningsOfPlayer2);
 		
 		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
 		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
@@ -427,7 +427,9 @@ public class Game {
 			}
 				
 			else{ 
+				
 				column = Spieler2.turn();
+
 				
 
 				row = placeDisk(column, Spieler2);
@@ -529,9 +531,11 @@ public class Game {
 
 	private static void trainAndTestNN() {
 		
-		generateDataSets();
-		IPlayer player2 = new NormalKI(2);
+		//TODO: Ich denke es könnte sehr viel bringen, zwei Netze zu trainieren, je nachdem welcher Spieler spielt.
+		//generateDataSets(500);
 		IPlayer player1 = new NNPlayer2(1);
+		IPlayer player2 = new NormalKI(2);
+		
 
 
 		playTournament(1000,player1,player2,false);
@@ -565,10 +569,10 @@ public class Game {
 	}
 
 
-	private static void generateDataSets() {
+	private static void generateDataSets(int numberOfTrainingGames) {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 500;
+		
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
