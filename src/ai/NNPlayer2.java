@@ -25,18 +25,12 @@ public class NNPlayer2 implements IPlayer{
 	
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
-<<<<<<< HEAD
-		
-//		learnNNPlayer();	
-		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
-		System.out.println("NN geladen");
-=======
 		//learnNNPlayer();
 		
 		//Gespeichertes Netz laden
 		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL180_300.nnet");
 		System.out.println("NN geladen.");
->>>>>>> NNPlayerV5
+
 	}
 	
 	public void learnNNPlayer(){
@@ -44,11 +38,9 @@ public class NNPlayer2 implements IPlayer{
 		try {
 			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 5 Elemente sind Output,
 			  * getrennt sind die Daten durch ein Komma */
-<<<<<<< HEAD
-			 ds = TrainingSetImport.importFromFile("dataset_neu.txt", 126, 7, ",");
-=======
+
 			 ds = TrainingSetImport.importFromFile("dataset_5x4_3G_p2_300.txt", 60, 5, ",");
->>>>>>> NNPlayerV5
+
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -60,14 +52,10 @@ public class NNPlayer2 implements IPlayer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-<<<<<<< HEAD
-		//	MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 126, 252, 7);
-=======
+
 		//MultilayerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
 		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 180, 5);
->>>>>>> NNPlayerV5
+
 
 		//LearningRule setzen
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
@@ -116,40 +104,13 @@ public class NNPlayer2 implements IPlayer{
 		
 		// Check output
 		while (!isActionAllowed(currentBoard, action)) {
-<<<<<<< HEAD
-      // while (Game.placeDiskPossible(action) == -1) {
-			for (int i = 1; i < Game.COLUMNS; i++) {
-				action = getNextMax(netOutput, i);
-				if(action != -1)
-					break;
-			}
-		}
-
-
-
-=======
 			action = getNextMax(netOutput, action);
 		}
 
->>>>>>> NNPlayerV5
 		return action;
 	}
 
 	private int getNextMax(double[] array, int count) {
-<<<<<<< HEAD
-		double[] arrCopy = Arrays.copyOf(array, array.length);
-		Arrays.sort(array);
-		//nächst höchster Wert
-		double nextMax = array[array.length-count-1];
-		//schauen an welcher Position der nächstehöchste Wert im ursprünglichen Array steht
-		for(int i= 0 ; i < arrCopy.length;i++){
-			if(arrCopy[i] == nextMax)
-				//Position des nächsthöchsten Wertes zurückgeben
-				return i;
-		}
-		return -1;
-	
-=======
 		double Max = array [count];
 	    double[] arrCopy = Arrays.copyOf(array, array.length);
 	    Arrays.sort(arrCopy);
@@ -164,7 +125,6 @@ public class NNPlayer2 implements IPlayer{
 	    		return j;
 	           }
 	    return -1;		
->>>>>>> NNPlayerV5
 	}
 
 	private boolean isActionAllowed(int[][] board, int action) {
