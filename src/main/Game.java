@@ -22,10 +22,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 3;
+	public static final int WINCOUNT = 4;
 	
-	public static final int COLUMNS = 5;
-	public static final int ROWS = 4;
+	public static final int COLUMNS = 7;
+	public static final int ROWS = 6;
 	
 	
 	//__________________________________________________________________________
@@ -358,7 +358,7 @@ public class Game {
 		}
 		else {
 			if (winningsOfPlayer1 > winningsOfPlayer2) {
-				System.out.println("Sieger des Turniers ist Spieler 1!");
+				System.out.println("Sieger des Turniers ist Spieler 1! ");
 			}
 			else {
 				System.out.println("Sieger des Turniers ist Spieler 2!");
@@ -370,9 +370,11 @@ public class Game {
 		result[1] = numberOfWinsPlayer2;
 		result[2] = numberOfDraws;
 		
+
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
 		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
+
 		
 		QPlayer2 qp = (QPlayer2)Spieler1;
 		System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
@@ -433,7 +435,9 @@ public class Game {
 			}
 				
 			else{ 
+				
 				column = Spieler2.turn();
+
 				
 
 				row = placeDisk(column, Spieler2);
@@ -510,8 +514,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
-		//trainAndTestNN();
+		//trainAndTestQ();
+		trainAndTestNN();
 
 	}
 	
@@ -519,12 +523,14 @@ public class Game {
 
 	private static void trainAndTestNN() {
 		
-		//generateDataSets();
-		IPlayer player2 = new NormalKI(2);
+		//TODO: Ich denke es könnte sehr viel bringen, zwei Netze zu trainieren, je nachdem welcher Spieler spielt.
+//		generateDataSets(200);
 		IPlayer player1 = new NNPlayer2(1);
-
-
-		playTournament(10,player1,player2,false);
+		IPlayer player2 = new NormalKI(2);
+//		
+//
+//
+		playTournament(10000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -555,10 +561,10 @@ public class Game {
 	}
 
 
-	private static void generateDataSets() {
+	private static void generateDataSets(int numberOfTrainingGames) {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
