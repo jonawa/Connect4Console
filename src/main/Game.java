@@ -368,11 +368,8 @@ public class Game {
 		
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
-		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
+		System.out.println("Anzahl der unentschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 		
-		int sum = winningsOfPlayer1 + winningsOfPlayer2;
-		int draws = numberOfGames - sum;
-		System.out.println("Anzahl der unentschiedenen Spiele: " + draws);
 
 		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
 		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
@@ -539,7 +536,7 @@ public class Game {
 		IPlayer player1 = new NNPlayer2(2);
 
 
-		playTournament(10000,player1,player2,true);
+		playTournament(10000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
