@@ -22,10 +22,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 4;
+	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	
 	//__________________________________________________________________________
@@ -509,8 +509,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
-		//trainAndTestNN();
+		//trainAndTestQ();
+		trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
@@ -535,11 +535,11 @@ public class Game {
 	private static void trainAndTestNN() {
 		
 		//generateDataSets();
-		IPlayer player2 = new NormalKI(2);
-		IPlayer player1 = new NNPlayer2(1);
+		IPlayer player2 = new NormalKI(1);
+		IPlayer player1 = new NNPlayer2(2);
 
 
-		playTournament(1000,player1,player2,false);
+		playTournament(10000,player1,player2,true);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		

@@ -28,7 +28,7 @@ public class NNPlayer2 implements IPlayer{
 		//learnNNPlayer();
 		
 		//Gespeichertes Netz laden
-		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL180_300.nnet");
+		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL120_300.nnet");
 		System.out.println("NN geladen.");
 
 	}
