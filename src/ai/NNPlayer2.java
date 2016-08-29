@@ -27,17 +27,19 @@ public class NNPlayer2 implements IPlayer{
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
 		
-//		learnNNPlayer();	
+		
+//		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 120, 5);
+//		learnNNPlayer(myMlPerceptron);
 		myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
-		System.out.println("NN geladen");
+//		System.out.println("NN geladen");
 	}
 	
-	public void learnNNPlayer(){
+	public static void learnNNPlayer(MultiLayerPerceptron MlPerceptron){
 		DataSet ds = null;
 		try {
 			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 55 Elemente sind Output
 			  * getrennt sind die Daten durch ein Komma */
-			 ds = TrainingSetImport.importFromFile("dataset_neu.txt", 126, 7, ",");
+			 ds = TrainingSetImport.importFromFile("dataset_A_4x5.txt", 60, 5, ",");
 			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -51,22 +53,22 @@ public class NNPlayer2 implements IPlayer{
 		}
 		
 		//	MultilaerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
-		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 126, 252, 7);
-
+//		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 126, 252, 7);
+		
 		//LearningRule setzten
-        MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
+        MomentumBackpropagation learningRule = (MomentumBackpropagation) MlPerceptron.getLearningRule();
         learningRule.setMaxError(0.1);
         learningRule.setLearningRate(0.2);
         learningRule.setMomentum(0.7);
         
-		myMlPerceptron.setLearningRule(learningRule);
+		MlPerceptron.setLearningRule(learningRule);
 		
 		//hier wird das Netz trainiert
 		System.out.println("Starte lernen");
-		myMlPerceptron.learn(ds);
+		MlPerceptron.learn(ds);
 		
 		//Das NeuralNetwork lokal speichern
-		myMlPerceptron.save("MLNetworkSave.nnet");
+		MlPerceptron.save("MLNetworkSave.nnet");
 		System.out.println("NN gespeichert!");
 		
 		System.out.println("Lernen abgeschlossen");

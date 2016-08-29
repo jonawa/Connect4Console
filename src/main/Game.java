@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
+import org.neuroph.core.NeuralNetwork;
+import org.neuroph.nnet.MultiLayerPerceptron;
+
 import ai.NNPlayer;
 import ai.NNPlayer2;
 import ai.QPlayer;
@@ -22,10 +25,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 4;
+	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	
 	//__________________________________________________________________________
@@ -505,14 +508,20 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
+//		trainAndTestQ();
 		//trainAndTestNN();
 		//TestDB2.getDB().loadDB("testSaveDB.ser");
 		//trainQPlayer(qPlayer, normalKI, 1000);
 		
 		//playTournament(1000, qPlayer, normalKI);
 		
-		//generateDataSets();
+		generateDataSets();
+		
+//		IPlayer player1 = new NormalKI(1);
+//		IPlayer player2 = new NNPlayer2(2);
+//		NeuralNetwork nn;
+		MultiLayerPerceptron myMlPerceptron = (MultiLayerPerceptron) MultiLayerPerceptron.load("MLNetworkSave.nnet");
+		NNPlayer2.learnNNPlayer(myMlPerceptron);
 
 		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
 
@@ -523,7 +532,9 @@ public class Game {
 		//generateDataSets();
 		//playGame(new NNPlayer2(1, COLUMNS, ROWS, WINCOUNT, 27, 0.05, 0.2, 0.7) , new HumanPlayer(2));
 		//playTournament(100, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
-
+		
+//		trainAndTestNN();
+//		playTournament(100, player1, player2,false);
 	}
 	
 
@@ -531,11 +542,11 @@ public class Game {
 	private static void trainAndTestNN() {
 		
 		//generateDataSets();
-		IPlayer player2 = new NormalKI(2);
-		IPlayer player1 = new NNPlayer2(1);
+		IPlayer player1 = new NormalKI(1);
+		IPlayer player2 = new NNPlayer2(2);
 
 
-		playTournament(1000,player1,player2,false);
+		playTournament(100,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -569,7 +580,7 @@ public class Game {
 	private static void generateDataSets() {
 		
 		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 100;
+		final int numberOfTrainingGames = 1000;
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);
@@ -582,7 +593,7 @@ public class Game {
 		
 		//schreibt das Array in die Datenbank
 		//Name der Txt-Datei erstellt anhand des aktuellen Spielfelds und der Gewinnbedingung
-		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_neu.txt");
+		Helper.saveTurnWrapperArrayToTxt2(list, "dataset_A_4x5.txt");
 		
 	}
 
