@@ -167,8 +167,6 @@ public class Game {
 
 		while(playcount <= numberTrainGames){
 
-			
-			
 			if ((count+playcount*indicator) % 2 == 0){
 				
 				column = Spieler1.turn();
@@ -189,8 +187,8 @@ public class Game {
 				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
 			}
 			
-			
-			System.out.println(Helper.convertIntBoardToString(board));
+			// Board ausgeben?
+			//System.out.println(Helper.convertIntBoardToString(board));
 			
 
 			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
@@ -205,6 +203,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			if (checkWin(2, row, column)){
 				Spieler1.reactToWinOrLose(false);
@@ -216,6 +216,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			if (boardIsFull()){
 				System.out.println("---------------------------------");
@@ -225,6 +227,8 @@ public class Game {
 				resetBoard();
 				count = 0;
 				playcount++;
+				//Gib Spiel-Nummer aus:
+				System.out.println("Spiel Nummer " + playcount+1);
 			}
 			
 		}
@@ -354,7 +358,7 @@ public class Game {
 		}
 		else {
 			if (winningsOfPlayer1 > winningsOfPlayer2) {
-				System.out.println("Sieger des Turniers ist Spieler 1!");
+				System.out.println("Sieger des Turniers ist Spieler 1! ");
 			}
 			else {
 				System.out.println("Sieger des Turniers ist Spieler 2!");
@@ -366,13 +370,15 @@ public class Game {
 		result[1] = numberOfWinsPlayer2;
 		result[2] = numberOfDraws;
 		
+
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
-		System.out.println("Anzahl der unentschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
-		
+		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 
-		//System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
-		//System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
+		
+		QPlayer2 qp = (QPlayer2)Spieler1;
+		System.out.println("Anzahl unbekannter Spielzustände: "+ qp.getAnzUnbekannteZustaende());
+		System.out.println("Anzahl der gewählten Optionen mit Wertung 0: "+ qp.getAnzZuegeMitWertungNulll());
 		
 		return result;
 	}
@@ -429,7 +435,9 @@ public class Game {
 			}
 				
 			else{ 
+				
 				column = Spieler2.turn();
+
 				
 
 				row = placeDisk(column, Spieler2);
@@ -508,22 +516,6 @@ public class Game {
 	
 		//trainAndTestQ();
 		trainAndTestNN();
-		//TestDB2.getDB().loadDB("testSaveDB.ser");
-		//trainQPlayer(qPlayer, normalKI, 1000);
-		
-		//playTournament(1000, qPlayer, normalKI);
-		
-		//generateDataSets();
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT));
-
-		//playGame(new HumanPlayer(1), new NNPlayer2(2));
-		
-		//im NNPlayer Kontruktor uebergeben: int playerID, int columns, int rows, int wincount, 
-		//int hiddenLayer, double maxError, double learningRate, double momentum
-		//generateDataSets();
-		//playGame(new NNPlayer2(1, COLUMNS, ROWS, WINCOUNT, 27, 0.05, 0.2, 0.7) , new HumanPlayer(2));
-		//playTournament(100, new NormalKI2(1), new NNPlayer2(2, COLUMNS, ROWS, WINCOUNT, 120, 0.05, 0.2, 0.7));
 
 	}
 	
@@ -531,12 +523,12 @@ public class Game {
 
 	private static void trainAndTestNN() {
 		
-		//generateDataSets();
-		IPlayer player2 = new NormalKI(2);
+		//TODO: Ich denke es könnte sehr viel bringen, zwei Netze zu trainieren, je nachdem welcher Spieler spielt.
+//		generateDataSets(200);
 		IPlayer player1 = new NNPlayer2(1);
 
-
-		playTournament(10000,player1,player2,true);
+		IPlayer player2 = new NormalKI(2);
+		playTournament(10000,player1,player2,false);
 //		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
 		
 		
@@ -547,30 +539,30 @@ public class Game {
 				
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
-		//TestDB2.getDB().loadDB("testSaveDB.ser");
 
-
-		trainQPlayer(qPlayer, normalKI, 5000, true);
+		TestDB2.getDB().loadDB("testSaveDB.ser");
+		
+		
+		trainQPlayer(qPlayer, normalKI, 32000, true);
 
 		
-
-		playTournament(1000, qPlayer, normalKI,true);
-
-		//trainQPlayer(qPlayer, normalKI, 1000);
-
-
+		int n=1; // legt die Anzahl der Tests fest
+				
+		for (int i=1; i<=n; i++){
+			JOptionPane.showMessageDialog(null, "Starte nächstes Turnier");
+			playTournament(10000, qPlayer, normalKI,true);
+		}
 		
+	
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
-		//TestDB2.getDB().saveDB("testSaveDB.ser");
-//		playTournament(10, qPlayer, new HumanPlayer(2));
+
+		TestDB2.getDB().saveDB("testSaveDB.ser");
+		//playTournament(10, qPlayer, new HumanPlayer(2), true);
 	}
 
 
-	private static void generateDataSets() {
-		
-		//Anzahl der Spiele die gespielt werden soll:
-		final int numberOfTrainingGames = 200;
+	private static void generateDataSets(int numberOfTrainingGames) {
 		
 		//generiert das Array
 		ArrayList<TurnWrapper> list =  generateDataSetForNN(new NormalKI(1), new NormalKI(2),numberOfTrainingGames);

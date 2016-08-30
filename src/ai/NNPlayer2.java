@@ -3,6 +3,7 @@ package ai;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.learning.DataSet;
@@ -67,7 +68,18 @@ public class NNPlayer2 implements IPlayer{
 		
 		//Netz trainieren
 		System.out.println("Starte lernen");
+//		System.out.println("To stop learning, type stop");
 		myMlPerceptron.learn(ds);
+//		myMlPerceptron.learnInNewThread(ds);
+	
+//		Scanner scanner = new Scanner(System.in);
+//		String input = scanner.nextLine();
+//		if(input == "stop")
+//			
+//			myMlPerceptron.stopLearning();
+//		
+		
+	    
 		
 		System.out.println("Lernen abgeschlossen");
 		
@@ -92,7 +104,6 @@ public class NNPlayer2 implements IPlayer{
        
         double[] netOutput =  myMlPerceptron.getOutput();
 		
-        
         // Turn output into an action for the next move
      	action = getMax(netOutput);
      	
@@ -103,8 +114,10 @@ public class NNPlayer2 implements IPlayer{
 			action = getNextMax(netOutput, action);
 		}
 
+
 		return action;
 	}
+
 
 	private int getNextMax(double[] array, int count) {
 		double Max = array [count];
@@ -121,7 +134,10 @@ public class NNPlayer2 implements IPlayer{
 	    		return j;
 	           }
 	    return -1;		
+
 	}
+	
+
 
 	private boolean isActionAllowed(int[][] board, int action) {
 		int emptyRow = 0;
@@ -170,6 +186,30 @@ public class NNPlayer2 implements IPlayer{
 		
 	}
 	
+//  public static void main(String[] args) {
+////		
+//////		double[] array = {0.1, 0.5, 0.3};
+//////		double[] arrCopy = Arrays.copyOf(array, array.length);
+//////		
+//////		array[1] = 0.666;
+//////		
+//////		System.out.println(Arrays.toString(arrCopy));
+//////		System.out.println(Arrays.toString(array));
+//////		System.out.println(Arrays.equals(array, arrCopy));
+////		
+//		double[] netOutput = {0.2, 0.7114, 1.22, 1.89, 6.736, 0.161, 3.412};
+//        int count = 0;
+//        while (true) {
+//        	int nextMax = getNextMax(netOutput, count);
+//        	System.out.println(nextMax + " ist " +  netOutput[nextMax]);
+//        	count++;
+//        	
+//        	if(count > 7)
+//        		throw new RuntimeException("Wieso größer als 7 alle müssten jetzt einmal druch sein");
+//        
+//        }
+//	}
+//	
 	
 
 }

@@ -1,0 +1,102 @@
+diff a/src/ai/QPlayer2.java b/src/ai/QPlayer2.java	(rejected hunks)
+@@ -158,38 +158,86 @@
+ 		
+ 		//Invertiere das Array um Erfahrungsdaten Bank auf gegnerischen Zug Anwenden zu k�nnen.
+ 		
+-		int[][] inversIextStateOpponent = Helper.deepCopy2DArray(nextStateOpponent);
++		int[][] inverseNextStateOpponent = Helper.deepCopy2DArray(nextStateOpponent);
+ 		for (int i=0; i<Game.ROWS; i++ ){
+ 			for (int j=0; j<Game.COLUMNS; j++){
+-				if (inversIextStateOpponent[i][j]==1){
+-					inversIextStateOpponent[i][j]=2;
++				if (inverseNextStateOpponent[i][j]==1){
++					inverseNextStateOpponent[i][j]=2;
+ 				}
+-				if (inversIextStateOpponent[i][j]==2){
+-					inversIextStateOpponent[i][j]=1;
++				if (inverseNextStateOpponent[i][j]==2){
++					inverseNextStateOpponent[i][j]=1;
+ 				}
+ 			}
+ 		}
+ 		
+ 		
+ 		int bestAction = allActionOpponent[0];
+-		double bestValue = Double.MIN_VALUE;
++		double bestValue = PUNISHMENT-1;
++		int [] bestActions = new int[allActionOpponent.length];
++		int anz=0;
+ 		
+ 		//Wie berahten jetzt "Wenn ich mein Gegner w�re".
+ 		//F�r jede m�gliche Aktion des Gegners:
+-		if(Q.containsState(inversIextStateOpponent)){
++		//if(Q.containsState(inverseNextStateOpponent)){
++		if(false){	
+ 			for(int actionOpponent: allActionOpponent){
+ 				
+-				double value = Q.getValueOfStateAndAction(inversIextStateOpponent, actionOpponent);
+-				if(value > bestValue){
+-					bestValue = value;
+-					bestAction = action;
++				double value = Q.getValueOfStateAndAction(inverseNextStateOpponent, actionOpponent);
++				if(Double.compare(value, bestValue) >= 0){
++					if(value>bestValue){ 
++						// verwerfe Array wenn neuer Best-Wert gefunden wurde
++						bestActions = new int[allActionOpponent.length];
++						anz=0;
++					}
++						
++						bestValue = value;
++						bestActions[anz] = actionOpponent;
++						anz++;
+ 				}
+ 			}
++			//W�hle einen zuf�lligen Zug aus dem Array bestactions
++			System.out.println("W�hle aus "+ anz+" M�glichkeiten");
++			int zufallszahl = (int)(Math.random() * anz);
++			System.out.println("W�hle M�glichkeiten Nr. " + (zufallszahl+1));
++			bestAction=bestActions[zufallszahl];
++			
+ 		}
+-		// Falls keine Erfahrungswere bestehen, wird eine zuf�llige Spalte gew�hlt
++	
++		// Falls keine Erfahrungswere bestehen, wird eine zuf�llige Spalte gew�hlt -- nicht mehr
++		// --> Bilde Durchschnittswert
+ 		else{
+-			int zufallszahl = (int)(Math.random() * allActionOpponent.length);
+-			bestAction=allActionOpponent[zufallszahl];
++			//int zufallszahl = (int)(Math.random() * allActionOpponent.length);
++			//bestAction=allActionOpponent[zufallszahl];
++			double sumOfAllPossibleActions=0;
++			int count=0;
++			
++			for (int actionOpponent: allActionOpponent){
++				//Platziere Stein des Gegners
++				int[][] nextStatePlayer=Helper.deepCopy2DArray(nextStateOpponent);
++				
++				int rowOpponent = Game.placeDiskPossible(actionOpponent); //?
++				
++				
++				if (playerID==1) 
++					nextStatePlayer[row][actionOpponent]=2;
++				else
++					nextStatePlayer[row][actionOpponent]=1;
++				
++				//mein Zug in der folgen den Runde
++
++				int[] actions = generateActions(nextStatePlayer, true);
++				int nextaction = chooseBestAction(nextStatePlayer, actions);
++				
++				//Durchschnitt bilden:
++				//double avgValue=avgValueForState(nextStatePlayer);
++				
++				sumOfAllPossibleActions+=Q.getValueOfStateAndAction(nextStatePlayer, nextaction);
++				count++;
++			}
++			
++			if (count==0) return 0;
++			else return sumOfAllPossibleActions/count;
++			
+ 		}
+ 			
+ 		//Platziere Stein des Gegner f�r beste Aktion im Spielfeld

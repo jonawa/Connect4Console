@@ -55,8 +55,8 @@ public class TestDB2 {
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		if (db.containsKey(stateWrap)){
 			
-			 HashMap<Integer, Double> actionValue;
-			 actionValue = db.get(stateWrap);
+
+			 HashMap<Integer, Double> actionValue = db.get(stateWrap);
 			 return actionValue;
 		}
 		return null;
@@ -80,7 +80,8 @@ public class TestDB2 {
 	 * @return
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
-	public Double getValueOfStateAndAction(int[][]state, int action){
+
+	public double getValueOfStateAndAction(int[][]state, int action){ //Double?
 
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		
@@ -90,8 +91,6 @@ public class TestDB2 {
 			return value;
 		else
 			throw new RuntimeException("Fehler sollte nicht passieren. Eintrag in DB nicht vorhanden");
-
-		
 	}
 	
 	/**
@@ -139,12 +138,8 @@ public class TestDB2 {
 			//TODO könnte man mit max mögliche Züge initialisieren
 			HashMap<Integer, Double> key = new HashMap<Integer,Double>();
 			key.put(action, value);
-			db.put(stateWrap, key);
-			
-			
-		}
-			
-		
+			db.put(stateWrap, key);			
+		}		
 	}
 
 	/**
@@ -169,9 +164,7 @@ public class TestDB2 {
 //				
 //				sb.append("value"); //bisher noch nicht drin
 //				sb.append("\n");
-//				
-//
-//				
+//								
 //			}
 //			
 //			
@@ -230,8 +223,6 @@ public class TestDB2 {
 			e.printStackTrace();
 		}
 
-		
-		
 	}
 	
 
@@ -258,10 +249,12 @@ public class TestDB2 {
 		double previousValue = db.get(stateWrap).get(action); 
 		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
 		//db.get(stateWrap).put(action, previousValue + addValue);
-		
+
 		// addValue wird schon vorher mit dem alten Wert verrechnet. 
 		// Die Vorgänger zustände vom Ende werden fest gesetzt 
 		db.get(stateWrap).put(action, addValue);
+		//db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
+		
 		return true;
 	}
 	
@@ -296,7 +289,6 @@ public class TestDB2 {
 		    	bw.newLine();bw.newLine();
 		    	//System.out.println("\n \n");
 		    }
-
 
 
 		    bw.close();
