@@ -399,9 +399,6 @@ public class QPlayer2 implements IPlayer {
 			
 		}
 	}
-	
-	 
-	
 
 	@Override
 	public void reactToWinOrLose(boolean win) {

@@ -540,24 +540,24 @@ public class Game {
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
 
-		TestDB2.getDB().loadDB("16000.ser");
+		TestDB2.getDB().loadDB("32000.ser");
 		
 		
-		//trainQPlayer(qPlayer, normalKI, 16000, true);
+		trainQPlayer(qPlayer, normalKI, 16000, true);
 
 		
 		int n=2; // legt die Anzahl der Tests fest
 				
 		for (int i=1; i<=n; i++){
 			JOptionPane.showMessageDialog(null, "Starte nächstes Turnier");
-			playTournament(10000, qPlayer, normalKI,true);
+			playTournament(10000, qPlayer, normalKI, true);
 		}
 		
 	
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 
-		//TestDB2.getDB().saveDB("testSaveDB.ser");
+		TestDB2.getDB().saveDB("testSaveDB.ser");
 		//playTournament(10, qPlayer, new HumanPlayer(2), true);
 	}
 

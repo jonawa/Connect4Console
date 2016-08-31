@@ -35,6 +35,7 @@ public class NormalKI2 implements IPlayer{
 	@Override
 	public int turn() {
 		
+		// Im Lernmodus soll die NormalKI genauso wie der Q-Player gelegentlich zufällige Züge machen.
 		int zz; //Zufallszahl
 		if (learning){
 			Random grn = new Random();
@@ -45,7 +46,7 @@ public class NormalKI2 implements IPlayer{
 			zz=100;
 		}
 		
-		if(zz>epsilon){
+		if(zz>=epsilon){
 		
 			if (debug){
 				System.out.println("Normale KI am Zug");
@@ -77,7 +78,7 @@ public class NormalKI2 implements IPlayer{
 				}
 			}
 			
-			//Kann der Gegner im nächsten zu gewinnen?
+			//Kann der Gegner im nächsten zu gewinnen? --> verhindern
 			for (column=0; column<=Game.COLUMNS-1; column++){
 				row=placeVirtualDisk(column);
 				
@@ -128,11 +129,12 @@ public class NormalKI2 implements IPlayer{
 			if (!possibleSolutions.isEmpty()){
 				Collections.shuffle(possibleSolutions);
 				if (debug){
-			          System.out.println("Wähle zufällig aus allem was nicht so schlehct erscheint");
+			          System.out.println("Wähle zufällig aus allem was nicht so schlecht erscheint");
 				}
 			    return (int)possibleSolutions.get(0);
 			}
 			
+			//Fall keine züge vorhanden waren:
 			//Füge verbotene Züge zu veryBadIdeas hinzu.
 			 for (int col = 0; col <= Game.COLUMNS-1; col++) {
 			      if (Game.getBoard()[topRow][col] != 0){
@@ -215,7 +217,7 @@ public class NormalKI2 implements IPlayer{
 		return -1;
 	}
 	
-public static boolean checkVirtualWin(int player, int win, int row, int column){
+	public static boolean checkVirtualWin(int player, int win, int row, int column){
 		
 		//Methoden sollen das für den statischen WINCOUNT prüfen, nicht für 4
 	
