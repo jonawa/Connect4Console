@@ -44,30 +44,19 @@ public class QPlayer2 implements IPlayer {
 		gamma = 0.8;
 	}
 	
-//	public static void main(String[] args) {
-//		QPlayer2 qplayer = new QPlayer2(1);
-//		qplayer.testMethods();
-//	}
-	
-	
-	
 	@Override
 	public int turn() {
+		
 		//Wie sieht das Spielfeld gerade aus:
 		int[][] currentState = Helper.deepCopy2DArray(Game.getBoard());
 		
-		
 		//aus allen MöglichenActions, die beste.. oder eine zufällig auswählen
 		int[] actions = generateActions(currentState, true);
-		
-		
 		int action = chooseBestAction(currentState, actions);	
 			
-		
 		//Finde neuen Wert für Q, außer es ist mein letzter Zug:
 		System.out.println(Game.tokensOnField);
 		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
-
 			if(learning){
 				//Datenbank mit neuem Wert updaten:	
 				double newQValue = (1-alpha)*Q.getValueOfStateAndAction(currentState,  action)+ 
@@ -76,8 +65,7 @@ public class QPlayer2 implements IPlayer {
 			}
 		}
 		
-		
-		
+				
 		/*Speichere den aktuellen State und die ausgewählte Action. Falls die KI verliert, wird sie dazu aufgefordert auf das Verlieren zu reagieren
 		 * (reactToWinrOrLose).
 		 * Die KI muss also wissen, was sie gemacht hat um Q zu aktualisieren und sich zu bestrafen.
@@ -145,18 +133,23 @@ public class QPlayer2 implements IPlayer {
 
 	private double avgValueForNextStateAllActions(int[][] state, int action) {
 
+		//Simulieren: QPlayer wirft seinen Stein - richtiges Board wird erst verändert nach dem Zug
 		
-		//Simulieren, QPlayer wirft seinen Stein, richtiges Board wird erst verändert nach dem Zug
+		// 1. hole Kopie des Spielfelds
 		int[][] nextStateOpponent = Helper.deepCopy2DArray(state); 
 
+		// 2. berechne in welcher Zeile der Stein landenwürde
 		int row = Game.placeDiskPossible(action);
+		
+		// 3. markiere das entsprechende Feld mit der ID des Players 
 		nextStateOpponent[row][action] = playerID;
 		
-		//Simulieren wo Gegner hinwerfen könnte:
+		
+		
+		//Berechne wo Gegner hinwerfen könnte:
 		int[] allActionOpponent = generateActions(nextStateOpponent, false);
 		
-		//Invertiere das Array um Erfahrungsdaten Bank auf gegnerischen Zug Anwenden zu können.
-		
+		//Invertiere das Array um Erfahrungsdaten-Bank auf gegnerischen Zug anwenden zu können.		
 		int[][] inversIextStateOpponent = Helper.deepCopy2DArray(nextStateOpponent);
 		for (int i=0; i<Game.ROWS; i++ ){
 			for (int j=0; j<Game.COLUMNS; j++){
@@ -169,13 +162,10 @@ public class QPlayer2 implements IPlayer {
 			}
 		}
 		
-		
+		// Wir gehen davon aus, dass der Gegner den für sich besten Zug wählt.
 		int bestAction = allActionOpponent[0];
-
 		Double bestValue = PUNISHMENT-1;
 
-		//Wie berahten jetzt "Wenn ich mein Gegner wäre".
-		//Für jede mögliche Aktion des Gegners:
 		if(Q.containsState(inversIextStateOpponent)){
 			for(int actionOpponent: allActionOpponent){
 				
@@ -186,6 +176,7 @@ public class QPlayer2 implements IPlayer {
 				}
 			}
 		}
+		
 		// Falls keine Erfahrungswere bestehen, wird eine zufällige Spalte gewählt
 		else{
 			int zufallszahl = (int)(Math.random() * allActionOpponent.length);
@@ -197,7 +188,7 @@ public class QPlayer2 implements IPlayer {
 		int rowOpponent = Game.placeDiskPossible(bestAction);
 		if (playerID == 1)
 			nextStatePlayer[rowOpponent][bestAction] = 2; 
-		else //TODO: hier irgendwie Spieler 2 holen?
+		else 
 			nextStatePlayer[rowOpponent][bestAction] = 1;
 			
 		//Berechne Durchschnitt aller möglichen Züge
@@ -229,7 +220,6 @@ public class QPlayer2 implements IPlayer {
 				possibleActions[i] = action;
 				i++;
 			}
-			
 		}
 		//Falls in Q noch nicht der State vorhanden ist, teste welche Züge (Actions) möglich sind und schreibe sie anschließende in die DB (mit Value 0):
 		else{
@@ -261,7 +251,6 @@ public class QPlayer2 implements IPlayer {
 		}
 		
 		return possibleActions;
-		
 	}
 	
 	private int chooseBestAction(final int[][] currentState, final int[] actions){
@@ -274,17 +263,20 @@ public class QPlayer2 implements IPlayer {
 		double bestValue = PUNISHMENT-1 ; //Double.MIN_VALUE;
 		int zz; //Zufallszahl für Spaltenauswahl
 
+		//Innerhalb der Lern-Phase sollen epsilon% der Züge zufällig gewählt werden umzu vermeiden, 
+		//dass sich der Q-Player fest fährt.
 		if (learning){
 			Random grn = new Random();
 			zz =grn.nextInt(100)+1;
 		}
+		// Im Turnier sollen kene Zufälligen Züge mehr gewählt werden, daher wir zz auf 100 gesetz.
 		else {
 			zz=100;
 		}
 		//Q.saveDBToTxt();
 		
 		if(Q.containsState(currentState)){
-			if (zz>epsilon){
+			if (zz>=epsilon){
 				for(int i=0; i<actions.length; i++){
 					double value = Q.getValueOfStateAndAction(currentState, actions[i]);
 
@@ -420,7 +412,7 @@ public class QPlayer2 implements IPlayer {
 		}	
 		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
 		if(win){
-			Q.update(lastState, lastAction,REWARD); // 1.0 richtig?
+			Q.update(lastState, lastAction, REWARD); // 1.0 richtig?
 		}
 		else{
 			Q.update(lastState, lastAction, PUNISHMENT);	

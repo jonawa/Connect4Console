@@ -1,0 +1,16 @@
+diff a/src/db/TestDB2.java b/src/db/TestDB2.java	(rejected hunks)
+@@ -247,11 +247,9 @@
+ 		double previousValue = db.get(stateWrap).get(action); 
+ 		//put von HashMap �berschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
+ 		//db.get(stateWrap).put(action, previousValue + addValue);
+-
+-		// addValue wird schon vorher mit dem alten Wert verrechnet. 
+-		// Die Vorg�nger zust�nde vom Ende werden fest gesetzt 
+-		db.get(stateWrap).put(action, addValue);
+-		//db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
++		//db.get(stateWrap).put(action, addValue);
++		db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
++		
+ 		
+ 		return true;
+ 	}
