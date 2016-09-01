@@ -157,7 +157,7 @@ public class NormalKI2 implements IPlayer{
 				 }
 				 while (Game.getBoard()[topRow][column]!=0);
 				 if (debug){
-						System.out.println("Das ist alles nicht gut. Suche eine Spalte, die nciht voll ist.");
+						System.out.println("Das ist alles nicht gut. Suche eine Spalte, die nicht voll ist.");
 					}
 				 return column;
 			 }
