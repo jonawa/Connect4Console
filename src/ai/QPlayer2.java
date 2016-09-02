@@ -67,14 +67,11 @@ public class QPlayer2 implements IPlayer {
 		//Finde neuen Wert für Q, außer es ist mein letzter Zug:
 		System.out.println(Game.tokensOnField);
 		if (Game.tokensOnField<(Game.ROWS*Game.COLUMNS)-2){
-			double newQValue= (gamma * avgValueForNextStateAllActions(currentState, action));
-			//double newQValue2 = (1-alpha)*Q.getValueOfStateAndAction(currentState,  action)+ 
-			//		alpha*(gamma*avgValueForNextStateAllActions(currentState, action));
-			//alpha wird jetzt über die update Methode verrechnet,
-			//um Konflikte im Turniermodus zu umgehen
 			if(learning){
 				//Datenbank mit neuem Wert updaten:	
-				Q.update(currentState, action, newQValue, alpha);
+				double newQValue = (1-alpha)*Q.getValueOfStateAndAction(currentState,  action)+ 
+					alpha*(gamma*avgValueForNextStateAllActions(currentState, action));
+				Q.update(currentState, action, newQValue);
 			}
 		}
 		
@@ -417,10 +414,10 @@ public class QPlayer2 implements IPlayer {
 		}	
 		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
 		if(win){
-			Q.update(lastState, lastAction,REWARD, 1.0); // 1.0 richtig?
+			Q.update(lastState, lastAction,REWARD); // 1.0 richtig?
 		}
 		else{
-			Q.update(lastState, lastAction, PUNISHMENT, 1.0);	
+			Q.update(lastState, lastAction, PUNISHMENT);	
 		}
 		
 	}
