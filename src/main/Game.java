@@ -543,10 +543,10 @@ public class Game {
 		TestDB2.getDB().loadDB("32000.ser");
 		
 		
-		trainQPlayer(qPlayer, normalKI, 16000, true);
+		//trainQPlayer(qPlayer, normalKI, 16000, true);
 
 		
-		int n=2; // legt die Anzahl der Tests fest
+		int n=5; // legt die Anzahl der Tests fest
 				
 		for (int i=1; i<=n; i++){
 			JOptionPane.showMessageDialog(null, "Starte nächstes Turnier");
@@ -557,7 +557,7 @@ public class Game {
 		// Gib Spieleinstellungen aus:
 		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
 
-		TestDB2.getDB().saveDB("testSaveDB.ser");
+		//TestDB2.getDB().saveDB("testSaveDB.ser");
 		//playTournament(10, qPlayer, new HumanPlayer(2), true);
 	}
 
