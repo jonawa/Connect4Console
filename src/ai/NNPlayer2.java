@@ -24,63 +24,78 @@ public class NNPlayer2 implements IPlayer{
 	private final int playerID;
 	private MultiLayerPerceptron myMlPerceptron;
 	
+	/**
+	 * Erzeugt einen KI-Spieler für das Spiel "Vier Gewinnt", welcher ein Neurnales Netz nutz,
+	 * um auf die Zuege des Gegners zu reagieren.
+	 * 
+	 * Achtung: Hier muessen zum Lernen oder Laden die entsprechenden Zeilen auskommentiert werden!
+	 * 
+	 * @param playerID   1 fuer Spieler 1 oder 2 fuer Spieler 2
+	 */
 	public NNPlayer2(int playerID) {
 		this.playerID = playerID;
+		
+		/*
+		 * Neuronales Netz erstellen und lernen lassen:
+		 * -> Hier auskommentieren, wenn vorhandenes Netz geladen werden soll!
+		 */
 		//learnNNPlayer();
 		
-		//Gespeichertes Netz laden
-		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer1_HL240_400.nnet");
+		/*
+		 * Gespeichertes Netz laden:
+		 * Hier immer den Parameter fuer das zu ladenene Neuronale Netz anpassen!
+		 * -> Hier auskommentieren, wenn ein neues Netz erstellt werden soll!
+		 */
+		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer1_HL240_200.nnet");
 		System.out.println("NN geladen.");
 
 	}
 	
+	/**
+	 * Methode erzeugt ein neues Neuronales Netz anhand einer Textdatei und den dazu passenden Parametern. 
+	 *
+	 */
 	public void learnNNPlayer(){
 		DataSet ds = null;
 		try {
-			 /*Datenset muss erstellt werden und wird eingelesen, die ersten 60 Elemete sind Input, die nächsten 5 Elemente sind Output,
-			  * getrennt sind die Daten durch ein Komma */
-
+			 /*
+			  * Datenset muss vorher erstellt worden sein und wird hier eingelesen. 
+			  * Fuer ein Spielfeld 4x5 sind die ersten 60 Elemete Input-Werte, die nächsten 5 Elemente Output-Werte,
+			  * welche alle durch ein Komma getrennt werden. 
+			  * */
 			 ds = TrainingSetImport.importFromFile("dataset_5x4_3G_p1_400.txt", 60, 5, ",");
-
-			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		//MultilayerPerceptron wird erstellt 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen
+		/* 
+		* MultilayerPerceptron erstellen.
+		* 60 Input Neuronen, 120 Hidden Neuronen, 5 Output Neuronen fuer Spielfeld 4x5 als Beispiel.
+		* 
+		* Beim Erstellen eines neuen Neuronalen Netzes muessen die Parameter entsprechend angepasst werden!
+		*/
 		myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 240, 5);
 
 
-		//LearningRule setzen
+		/*
+		 * LearningRule setzen.
+		 * Hier koennen die Parameter für den maximalen Fehler, die Lernrate und das Momentum entsprechend veraendert werden.
+		 */
         MomentumBackpropagation learningRule = (MomentumBackpropagation) myMlPerceptron.getLearningRule();
         learningRule.setMaxError(0.01);
         learningRule.setLearningRate(0.2);
         learningRule.setMomentum(0.7);
         
+        //Angepasste learningRule an das MultiLayerPerceptron uebergeben.
 		myMlPerceptron.setLearningRule(learningRule);
 		
-		//Netz trainieren
+		//Netz trainieren (Lernen).
 		System.out.println("Starte lernen");
-//		System.out.println("To stop learning, type stop");
-		myMlPerceptron.learn(ds);
-//		myMlPerceptron.learnInNewThread(ds);
-	
-//		Scanner scanner = new Scanner(System.in);
-//		String input = scanner.nextLine();
-//		if(input == "stop")
-//			
-//			myMlPerceptron.stopLearning();
-//		
-		
-	    
-		
+		myMlPerceptron.learn(ds);	
 		System.out.println("Lernen abgeschlossen");
 		
 		//Netz speichern
@@ -90,37 +105,48 @@ public class NNPlayer2 implements IPlayer{
 
 	
 
-
+	/* (non-Javadoc)
+	 * @see main.IPlayer#turn()^^
+	 */
 	@Override
 	public int turn() {
 		int action = 0;
-		//Get current board
+		//Das aktuelle Spielfeld
 		int[][] currentBoard = Helper.deepCopy2DArray(Game.getBoard());
 		
-		//Generate output to calculate the next move
+		/*
+		 * Um den naechsten Zug generieren zu koennen, muss currentBoard in Input fuer das Neuronale Netz umgewandelt werden.
+		 */
 		double[] input = TrainNNetwork.convertBoard(currentBoard);
+		
+		// Input an Neuronale Netz fuer Kalkulation uebergeben.
 		myMlPerceptron.setInput(input);
         myMlPerceptron.calculate();
        
+        // Output erzeugen
         double[] netOutput =  myMlPerceptron.getOutput();
 		
-        // Turn output into an action for the next move
+        // Output umwandeln in Aktion fuer den naechsten Zug (action).
      	action = getMax(netOutput);
-     	
         System.out.println(Arrays.toString(netOutput));
 		
-		// Check output
+		// Ueberpruefung, ob action fuer den naechsten Zug erlaubt ist.
 		while (!isActionAllowed(currentBoard, action)) {
 			action = getNextMax(netOutput, action);
 		}
-
-
+		
 		return action;
 	}
 
-
-	private int getNextMax(double[] array, int count) {
-		double Max = array [count];
+	/**
+	 * Diese Methode gibt den naechst hoechsten Wert des Output-Arrays zurueck.
+	 * 
+	 * @param Output-Array
+	 * @param zu pruefende Aktion
+	 * @return Naechst hoechster Wert im Output-Array
+	 */
+	private int getNextMax(double[] array, int action) {
+		double Max = array [action];
 	    double[] arrCopy = Arrays.copyOf(array, array.length);
 	    Arrays.sort(arrCopy);
 	    double nextMax = 0;
@@ -136,9 +162,14 @@ public class NNPlayer2 implements IPlayer{
 	    return -1;		
 
 	}
-	
 
-
+	/**
+	 * Diese Methode prueft, ob Aktion erlaubt ist.
+	 * 
+	 * @param Spielfeld
+	 * @param zu pruefende Aktion
+	 * @return true, wenn Aktion erlaubt, ansonsten false
+	 */
 	private boolean isActionAllowed(int[][] board, int action) {
 		int emptyRow = 0;
 		for (int i = Game.ROWS - 1; i >= 0; i--) {
@@ -154,7 +185,12 @@ public class NNPlayer2 implements IPlayer{
 		return true;
 	}
 
-	
+	/**
+	 * Diese Methode berechnet das Maximum in einem Array.
+	 * 
+	 * @param array
+	 * @return Maximum
+	 */
 	private int getMax(double[] array) {
 		double max = 0;
 		int row = 0;
@@ -162,54 +198,27 @@ public class NNPlayer2 implements IPlayer{
 			if(array[i]> max){
 				max = array[i];
 				row = i;
-			}
-				
+			}	
 		}
-		
 		return row;
 	}
 
 	@Override
 	public void reactToWinOrLose(boolean win) {
-		// TODO Auto-generated method stub
-		
+		// Fuer NNPlayer nicht notwendig.	
 	}
 
+	/* (non-Javadoc)
+	 * @see main.IPlayer#getPlayerID()
+	 */
 	@Override
 	public int getPlayerID() {
-		// TODO Auto-generated method stub
 		return playerID;
 	}
+	
 	@Override
 	public void setLearning(boolean b) {
-		// TODO Auto-generated method stub
-		
+		// Fuer NNPlayer nicht notwendig.
 	}
 	
-//  public static void main(String[] args) {
-////		
-//////		double[] array = {0.1, 0.5, 0.3};
-//////		double[] arrCopy = Arrays.copyOf(array, array.length);
-//////		
-//////		array[1] = 0.666;
-//////		
-//////		System.out.println(Arrays.toString(arrCopy));
-//////		System.out.println(Arrays.toString(array));
-//////		System.out.println(Arrays.equals(array, arrCopy));
-////		
-//		double[] netOutput = {0.2, 0.7114, 1.22, 1.89, 6.736, 0.161, 3.412};
-//        int count = 0;
-//        while (true) {
-//        	int nextMax = getNextMax(netOutput, count);
-//        	System.out.println(nextMax + " ist " +  netOutput[nextMax]);
-//        	count++;
-//        	
-//        	if(count > 7)
-//        		throw new RuntimeException("Wieso größer als 7 alle müssten jetzt einmal druch sein");
-//        
-//        }
-//	}
-//	
-	
-
 }

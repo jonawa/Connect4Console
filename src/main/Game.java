@@ -373,7 +373,7 @@ public class Game {
 
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
-		System.out.println("Anzahl der unendschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
+		System.out.println("Anzahl der unentschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 
 		
 		QPlayer2 qp = (QPlayer2)Spieler1;
@@ -514,22 +514,18 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		trainAndTestQ();
-		//trainAndTestNN();
+		//trainAndTestQ();
+		trainAndTestNN();
 
 	}
 	
 
 
 	private static void trainAndTestNN() {
-		
-		//TODO: Ich denke es könnte sehr viel bringen, zwei Netze zu trainieren, je nachdem welcher Spieler spielt.
-//		generateDataSets(200);
 		IPlayer player1 = new NNPlayer2(1);
-
 		IPlayer player2 = new NormalKI(2);
-		playTournament(10000,player1,player2,false);
-//		playTournament(1000, new NormalKI(1), new NormalKI(2), true);
+		
+		playTournament(100,player1,player2,true);
 		
 		
 	}
