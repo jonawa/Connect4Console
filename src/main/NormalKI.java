@@ -10,7 +10,7 @@ public class NormalKI implements IPlayer{
 	
 	private int playerID;
 	private int enemyID;
-	private boolean debug = true;
+	private boolean debug = false;
 	
 	/**
 	 * Konstruktor für die "normale" KI, muss 1 oder 2 zugewiesen weden.

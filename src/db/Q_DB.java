@@ -82,7 +82,7 @@ public class Q_DB {
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
 
-	public double getValueOfStateAndAction(int[][]state, int action){ //Double?
+	public double getValueOfStateAndAction(int[][]state, int action){ 
 
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		
@@ -164,7 +164,7 @@ public class Q_DB {
 			
 	}
 	/**
-	 * lädt die Datenbank und weist der TestDB2 die gelandene Datenbank zu
+	 * lädt die Datenbank und weist der Q_DB die gelandene Datenbank zu
 	 * @param filename
 	 */
 	public void loadDB(String filename){
@@ -201,10 +201,10 @@ public class Q_DB {
 	 * 
 	 * @param state aktuelle Spielposition als 2D Int Array
 	 * @param action Action(also Reihe, in die geschmissen wurde) die bewertet werden soll
-	 * @param addValue Bewertung als int, von dem was hinzugefügt werden soll zum aktuellen Value
-	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
+	 * @param Bewertung als Double, überschreibt den alten Value der in der DB steht
+	 * @return true, wenn das Update erfolgreich war, wirft zum Testen einen Fehler wenn das Update nicht erfolgreich war
 	 */
-	public boolean update(int[][] state, int action, double addValue){
+	public boolean update(int[][] state, int action, double newValue){
 
 		
 		Array2DWrapper stateWrap = new Array2DWrapper(state);
@@ -213,15 +213,11 @@ public class Q_DB {
 		if(db.containsKey(stateWrap) == false)
 			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
 		
-		
-		double previousValue = db.get(stateWrap).get(action); 
-		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
-		//db.get(stateWrap).put(action, previousValue + addValue);
+		// newValue wird vom Q-Player selbst wie folgt berechnet:
+		// newValue (1-alpha)*previousValue+alpha*addValue)
+		// und der Datenbank hiermmit übergeben 
+		db.get(stateWrap).put(action, newValue);
 
-		// addValue wird schon vorher mit dem alten Wert verrechnet. 
-		// Die Vorgänger zustände vom Ende werden fest gesetzt 
-		db.get(stateWrap).put(action, addValue);
-		//db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
 		
 		return true;
 	}

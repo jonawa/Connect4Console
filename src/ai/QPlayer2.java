@@ -75,6 +75,40 @@ public class QPlayer2 implements IPlayer {
 	}
 	
 	/**
+	 * Sobald der Algo an einem Punkt angelangt ist, an dem er die nächsten möglichen Züge noch nicht in seiner Datenbank hat (Am Anfang ist das immer der Fall)
+	 * wird diese Methode ausgeführt.
+	 * 
+	 * Die Methode generiert alle möglichen Züge (actions) basierend auf dem aktuellen Spielfeld (state) und fügt für diesen State dann alle möglichen 
+	 * Actions mit Value 0 in die Datenbank ein.
+	 * 
+	 * @param state Spielfeld
+	 * @param possibleActions 
+	 */
+	public void initializeState(int[][] state, int[] possibleActions){
+		
+		for(int action : possibleActions){
+			Q.put(state, action, 0.0);
+			
+		}
+	}
+
+	@Override
+	public void reactToWinOrLose(boolean win) {
+		//teste ob der letzte State nicht der aktuelle State ist und wirklich eine tiefe Kopie erstellet worden ist:
+		if(Arrays.deepEquals(Game.getBoard(),lastState)){
+			throw new RuntimeException("Die Q KI hat sich nicht den letzten Spielstand gemerkt.");
+		}	
+		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
+		if(win){
+			Q.update(lastState, lastAction, REWARD); // 1.0 richtig?
+		}
+		else{
+			Q.update(lastState, lastAction, PUNISHMENT);	
+		}
+		
+	}
+
+	/**
 	 * Nachdem die beste Aktion vom QPlayer ausgewählt wurde, wird diese Methode aufgerufen.
 	 * Es werden die nächsten möglichen States für den QPlayer betrachet, und von dieses States die
 	 * die Action gesucht mit dem höchsten Value. Dieser Value wird zurückgegeben.
@@ -379,41 +413,6 @@ public class QPlayer2 implements IPlayer {
 	
 
 	
-	/**
-	 * Sobald der Algo an einem Punkt angelangt ist, an dem er die nächsten möglichen Züge noch nicht in seiner Datenbank hat (Am Anfang ist das immer der Fall)
-	 * wird diese Methode ausgeführt.
-	 * 
-	 * Die Methode generiert alle möglichen Züge (actions) basierend auf dem aktuellen Spielfeld (state) und fügt für diesen State dann alle möglichen 
-	 * Actions mit Value 0 in die Datenbank ein.
-	 * 
-	 * @param state Spielfeld
-	 * @param possibleActions 
-	 */
-	public void initializeState(int[][] state, int[] possibleActions){
-		
-		for(int action : possibleActions){
-			Q.put(state, action, 0.0);
-			
-		}
-	}
-
-	@Override
-	public void reactToWinOrLose(boolean win) {
-		//teste ob der letzte State nicht der aktuelle State ist und wirklich eine tiefe Kopie erstellet worden ist:
-		if(Arrays.deepEquals(Game.getBoard(),lastState)){
-			throw new RuntimeException("Die Q KI hat sich nicht den letzten Spielstand gemerkt.");
-		}	
-		//wenn gewonnen, muss nichts passieren, KI hat sich schon selbst belohnt, als der Gewinnzug ausgeführt wurde( mit REWARD)
-		if(win){
-			Q.update(lastState, lastAction, REWARD); // 1.0 richtig?
-		}
-		else{
-			Q.update(lastState, lastAction, PUNISHMENT);	
-		}
-		
-	}
-	
-
 	@Override
 	public int getPlayerID() {
 
