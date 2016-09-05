@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
-
-import db.TestDB;
-import db.TestDB2;
-import db.TestDB3;
+import db.Q_DB;
 import main.Game;
 import main.IPlayer;
 import util.Helper;
@@ -19,7 +16,7 @@ public class QPlayer2 implements IPlayer {
 	public static final double PUNISHMENT = -100.0; //wenn verloren
 	
 	private final int playerID;
-	private TestDB2 Q;
+	private Q_DB Q;
 	private double gamma;
 	private int epsilon = 20;
 	private double alpha = 0.05;
@@ -40,7 +37,7 @@ public class QPlayer2 implements IPlayer {
 	public QPlayer2(int playerID) {
 
 		this.playerID = playerID;
-		Q = TestDB2.getDB();
+		Q = Q_DB.getDB();
 		gamma = 0.8;
 	}
 	
@@ -73,8 +70,6 @@ public class QPlayer2 implements IPlayer {
 		lastState = currentState;	//tiefe Kopie erstellen, wurde oben bereits gemacht
 		lastAction = action;
 		
-		//sichert db.txt im Projektordner, zum Testen aktuell, was in der DB steht.
-		//Q.saveDBToTxt(); //TODO rausnehmen und nur am Ende einmal speichern
 		
 		return action;
 	}
@@ -85,6 +80,8 @@ public class QPlayer2 implements IPlayer {
 	 * die Action gesucht mit dem höchsten Value. Dieser Value wird zurückgegeben.
 	 * Da der QPlayer nicht direkt wieder dran ist, müssen auch alle unterschiedlichen Möglichkeiten für
 	 * den Gegner durchgegangen werrden.
+	 * 
+	 * ACHTUNG: WIRD AKTUELL NICHT MEHR VERWENDET!!
 	 * 
 	 * @param state Spielfeld bevor der QPlayer seinen Stein geworfen hat.
 	 * @param action Zug der vom QPlayer ausgewählt worden ist.
@@ -110,7 +107,7 @@ public class QPlayer2 implements IPlayer {
 			int rowOpponent = Game.placeDiskPossible(actionOpponent);
 			if (playerID == 1)
 				nextStatePlayer[rowOpponent][actionOpponent] = 2; 
-			else //TODO: hier irgendwie Spieler 2 holen?
+			else 
 				nextStatePlayer[rowOpponent][actionOpponent] = 1;
 			
 			//Wähle höchsten Value aller möglichen nächsten Züge für QPlayer aus.
@@ -403,7 +400,6 @@ public class QPlayer2 implements IPlayer {
 	@Override
 	public void reactToWinOrLose(boolean win) {
 		//teste ob der letzte State nicht der aktuelle State ist und wirklich eine tiefe Kopie erstellet worden ist:
-		//TODO Rausnehmen, da unnötige Leistung
 		if(Arrays.deepEquals(Game.getBoard(),lastState)){
 			throw new RuntimeException("Die Q KI hat sich nicht den letzten Spielstand gemerkt.");
 		}	
@@ -428,7 +424,7 @@ public class QPlayer2 implements IPlayer {
 		//TestGenerateActions();
 		//TestGetMaximum();
 		//TestDB();
-		newTestCase();
+		//newTestCase();
 
 	}
 

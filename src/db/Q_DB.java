@@ -2,13 +2,16 @@ package db;
 
 import java.util.Map;
 
+
 import util.Helper;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,30 +19,32 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Database mit Binärcodierung implementiert
- * @author jcawa
+ * 
+ * Datenbank für den Q-Player, benutzt eine HashMap.
+ * Key: Spielstand als 2D-Int Array
+ * Schlüssel: Züge von diesem Spielzustand und die Bewertung davon 
  *
  */
-public class TestDB3 {
+public class Q_DB {
 	
-	private static TestDB3 testDB3;
+	private static Q_DB testDB2;
 	
 	
-	private  Map<ArrayWrapper, HashMap<Integer, Integer>> db;
+	private  Map<Array2DWrapper, HashMap<Integer, Double>> db;
 	
-	private TestDB3() {
-		db = new HashMap<ArrayWrapper, HashMap<Integer,Integer>>();
+	private Q_DB() {
+		db = new HashMap<Array2DWrapper, HashMap<Integer,Double>>();
 	}
 	
 	/**
 	 * Singelton Implementaion, hiermit auf die DB zugreifen.
 	 * @return
 	 */
-	public static TestDB3 getDB(){
+	public static Q_DB getDB(){
 		//TODO HashMap initialisieren.
-		if (testDB3 == null)
-			testDB3 = new TestDB3();
-		return testDB3;
+		if (testDB2 == null)
+			testDB2 = new Q_DB();
+		return testDB2;
 	}
 	
 	/**
@@ -47,16 +52,12 @@ public class TestDB3 {
 	 * @param state
 	 * @return
 	 */
-	public HashMap<Integer,Integer> get(int[][] state){
-		
-		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
-		int[] stateBinary = Helper.ArraytoBinary(state);
-		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
-		
+	public HashMap<Integer,Double> get(int[][] state){
+		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		if (db.containsKey(stateWrap)){
 			
-			 HashMap<Integer, Integer> actionValue;
-			 actionValue = db.get(stateWrap);
+
+			 HashMap<Integer, Double> actionValue = db.get(stateWrap);
 			 return actionValue;
 		}
 		return null;
@@ -65,11 +66,8 @@ public class TestDB3 {
 
 	
 	public boolean containsState(int[][] state) {
-		int[] stateBinary = Helper.ArraytoBinary(state);
-		
-		
-		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
-;
+
+		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		return db.containsKey(stateWrap);
 	}
 	
@@ -83,20 +81,17 @@ public class TestDB3 {
 	 * @return
 	 * @throws Exception wenn State und oder Action nicht vorhanden
 	 */
-	public int getValueOfStateAndAction(int[][] state, int action){
+
+	public double getValueOfStateAndAction(int[][]state, int action){ //Double?
+
+		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		
-		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
-		int[] stateBinary = Helper.ArraytoBinary(state);
-		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
-		
-		Integer value = db.get(stateWrap).get(action);
+		Double value = db.get(stateWrap).get(action);
 		
 		if (value != null)
 			return value;
 		else
 			throw new RuntimeException("Fehler sollte nicht passieren. Eintrag in DB nicht vorhanden");
-
-		
 	}
 	
 	/**
@@ -111,17 +106,15 @@ public class TestDB3 {
 	 * @param action
 	 * @param value
 	 */
-	public void put(int[][] state, int action, int value){
+	public void put(int[][] state, int action, double value){
 		
-		//konvertieren des 2D Arrays zu einem 1D Array in Binärcodierung
-		int[] stateBinary = Helper.ArraytoBinary(state);
-		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
+		Array2DWrapper stateWrap = new Array2DWrapper(state);
 		
 		
 		//Wenn der Zustand/ das aktuelle Board bereits in der DB gespeichert ist:
 		if (db.containsKey(stateWrap)){
 			
-			 HashMap<Integer, Integer> key;
+			 HashMap<Integer, Double> key;
 			 key = db.get(stateWrap);
 			 if (key == null){
 				 //Wenn kein Spielzug für Boardstate vorhanden, füge den aktuellen hinzu:
@@ -142,92 +135,66 @@ public class TestDB3 {
 		//Wenn der aktuelle Zustand noch nicht in der DB gespeichert ist.
 		else{
 			//neue HashMap erzeugen:
-			//TODO könnte man mit max mögliche Züge initialisieren
-			HashMap<Integer, Integer> key = new HashMap<Integer,Integer>();
+			HashMap<Integer, Double> key = new HashMap<Integer,Double>();
 			key.put(action, value);
-			db.put(stateWrap, key);
-			
-			
+			db.put(stateWrap, key);			
+		}		
+	}
+
+
+
+	/**
+	 * Speichert die Datenbank, filename ist Pfad und Dateiname zusammen, als Endung am besten .ser eingeben
+	 */
+	public void saveDB(String filename){
+
+		
+		try{
+			FileOutputStream fileOut = new FileOutputStream(filename);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(db);
+			out.close();
+			fileOut.close();
+			System.out.println("Die Datenbank wurde serialisiert");
+		}
+		catch(IOException i){
+			System.out.println("Fehler beim Speichern der Datenbank!");
+			i.printStackTrace();
 		}
 			
-		
 	}
-
 	/**
-	 * is currently used to either print out all data points or just the database size
+	 * lädt die Datenbank und weist der TestDB2 die gelandene Datenbank zu
+	 * @param filename
 	 */
-	public String toString(){
-		StringBuilder sb = new StringBuilder();
+	public void loadDB(String filename){
 		
-//		for(int[] key : db.keySet()){
-//
-//			
-//			HashMap<Integer, Integer> value = db.get(key);
-//			
-//			
-//			for(Integer intKey: value.keySet()){
-//				sb.append(key);
-//				/* sb.append(Helper.convertIntBoardTo1DString(key)); */
-//				sb.append("\t");
-//				
-//				sb.append(intKey);
-//				sb.append("\t");
-//				
-//				sb.append("value"); //bisher noch nicht drin
-//				sb.append("\n");
-//				
-//
-//				
-//			}
-//			
-//			
-//		}
-		
-		sb.append("Die Menge der Keys in der DB: " + db.size());
-		return sb.toString();
-	}
 
-	/**
-	 * Achtung noch nicht vollständig und ungetestet
-	 */
-	public void saveDB(){
+		Map<Array2DWrapper, HashMap<Integer, Double>> dbLoaded = null;
+		FileInputStream fileIn;
 		try {
-			FileOutputStream fileOut =
-			         new FileOutputStream("");
-			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			         try {
-						out.writeObject(db);
-						out.close();
-				         fileOut.close();
-					} catch (IOException e) {
-					
-						e.printStackTrace();
-					}
-			         
+			fileIn = new FileInputStream (filename);
+			ObjectInputStream in = new ObjectInputStream (fileIn);
+			dbLoaded = (Map<Array2DWrapper, HashMap<Integer, Double>>) in.readObject();
+			db = dbLoaded;
+			in.close();
+			fileIn.close();
+			System.out.println("Die Datenbank wurde erfolgreich geladen");
+			}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	
 			
 		} catch (FileNotFoundException e) {
-		
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
+		} catch (IOException e){
+			e.printStackTrace();
 		}
+
 	}
 	
-	/**
-	 * Der Methode wird ein 2D Int Array übergeben. Die Datenbank überprüft, ob dieser State vorhanden ist.
-	 * Falls nicht wird -1 zurückgeben, falls vorhanden wird die Action aus der Datenbank gesucht, die den höchsten Value hat.
-	 * Die Action ist ein Wert von 0 bis zur Größe des aktuellen Spielfeldes -1.
-	 * Also die Spalte mit dem höchsten Wert
-	 * 
-	 * @param state aktuelle Spielposition als 2D Int Array
-	 * @return int, gibt die Reihe(action) zurück in die geworfen werden soll
-	 * 
-	 */
-	public int maxValueActionForState(int[] state){
-		//TODO Implementieren
-		return -1;
-	}
+
 	/**
 	 * Die Datenbank nach dem State und der Action die bewertet werden soll und addiert den Wert von addValue
 	 * zu dem aktuellen Wert(value).
@@ -237,25 +204,31 @@ public class TestDB3 {
 	 * @param addValue Bewertung als int, von dem was hinzugefügt werden soll zum aktuellen Value
 	 * @return true, wenn das Update erfolgreich war, false wenn das Update nicht erfolgreich war
 	 */
-	public boolean update(int[][] state, int action, int addValue){
+	public boolean update(int[][] state, int action, double addValue){
 
 		
-		int[] stateBinary = Helper.ArraytoBinary(state);
-		
-		
-		ArrayWrapper stateWrap = new ArrayWrapper(stateBinary);
+		Array2DWrapper stateWrap = new Array2DWrapper(state);
 
 		
 		if(db.containsKey(stateWrap) == false)
 			throw new RuntimeException("Datenbank soll geupdatet werden enthählt aber das Element nicht");
 		
 		
-		int previousValue = db.get(stateWrap).get(action); 
+		double previousValue = db.get(stateWrap).get(action); 
 		//put von HashMap überschreibt einfach das Mapping des Keys auf das bisherige Value, siehe Java Doc.
-		db.get(stateWrap).put(action, previousValue + addValue);
+		//db.get(stateWrap).put(action, previousValue + addValue);
+
+		// addValue wird schon vorher mit dem alten Wert verrechnet. 
+		// Die Vorgänger zustände vom Ende werden fest gesetzt 
+		db.get(stateWrap).put(action, addValue);
+		//db.get(stateWrap).put(action, (1-alpha)*previousValue+alpha*addValue);
+		
 		return true;
 	}
 	
+	/**
+	 * wird aktuell nicht mehr benutzt, da das schreiben in eine Txt Datei zu ineffizient ist
+	 */
 	public void saveDBToTxt(){
 		System.out.println("Datenbank Elemente" + db.size());
 		 FileWriter fw;
@@ -263,14 +236,13 @@ public class TestDB3 {
 			fw = new FileWriter("db.txt");
 		    BufferedWriter bw = new BufferedWriter(fw);
 		    
-		    for(ArrayWrapper stateWrap : db.keySet()){
+		    for(Array2DWrapper stateWrap : db.keySet()){
 		    	
-		    	HashMap<Integer, Integer> valueActionMap = db.get(stateWrap);
+		    	HashMap<Integer, Double> valueActionMap = db.get(stateWrap);
 		    	
 		    	for(Integer action : valueActionMap.keySet()){
-		    		//TODO Extra Methode schreiben, damit state nicht in einer Zeile ausgegeben wird
-		    		//Das Problem ist hier das \n in der Helper Methode, wird nicht von Buffered Writer erkannt..
-		    		bw.write(Arrays.toString(stateWrap.getArr()));
+
+		    		bw.write(Helper.convertIntBoardToString(stateWrap.getArr()));
 		    		//System.out.println(Helper.convertIntBoardToString(state));
 		    		bw.write("\t");
 		    		bw.write(action.toString());
@@ -288,10 +260,9 @@ public class TestDB3 {
 		    }
 
 
-
 		    bw.close();
 		} catch (IOException e) {
-		
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -299,8 +270,8 @@ public class TestDB3 {
 
     public static void main(String[] args) {
 		System.out.println("Teste Array List");
-		int[] arr1 = {1,2,3};
-		int[] arr2 = {1,2,3};
+		int[][] arr1 = {{1,2,3},{4,5,6}};
+		int[][] arr2 = {{1,2,3},{4,5,6}};
 		
 		List<int[]> list = Arrays.asList(arr1);
 		List<int[]> list2 = Arrays.asList(arr2);
@@ -315,6 +286,10 @@ public class TestDB3 {
 		System.out.println(list3.equals(list4));
 		
 	}
+    
+    public int getSize(){
+    	return db.size();
+    }
 
 
 }
