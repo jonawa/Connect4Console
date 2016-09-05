@@ -65,6 +65,7 @@ public class Game {
 		// TODO Auto-generated constructor stub
 	}
 	
+	// nicht mher verwendet
 	public static void playGame(IPlayer Spieler1, IPlayer Spieler2){
 		
 		//Erzeuge leeres Board.
@@ -135,7 +136,6 @@ public class Game {
 	/**
 	 * Resets oder wenn noch nicht vorhanden, initialisiert das Board
 	 */
-	
 	
 
 	/**
@@ -539,7 +539,7 @@ public class Game {
 		TestDB2.getDB().loadDB("32000.ser");
 		
 		
-		//trainQPlayer(qPlayer, normalKI, 16000, true);
+		trainQPlayer(qPlayer, normalKI, 16000, true);
 
 		
 		int n=5; // legt die Anzahl der Tests fest
