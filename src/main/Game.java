@@ -7,10 +7,8 @@ import javax.swing.JOptionPane;
 
 import ai.NNPlayer;
 import ai.NNPlayer2;
-import ai.QPlayer;
 import db.Array2DWrapper;
-import db.TestDB;
-import db.TestDB2;
+import db.Q_DB;
 import db.TurnWrapper;
 import ai.QPlayer2;
 import ai.RandomPlayer;
@@ -396,7 +394,7 @@ public class Game {
 	 * @param numGames
 	 * @return ArrayList mit TurnWrappern
 	 */
-	public static ArrayList<TurnWrapper> generateDataSetForNN(IPlayer Spieler1, IPlayer Spieler2, int numGames){
+	private static ArrayList<TurnWrapper> generateDataSetForNN(IPlayer Spieler1, IPlayer Spieler2, int numGames){
 		
 		resetBoard();
 		
@@ -515,14 +513,20 @@ public class Game {
 	public static void main(String[] args) {
 	
 		//trainAndTestQ();
-		trainAndTestNN();
+		//trainAndTestNN();
 
 	}
 	
 
 
 	private static void trainAndTestNN() {
+		//erstellen des Datasets
+		generateDataSets(100);
+		/*NNPlayer lernt automatisch mit diesem Datenset, Input Output Neuronen
+		müssen allerdings auf die Größe des Spielfelds angepasst werden*/
 		IPlayer player1 = new NNPlayer2(1);
+		
+		
 		IPlayer player2 = new NormalKI(2);
 		
 		playTournament(100,player1,player2,true);
@@ -536,7 +540,7 @@ public class Game {
 		IPlayer qPlayer = new QPlayer2(1);
 		IPlayer normalKI = new NormalKI2(2);
 
-		TestDB2.getDB().loadDB("32000.ser");
+		Q_DB.getDB().loadDB("32000.ser");
 		
 		
 		trainQPlayer(qPlayer, normalKI, 16000, true);
@@ -551,7 +555,7 @@ public class Game {
 		
 	
 		// Gib Spieleinstellungen aus:
-		System.out.println("Anzahl der Datenbank-Elemente: " + TestDB2.getDB().getSize());
+		System.out.println("Anzahl der Datenbank-Elemente: " + Q_DB.getDB().getSize());
 
 		//TestDB2.getDB().saveDB("testSaveDB.ser");
 		//playTournament(10, qPlayer, new HumanPlayer(2), true);
