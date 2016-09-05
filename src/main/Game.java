@@ -20,10 +20,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 3;
+	public static final int WINCOUNT = 4;
 	
-	public static final int COLUMNS = 5;
-	public static final int ROWS = 4;
+	public static final int COLUMNS = 7;
+	public static final int ROWS = 6;
 	
 	
 	//__________________________________________________________________________
@@ -93,7 +93,7 @@ public class Game {
 			}
 			count++;
 			
-			//TODO Fehlerbehandlung
+			//Falls die PlaceDisk Methode nicht funktioniert hat.
 			if(row == -1){
 				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
 			}
@@ -102,7 +102,7 @@ public class Game {
 			System.out.println(Helper.convertIntBoardToString(board));
 			
 
-			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+
 			if (checkWin(1, row,column)){
 
 				Spieler1.reactToWinOrLose(true);
@@ -265,6 +265,8 @@ public class Game {
 		int numberOfWinsPlayer1 = 0;
 		int numberOfWinsPlayer2 = 0;
 		int numberOfDraws = 0;
+
+		double totalNumberOfGames = 0;
 		
 		int[] result = new int[3];
 		
@@ -323,6 +325,7 @@ public class Game {
 					count = 0;
 					
 					numberOfWinsPlayer1++;
+					totalNumberOfGames += numberOfMoves;
 				}
 				
 				if (checkWin(2, row, column)){
@@ -333,7 +336,9 @@ public class Game {
 					FINISHED = true;
 					count = 0;
 					
+					
 					numberOfWinsPlayer2++;
+					totalNumberOfGames += numberOfMoves;
 				}
 				if (boardIsFull()){
 					System.out.println("---------------------------------");
@@ -343,6 +348,7 @@ public class Game {
 					count = 0;
 					
 					numberOfDraws++;
+					totalNumberOfGames += numberOfMoves;
 				}
 				
 				
@@ -372,6 +378,9 @@ public class Game {
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 1: " + winningsOfPlayer1);
 		System.out.println("Anzahl der gewonnenen Spiele von Spieler 2: " + winningsOfPlayer2);
 		System.out.println("Anzahl der unentschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
+		System.out.println("-------------------------");
+		double avgTurnsPerGame = totalNumberOfGames / numberOfGames;
+		System.out.println("Durchschnittliche Anzahl von Spielen:" + avgTurnsPerGame);
 
 		
 		QPlayer2 qp = (QPlayer2)Spieler1;
@@ -513,7 +522,7 @@ public class Game {
 	public static void main(String[] args) {
 	
 		//trainAndTestQ();
-		//trainAndTestNN();
+		trainAndTestNN();
 
 	}
 	
@@ -521,7 +530,7 @@ public class Game {
 
 	private static void trainAndTestNN() {
 		//erstellen des Datasets
-		generateDataSets(100);
+//		generateDataSets(150);
 		/*NNPlayer lernt automatisch mit diesem Datenset, Input Output Neuronen
 		müssen allerdings auf die Größe des Spielfelds angepasst werden*/
 		IPlayer player1 = new NNPlayer2(1);
@@ -529,7 +538,9 @@ public class Game {
 		
 		IPlayer player2 = new NormalKI(2);
 		
-		playTournament(100,player1,player2,true);
+		playTournament(1000,player1, player2,false);
+		
+//		playTournament(10, player1, new HumanPlayer(2), false);
 		
 		
 	}
