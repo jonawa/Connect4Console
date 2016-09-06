@@ -11,36 +11,8 @@ import org.neuroph.util.TransferFunctionType;
 public class TrainNNetwork {
 
 	public TrainNNetwork() {
-		// TODO Auto-generated constructor stub
+		
 	}
-
-//	public static void main(String[] args) {
-//		// create training set
-//        DataSet trainingSet = new DataSet(60, 5);
-//        //trainingSet.addRow(new DataSetRow(methUmwandlung(), outputMoeglicheZustaende());
-//        
-//
-//        // create multi layer perceptron
-//        MultiLayerPerceptron NNMlp = new MultiLayerPerceptron(TransferFunctionType.SIGMOID, 60, 60, 5);
-//        
-//        // learn the training set
-//        NNMlp.learn(trainingSet);
-//
-//        // test perceptron
-//        System.out.println("Testing trained neural network");
-//        testNeuralNetwork(NNMlp, trainingSet);
-//
-//        // save trained neural network
-//        NNMlp.save("NNMlp.nnet");
-//
-//        // load saved neural network
-//        NeuralNetwork loadedMlp = NeuralNetwork.createFromFile("NNMlp.nnet");
-//
-//        // test loaded neural network
-//        System.out.println("Testing loaded neural network");
-//        testNeuralNetwork(loadedMlp, trainingSet);
-//
-//    }
 
     public static void testNeuralNetwork(NeuralNetwork nnet, DataSet testSet) {
 
@@ -81,11 +53,6 @@ public class TrainNNetwork {
         }
     	return converted;
     }
-    
-    public static void main(String[] args) {
-		int[][] test = {{0,2},{2,1}};
-		double[] arr = convertBoard(test);
-		System.out.println(Arrays.toString(arr));
-	}
+
     
 }
