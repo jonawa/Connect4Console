@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
-import ai.NNPlayer;
 import ai.NNPlayer2;
 import db.Array2DWrapper;
 import db.Q_DB;
@@ -46,7 +45,7 @@ public class Game {
 								
 	 */
 	private static int[][] board;
-	//TODO immer mit getter jetzt auf board zugreifen. Die einzige Methode, die board verändern darf sollte placeDisk sein.
+	// immer mit getter auf board zugreifen. Die einzige Methode, die board verändern darf, sollte placeDisk sein.
 
 	/**
 	 * Board sollte eigentlich wirklich nicht public sein und darf nicht von anderen Klassen verändert werden.
@@ -60,7 +59,7 @@ public class Game {
 	
 
 	public Game() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	// nicht mher verwendet
@@ -180,7 +179,7 @@ public class Game {
 			count++;
 			tokensOnField++;
 			
-			//TODO Fehlerbehandlung
+			//Fehlerbehandlung
 			if(row == -1){
 				System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
 			}
@@ -189,7 +188,7 @@ public class Game {
 			//System.out.println(Helper.convertIntBoardToString(board));
 			
 
-			//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+			//WICHTIG : Abprüfung, ob ein Untentschieden vorliegt, da alle Felder voll sind.
 			if (checkWin(1, row,column)){
 
 				Spieler1.reactToWinOrLose(true);
@@ -306,7 +305,7 @@ public class Game {
 				count++;
 				tokensOnField++;
 			
-				//TODO Fehlerbehandlung
+				//Fehlerbehandlung
 				if(row == -1){
 					System.out.println("Fehler durch die Methode placeDisk, wahrscheinlich ist die Reihe voll deswegen -1");
 				}
@@ -315,7 +314,7 @@ public class Game {
 				System.out.println(Helper.convertIntBoardToString(board));
 			
 
-				//TODO WICHTIG : Abprüfen ob ein Untentschieden vorliegt, da alle Felder voll sind.
+				//WICHTIG : Abprüfung, ob ein Untentschieden vorliegt, da alle Felder voll sind.
 				if (checkWin(1, row,column)){
 					winningsOfPlayer1++;
 					System.out.println("---------------------------------");
