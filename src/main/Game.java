@@ -551,7 +551,7 @@ public class Game {
 		//IPlayer ki = new NormalKI2(2);
 		IPlayer ki = new NNPlayer2(2);
 
-		Q_DB.getDB().loadDB("32000.ser");
+		Q_DB.getDB().loadDB("128000.ser");
 		
 		
 		//trainQPlayer(qPlayer, normalKI, 16000, true);
