@@ -1,0 +1,88 @@
+Normale KI am Zug
+Zuerst in die Mitte
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|1|0|0|
+
+[7.670619751694455E-5, 0.975481087293401, 0.014967969773840432, 0.146846234919162, 4.687234376565263E-5]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|2|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 1
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|1|0|0|0|
+|0|2|1|0|0|
+
+[0.0019368881543267815, 0.08826371014247271, 0.4185057860885448, 0.2322598484704149, 0.0036438243300725907]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|1|2|0|0|
+|0|2|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 1
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|1|0|0|0|
+|0|1|2|0|0|
+|0|2|1|0|0|
+
+[0.003203197982766356, 0.9309427664222465, 2.1207577590137564E-4, 9.743737997179899E-4, 3.63150128550117E-5]
+|0|2|0|0|0|
+|0|1|0|0|0|
+|0|1|2|0|0|
+|0|2|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 1
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|2|0|0|0|
+|0|1|1|0|0|
+|0|1|2|0|0|
+|0|2|1|0|0|
+
+[0.9968569402527587, 2.919808346125428E-8, 0.05832293935279488, 2.21308620215207E-6, 1.2748759620030245E-4]
+|0|2|0|0|0|
+|0|1|1|0|0|
+|0|1|2|0|0|
+|2|2|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 1
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|2|1|0|0|
+|0|1|1|0|0|
+|0|1|2|0|0|
+|2|2|1|0|0|
+
+[0.9690338087964924, 6.31412918782423E-4, 3.7874086969203167E-6, 4.929774613626803E-7, 3.250150252293371E-4]
+|0|2|1|0|0|
+|0|1|1|0|0|
+|2|1|2|0|0|
+|2|2|1|0|0|
+
+Normale KI am Zug
+Ich kann gewinnen! Wähle: 1
+|0|2|1|0|0|
+|1|1|1|0|0|
+|2|1|2|0|0|
+|2|2|1|0|0|
+
+---------------------------------
+Spieler 1 hat nach 11 Spielzuegen gewonnen
+---------------------------------

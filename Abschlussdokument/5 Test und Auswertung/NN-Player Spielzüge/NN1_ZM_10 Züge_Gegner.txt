@@ -1,0 +1,78 @@
+[4.986953613003537E-8, 0.0029220487521428046, 0.9840052397820115, 0.022734796659178592, 8.879971238302448E-5]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|2|0|0|
+|0|0|1|0|0|
+
+[1.4820104547867684E-6, 0.04812177304083183, 0.9696666721975356, 0.1229092680358885, 0.0027140336003164886]
+|0|0|0|0|0|
+|0|0|1|0|0|
+|0|0|2|0|0|
+|0|0|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|1|0|0|
+|0|0|2|0|0|
+|0|0|1|2|0|
+
+[0.0430025600736322, 0.9802372501038259, 0.03034244189822936, 0.0010638969693547932, 0.031937760528648586]
+|0|0|0|0|0|
+|0|0|1|0|0|
+|0|0|2|0|0|
+|0|1|1|2|0|
+
+Normale KI am Zug
+Ich muss verhindern, dass mein Gegner gewinnt: Wähle 1
+|0|0|0|0|0|
+|0|0|1|0|0|
+|0|0|2|0|0|
+|2|1|1|2|0|
+
+[0.9794519080134437, 0.00710716374962229, 0.006775868259099169, 0.00809461926256699, 0.008956253331043723]
+|0|0|0|0|0|
+|0|0|1|0|0|
+|1|0|2|0|0|
+|2|1|1|2|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 1
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|1|0|0|
+|1|2|2|0|0|
+|2|1|1|2|0|
+
+[0.016354536223558876, 0.7199122317372071, 8.437030970787037E-4, 0.02217932213976313, 0.008609909264974172]
+|0|0|0|0|0|
+|0|1|1|0|0|
+|1|2|2|0|0|
+|2|1|1|2|0|
+
+Normale KI am Zug
+Ich kann gewinnen! Wähle: 4
+|0|0|0|0|0|
+|0|1|1|0|0|
+|1|2|2|2|0|
+|2|1|1|2|0|
+
+---------------------------------
+Spieler 2 hat nach 10 Spielzuegen gewonnen
+---------------------------------

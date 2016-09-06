@@ -1,0 +1,55 @@
+[4.986953613003537E-8, 0.0029220487521428046, 0.9840052397820115, 0.022734796659178592, 8.879971238302448E-5]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|1|0|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|1|2|0|
+
+[1.2269249853885207E-5, 0.00843525736731736, 0.007786658545602998, 0.9619921447514321, 0.010660874921520649]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|1|0|
+|0|0|1|2|0|
+
+Normale KI am Zug
+Habe vielleicht etwas nützliches gefunden: 2
+Habe vielleicht etwas nützliches gefunden: 3
+Habe vielleicht etwas nützliches gefunden: 4
+Habe vielleicht etwas nützliches gefunden: 5
+Wähle zufällig aus allem was nicht so schlehct erscheint
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|1|0|
+|0|0|1|2|2|
+
+[1.0587014001628723E-6, 6.012881002254335E-4, 1.4067401384288934E-5, 0.0070503966609799735, 0.9982456974138002]
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|0|1|1|
+|0|0|1|2|2|
+
+Normale KI am Zug
+Ich muss verhindern, dass mein Gegner gewinnt: Wähle 3
+|0|0|0|0|0|
+|0|0|0|0|0|
+|0|0|2|1|1|
+|0|0|1|2|2|
+
+[7.934759650136073E-6, 0.0028972577688189884, 0.003418133328064055, 4.341667522930068E-5, 0.9994973082280015]
+|0|0|0|0|0|
+|0|0|0|0|1|
+|0|0|2|1|1|
+|0|0|1|2|2|
+
+---------------------------------
+Spieler 1 hat nach 7 Spielzuegen gewonnen
+---------------------------------
