@@ -521,8 +521,8 @@ public class Game {
 
 	public static void main(String[] args) {
 	
-		//trainAndTestQ();
-		trainAndTestNN();
+		trainAndTestQ();
+		//trainAndTestNN();
 
 	}
 	
@@ -554,7 +554,7 @@ public class Game {
 		Q_DB.getDB().loadDB("32000.ser");
 		
 		
-		trainQPlayer(qPlayer, normalKI, 16000, true);
+		//trainQPlayer(qPlayer, normalKI, 16000, true);
 
 		
 		int n=5; // legt die Anzahl der Tests fest
