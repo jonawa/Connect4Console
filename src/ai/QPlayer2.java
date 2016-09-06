@@ -18,8 +18,8 @@ public class QPlayer2 implements IPlayer {
 	private final int playerID;
 	private Q_DB Q;
 	private double gamma;
-	private int epsilon = 20;
-	private double alpha = 0.05;
+	private int epsilon = 10;
+	private double alpha = 0.01;
 	
 	/**
 	 * Variable bestimmt ob der QPlayer neue Datenbankeinträge macht oder nicht

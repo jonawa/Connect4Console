@@ -51,7 +51,7 @@ public final class Array2DWrapper implements Serializable{
 //		System.out.println(a1.equals(a2));
 //		System.out.println(a2.equals(a1));
 		
-		TestDB2 db = TestDB2.getDB();
+		Q_DB db = Q_DB.getDB();
 		
 		db.put(arr1, 1, 50);
 		db.update(arr1, 1, 333);
