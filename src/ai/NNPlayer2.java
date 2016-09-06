@@ -46,7 +46,7 @@ public class NNPlayer2 implements IPlayer{
 		 * Hier immer den Parameter fuer das zu ladenene Neuronale Netz anpassen!
 		 * -> Hier auskommentieren, wenn ein neues Netz erstellt werden soll!
 		 */
-		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer1_HL240_200.nnet");
+		myMlPerceptron  = (MultiLayerPerceptron) MultiLayerPerceptron.load("NNPlayer2_HL120_300.nnet");
 		System.out.println("NN geladen.");
 
 	}

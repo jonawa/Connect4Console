@@ -19,10 +19,10 @@ public class Game {
 	
 	//__________________________________________________________________________
 	// Spieleinstellungen: 
-	public static final int WINCOUNT = 4;
+	public static final int WINCOUNT = 3;
 	
-	public static final int COLUMNS = 7;
-	public static final int ROWS = 6;
+	public static final int COLUMNS = 5;
+	public static final int ROWS = 4;
 	
 	
 	//__________________________________________________________________________
@@ -379,7 +379,7 @@ public class Game {
 		System.out.println("Anzahl der unentschiedenen Spiele: " + (numberOfGames-winningsOfPlayer1-winningsOfPlayer2));
 		System.out.println("-------------------------");
 		double avgTurnsPerGame = totalNumberOfGames / numberOfGames;
-		System.out.println("Durchschnittliche Anzahl von Spielen:" + avgTurnsPerGame);
+		System.out.println("Durchschnittliche Anzahl von Spielzuegen:" + avgTurnsPerGame);
 
 		
 		QPlayer2 qp = (QPlayer2)Spieler1;
@@ -537,7 +537,7 @@ public class Game {
 		
 		IPlayer player2 = new NormalKI(2);
 		
-		playTournament(1000,player1, player2,false);
+		playTournament(10000,player1, player2,true);
 		
 //		playTournament(10, player1, new HumanPlayer(2), false);
 		
@@ -548,7 +548,8 @@ public class Game {
 	private static void trainAndTestQ() {
 				
 		IPlayer qPlayer = new QPlayer2(1);
-		IPlayer normalKI = new NormalKI2(2);
+		//IPlayer ki = new NormalKI2(2);
+		IPlayer ki = new NNPlayer2(2);
 
 		Q_DB.getDB().loadDB("32000.ser");
 		
@@ -560,7 +561,7 @@ public class Game {
 				
 		for (int i=1; i<=n; i++){
 			JOptionPane.showMessageDialog(null, "Starte nächstes Turnier");
-			playTournament(10000, qPlayer, normalKI, true);
+			playTournament(10000, qPlayer, ki, false);
 		}
 		
 	
